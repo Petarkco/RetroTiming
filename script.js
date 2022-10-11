@@ -1,4 +1,4 @@
-var debug = true;
+var debug = false;
 
 const url = 'http://127.0.0.1:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData';
 
@@ -111,5 +111,5 @@ async function getTimingData(){
 
 
 getTimingData();
-if (debug === false){setInterval(getTimingData, 1000)
+if (debug === false){setInterval(getTimingData, 500)
 }
