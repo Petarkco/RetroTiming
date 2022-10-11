@@ -91,33 +91,6 @@ html{
     min-width: 250px;
     text-align: center;
 }
-#foot-flag-sc{
-    background-color: #f8ff2c;
-    -moz-transition:all 0.5s ease-in-out;
-    -webkit-transition:all 0.5s ease-in-out;
-    -o-transition:all 0.5s ease-in-out;
-    -ms-transition:all 0.5s ease-in-out;
-    transition:all 0.5s ease-in-out; 
-    -moz-animation:blink normal 1.5s infinite ease-in-out; /* Firefox */
-    -webkit-animation:blink normal 1.5s infinite ease-in-out; /* Webkit */
-    -ms-animation:blink normal 1.5s infinite ease-in-out; /* IE */
-    animation:blink normal 1.5s infinite ease-in-out; /* Opera */
-    min-width: 250px;
-}
-
-#foot-flag-red{
-    background-color: #ff0000;
-    -moz-transition:all 0.5s ease-in-out;
-    -webkit-transition:all 0.5s ease-in-out;
-    -o-transition:all 0.5s ease-in-out;
-    -ms-transition:all 0.5s ease-in-out;
-    transition:all 0.5s ease-in-out; 
-    -moz-animation:blink normal 1.5s infinite ease-in-out; /* Firefox */
-    -webkit-animation:blink normal 1.5s infinite ease-in-out; /* Webkit */
-    -ms-animation:blink normal 1.5s infinite ease-in-out; /* IE */
-    animation:blink normal 1.5s infinite ease-in-out; /* Opera */
-    min-width: 250px;
-}
 @-moz-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Firefox */
 @-webkit-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Webkit */
 @-ms-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* IE */
