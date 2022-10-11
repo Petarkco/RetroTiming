@@ -1,0 +1,125 @@
+html{
+    font-family: futura-pt-condensed,sans-serif;
+font-weight: 600;
+font-style: normal;
+font-size: 1.3em;
+color: rgb(255, 255, 255);
+background-color: rgb(0, 0, 0);
+}
+
+html{
+    min-width: 50%;
+    max-width: 75%;
+   margin: auto;
+   padding: 1%;
+}
+#pos-head{
+    width: 5%;
+}
+#carnum-head{
+    width: 5%;
+}
+#name-head{
+    text-align: left;
+}
+#gap-head{
+    width: 5%;
+    text-align: right;
+}
+#int-head{
+    width: 5%;
+    text-align: right;
+}
+
+#lastlap-head{
+    width: 10%;
+}
+#status-head{
+    width: 5%;
+}
+#s1-head, #s2-head, #s3-head{
+    text-align: right;
+    color: #d24ae0;
+}
+#pit-head{
+    text-align: right;
+    width: 5%;
+}
+
+#name-head{
+    text-align: left !important;
+}
+#gap-head, #int-head{
+    color: #5dfafb;
+}
+#tab-pos{
+ color: #5dfafb;
+}
+
+#tab-name{
+    text-align: left;
+}
+#tab-gap, #tab-int{
+    color: #f8ff2c;
+    text-align: right;
+}
+#tab-p1-gap{
+    color: #f8ff2c;
+    text-align: left;
+}
+
+#tab-s1, #tab-s2, #tab-s3{
+    color: #f8ff2c;
+    /* color: white; */
+    text-align: right;
+}
+#tab-pit{
+    text-align: right;
+}
+
+#timing-foot{
+    width: 100%;
+}
+
+#track-time{
+    color: #f8ff2c;
+}
+#foot-flag{
+    min-width: 250px;
+    text-align: center;
+}
+#foot-flag-sc{
+    background-color: #f8ff2c;
+    -moz-transition:all 0.5s ease-in-out;
+    -webkit-transition:all 0.5s ease-in-out;
+    -o-transition:all 0.5s ease-in-out;
+    -ms-transition:all 0.5s ease-in-out;
+    transition:all 0.5s ease-in-out; 
+    -moz-animation:blink normal 1.5s infinite ease-in-out; /* Firefox */
+    -webkit-animation:blink normal 1.5s infinite ease-in-out; /* Webkit */
+    -ms-animation:blink normal 1.5s infinite ease-in-out; /* IE */
+    animation:blink normal 1.5s infinite ease-in-out; /* Opera */
+    min-width: 250px;
+}
+
+#foot-flag-red{
+    background-color: #ff0000;
+    -moz-transition:all 0.5s ease-in-out;
+    -webkit-transition:all 0.5s ease-in-out;
+    -o-transition:all 0.5s ease-in-out;
+    -ms-transition:all 0.5s ease-in-out;
+    transition:all 0.5s ease-in-out; 
+    -moz-animation:blink normal 1.5s infinite ease-in-out; /* Firefox */
+    -webkit-animation:blink normal 1.5s infinite ease-in-out; /* Webkit */
+    -ms-animation:blink normal 1.5s infinite ease-in-out; /* IE */
+    animation:blink normal 1.5s infinite ease-in-out; /* Opera */
+    min-width: 250px;
+}
+@-moz-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Firefox */
+@-webkit-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Webkit */
+@-ms-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* IE */
+@keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Opera */
+#race-time{
+    color: #f8ff2c;
+    float: right;
+}
