@@ -88,8 +88,8 @@ async function getTimingData(){
     <td id="tab-s1">${pos1_s1}</td>
     <td id="tab-s2">${pos1_s2}</td>
     <td id="tab-s3">${pos1_s3}</td>
-    <td id="tab-pit">${pos1_pit}</td>
-    `
+    <td id="tab-pit">${pos1_pit}</td>`;
+
     // console.log(pos1_s1_pb);
     if (pos1_s1_fast === true){
         document.getElementById('tab-s1').style.color = '#d24ae0';
