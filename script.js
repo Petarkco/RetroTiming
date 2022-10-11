@@ -1,3 +1,5 @@
+var debug = true;
+
 const url = 'http://127.0.0.1:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData';
 
 async function getTimingData(){
@@ -11,7 +13,9 @@ async function getTimingData(){
           } );
     console.log('Grabbing Timing Data')
     const timingData = await response.json();
-    console.log(timingData);
+    if (debug === true){
+        console.log(timingData);
+    }
 
     //Display 2 hour timer
     var sessionTimeRemaining = timingData.ExtrapolatedClock.Remaining;
@@ -80,31 +84,32 @@ async function getTimingData(){
     <td id="tab-pit">${pos1_pit}</td>
     `
     console.log(pos1_s1_pb);
-    if (pos1_s1_fast = true){
+    if (pos1_s1_fast === true){
         document.getElementById('tab-s1').style.color = '#d24ae0';
     }
-    if ((pos1_s1_pb = true) && (pos1_s1_fast = false)){
+    if ((pos1_s1_pb === true) && (pos1_s1_fast === false)){
         document.getElementById('tab-s1').style.color = '#f8ff2c';
     }
-    if (pos1_s2_fast == true ){
+    if (pos1_s2_fast === true ){
         document.getElementById('tab-s2').style.color = '#d24ae0';
     }
-    if ((pos1_s2_pb = true) && (pos1_s2_fast = false)){
+    if ((pos1_s2_pb === true) && (pos1_s2_fast === false)){
         document.getElementById('tab-s2').style.color = '#f8ff2c';
     }
-    if (pos1_s3_fast == true ){
+    if (pos1_s3_fast === true ){
         document.getElementById('tab-s3').style.color = '#d24ae0';
     }
-    if ((pos1_s3_pb = true) && (pos1_s3_fast = false)){
+    if ((pos1_s3_pb === true) && (pos1_s3_fast = false)){
         document.getElementById('tab-s3').style.color = "#f8ff2c";
     }
-    if (pos1_lastlap_isFL = true){
+    if (pos1_lastlap_isFL === true){
         document.getElementById('tab-lastlap').style.color = '#d24ae0';
     }
-    if ((pos1_lastlap_isFL = false) && (pos1_lastlap_isPB = true)){document.getElementById('tab-lastlap').style.color = '#f8ff2c';}
+    if ((pos1_lastlap_isFL === false) && (pos1_lastlap_isPB === true)){document.getElementById('tab-lastlap').style.color = '#f8ff2c';}
 }
 
 
 
 getTimingData();
-// setInterval(getTimingData, 1000)
+if (debug === false){setInterval(getTimingData, 1000)
+}
