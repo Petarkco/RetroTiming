@@ -1,4 +1,4 @@
-var debug = true;
+var debug = false;
 
 const url = 'http://127.0.0.1:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData';
 
@@ -25,6 +25,7 @@ async function getTimingData(){
     var trackStatus = timingData.TrackStatus.Message;
     if (trackStatus === 'AllClear'){
         document.getElementById("foot-flag").innerText = "";
+        document.getElementById("foot-flag").style.backgroundColor = '';
     }if(trackStatus === 'Red'){
         document.getElementById("foot-flag").innerText = "";
         document.getElementById("foot-flag").style.backgroundColor = '#ff0000';
