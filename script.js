@@ -38,9 +38,6 @@ async function getTimingData(){
         if (dot === -1) { // integer, insert decimal dot and pad up zeros
             return a + "." + "0".repeat(n);
         }
-        if (n = null){
-            return 0;
-        }
         const b = n - (a.length - dot) + 1;
         return b > 0 ? (a + "0".repeat(b)) : a;
      }
@@ -54,18 +51,18 @@ async function getTimingData(){
     var pos1_lastlap_isFL = timingData.TimingData.Lines[1].LastLapTime.OverallFastest;
     var pos1_lastlap_isPB = timingData.TimingData.Lines[1].LastLapTime.PersonalFastest;
     var pos1_status = '';
-    var pos1_s1 = parseFloat(timingData.TimingData.Lines[1].Sectors[0].Value);
-    var pos1_s1_n = pos1_s1.toFixedNoRounding(1);
+    var pos1_s1 = timingData.TimingData.Lines[1].Sectors[0].Value;
+    // var pos1_s1 = pos1_s1.toFixedNoRounding(1);
     var pos1_s1_fast = timingData.TimingData.Lines[1].Sectors[0].OverallFastest;
     var pos1_s1_pb = timingData.TimingData.Lines[1].Sectors[0].PersonalFastest;   
-    var pos1_s2 = parseFloat(timingData.TimingData.Lines[1].Sectors[1].Value);
-    var pos1_s2_n = pos1_s2.toFixedNoRounding(1);
+    var pos1_s2 = timingData.TimingData.Lines[1].Sectors[1].Value;
+    // var pos1_s2 = pos1_s2.toFixedNoRounding(1);
     var pos1_s2_fast = timingData.TimingData.Lines[1].Sectors[1].OverallFastest;    
     var pos1_s2_pb = timingData.TimingData.Lines[1].Sectors[1].PersonalFastest;
-    var pos1_s3 = parseFloat(timingData.TimingData.Lines[1].Sectors[2].Value);
+    var pos1_s3 = timingData.TimingData.Lines[1].Sectors[2].Value;
     console.log(pos1_s3);
-    var pos1_s3_n = pos1_s3.toFixedNoRounding(1);
-    console.log(pos1_s3_n);
+    // var pos1_s3 = pos1_s3.toFixedNoRounding(1);
+    console.log(pos1_s3);
     var pos1_s3_fast = timingData.TimingData.Lines[1].Sectors[2].OverallFastest;    
     var pos1_s3_pb = timingData.TimingData.Lines[1].Sectors[2].PersonalFastest;  
     var pos1_pit = timingData.TimingData.Lines[1].NumberOfPitStops;
@@ -77,9 +74,9 @@ async function getTimingData(){
     <td id="tab-p1-gap" colspan="2">${pos1_gap}</td>
     <td id="tab-lastlap">${pos1_lastlap}</td>
     <td id="tab-status">${pos1_status}</td>
-    <td id="tab-s1">${pos1_s1_n}</td>
-    <td id="tab-s2">${pos1_s2_n}</td>
-    <td id="tab-s3">${pos1_s3_n}</td>
+    <td id="tab-s1">${pos1_s1}</td>
+    <td id="tab-s2">${pos1_s2}</td>
+    <td id="tab-s3">${pos1_s3}</td>
     <td id="tab-pit">${pos1_pit}</td>
     `
     console.log(pos1_s1_pb);
