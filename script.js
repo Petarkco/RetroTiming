@@ -28,16 +28,16 @@ async function getTimingData(){
         document.getElementById("foot-flag").style.backgroundColor = '';
     }if(trackStatus === 'Red'){
         document.getElementById("foot-flag").innerText = "";
-        document.getElementById("foot-flag").style.backgroundColor = '#ff0000';
-        document.getElementById("foot-flag").style.animation = 'blink normal 1.5s infinite ease-in-out';
+        document.getElementById("foot-flag").style.backgroundColor = '#c80000';
+        document.getElementById("foot-flag").style.animation = 'blink normal 1.2s infinite ease-in-out';
     }if(trackStatus === "SCDeployed"){
         document.getElementById("foot-flag").innerText = "";
         document.getElementById("foot-flag").style.backgroundColor = '#f8ff2c';
-        document.getElementById("foot-flag").style.animation = 'blink normal 1.5s infinite ease-in-out';
+        document.getElementById("foot-flag").style.animation = 'blink normal 1.2s infinite ease-in-out';
     }if(trackStatus === "VSCDeployed"){
         document.getElementById("foot-flag").innerText = "";
         document.getElementById("foot-flag").style.backgroundColor = '#f8ff2c';
-        document.getElementById("foot-flag").style.animation = 'blink normal 1.5s infinite ease-in-out';
+        document.getElementById("foot-flag").style.animation = 'blink normal 1.2s infinite ease-in-out';
     }
     console.log(trackStatus);
 
