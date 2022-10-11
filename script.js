@@ -1,4 +1,4 @@
-var debug = false;
+var debug = true;
 
 const url = 'http://127.0.0.1:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData';
 
@@ -24,13 +24,19 @@ async function getTimingData(){
     //Display SC/VSC and Red flags
     var trackStatus = timingData.TrackStatus.Message;
     if (trackStatus === 'AllClear'){
-        document.getElementById("foot-flag").innerText = "© Formula 1 - P4";
+        document.getElementById("foot-flag").innerText = "";
     }if(trackStatus === 'Red'){
-        document.getElementById("foot-flag").id = "foot-flag-red";
-        document.getElementById("foot-flag-red").innerText = "";
+        document.getElementById("foot-flag").innerText = "";
+        document.getElementById("foot-flag").style.backgroundColor = '#ff0000';
+        document.getElementById("foot-flag").style.animation = 'blink normal 1.5s infinite ease-in-out';
     }if(trackStatus === "SCDeployed"){
-        document.getElementById("foot-flag").id = "foot-flag-sc";
-        document.getElementById("foot-flag-sc").innerText = "";
+        document.getElementById("foot-flag").innerText = "";
+        document.getElementById("foot-flag").style.backgroundColor = '#f8ff2c';
+        document.getElementById("foot-flag").style.animation = 'blink normal 1.5s infinite ease-in-out';
+    }if(trackStatus === "VSCDeployed"){
+        document.getElementById("foot-flag").innerText = "";
+        document.getElementById("foot-flag").style.backgroundColor = '#f8ff2c';
+        document.getElementById("foot-flag").style.animation = 'blink normal 1.5s infinite ease-in-out';
     }
     console.log(trackStatus);
 
@@ -64,9 +70,9 @@ async function getTimingData(){
     var pos1_s2_fast = timingData.TimingData.Lines[1].Sectors[1].OverallFastest;    
     var pos1_s2_pb = timingData.TimingData.Lines[1].Sectors[1].PersonalFastest;
     var pos1_s3 = timingData.TimingData.Lines[1].Sectors[2].Value;
-    console.log(pos1_s3);
+    // console.log(pos1_s3);
     // var pos1_s3 = pos1_s3.toFixedNoRounding(1);
-    console.log(pos1_s3);
+    // console.log(pos1_s3);
     var pos1_s3_fast = timingData.TimingData.Lines[1].Sectors[2].OverallFastest;    
     var pos1_s3_pb = timingData.TimingData.Lines[1].Sectors[2].PersonalFastest;  
     var pos1_pit = timingData.TimingData.Lines[1].NumberOfPitStops;
@@ -83,7 +89,7 @@ async function getTimingData(){
     <td id="tab-s3">${pos1_s3}</td>
     <td id="tab-pit">${pos1_pit}</td>
     `
-    console.log(pos1_s1_pb);
+    // console.log(pos1_s1_pb);
     if (pos1_s1_fast === true){
         document.getElementById('tab-s1').style.color = '#d24ae0';
     }

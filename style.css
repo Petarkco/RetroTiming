@@ -68,6 +68,9 @@ html{
     text-align: left;
 }
 
+#tab-lastlap{
+    color: #f8ff2c;
+}
 #tab-s1, #tab-s2, #tab-s3{
     color: #f8ff2c;
     /* color: white; */
