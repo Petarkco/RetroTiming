@@ -39,7 +39,6 @@ async function getTimingData(){
         document.getElementById("foot-flag").style.backgroundColor = '#f8ff2c';
         document.getElementById("foot-flag").style.animation = 'blink normal 1.2s infinite ease-in-out';
     }
-    console.log(trackStatus);
 
     //Allows sector times to have 2 decimals without rounding down
     Number.prototype.toFixedNoRounding = function(n) {
@@ -67,7 +66,6 @@ async function getTimingData(){
     var pos1_lastlap_isPB = timingData.TimingData.Lines[1].LastLapTime.PersonalFastest;
     var pos1_status = '';
     var pos1_s1 = timingData.TimingData.Lines[1].Sectors[0].Value;
-    console.log(pos1_s1);
     var pos1_s1_flt = parseFloat(pos1_s1);
     var pos1_s1_dec = pos1_s1_flt.toFixedNoRounding(1);
     var pos1_s1_fast = timingData.TimingData.Lines[1].Sectors[0].OverallFastest;
@@ -80,7 +78,6 @@ async function getTimingData(){
     var pos1_s3 = timingData.TimingData.Lines[1].Sectors[2].Value;
     var pos1_s3_flt = parseFloat(pos1_s3);
     var pos1_s3_dec = pos1_s3_flt.toFixedNoRounding(1);
-    // console.log(pos1_s3);
     var pos1_s3_fast = timingData.TimingData.Lines[1].Sectors[2].OverallFastest;    
     var pos1_s3_pb = timingData.TimingData.Lines[1].Sectors[2].PersonalFastest;  
     var pos1_pit = timingData.TimingData.Lines[1].NumberOfPitStops;
