@@ -133,8 +133,34 @@ async function getTimingData(){
     if ((pos1_lastlap_isFL === false) && (pos1_lastlap_isPB === true)){document.getElementById('tab-lastlap').style.color = '#f8ff2c';}
 }
 
+async function getClock(){
+    const response = await fetch ('http://127.0.0.1:10101/api/v2/live-timing/clock',
+        {   mode: 'cors',
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              }
+          } );
+    console.log('Getting time')
+    const clockData = await response.json();
+    if (debug === true){
+        console.log(clockData);
+    }
+
+    var systemTime = clockData.systemTime;
+    var trackTime = clockData.trackTime;
+    var now = Date.now();
+    // console.log(trackTime);
+    var trackTimeLiveRaw = now -= systemTime -= trackTime;
+    var trackTimeLive = new Date(trackTimeLiveRaw).toLocaleTimeString('en-GB',  {timeZone: "Asia/Tokyo"});
+    document.getElementById('track-time').innerHTML = trackTimeLive;
+}
+
 
 
 getTimingData();
 if (debug === false){setInterval(getTimingData, 500)
 }
+getClock();
+if (debug === false){setInterval(getClock, 500)}
