@@ -43,6 +43,7 @@ async function getTimingData(){
 
     //Allows sector times to have 2 decimals without rounding down
     Number.prototype.toFixedNoRounding = function(n) {
+        try{
         const reg = new RegExp("^-?\\d+(?:\\.\\d{0," + n + "})?", "g")
         const a = this.toString().match(reg)[0];
         const dot = a.indexOf(".");
@@ -50,7 +51,10 @@ async function getTimingData(){
             return a + "." + "0".repeat(n);
         }
         const b = n - (a.length - dot) + 1;
-        return b > 0 ? (a + "0".repeat(b)) : a;
+        return b > 0 ? (a + "0".repeat(b)) : a;}
+        catch(err){
+        
+        }
      }
     //Display positions
     var pos1_pos = '1';
@@ -63,16 +67,19 @@ async function getTimingData(){
     var pos1_lastlap_isPB = timingData.TimingData.Lines[1].LastLapTime.PersonalFastest;
     var pos1_status = '';
     var pos1_s1 = timingData.TimingData.Lines[1].Sectors[0].Value;
-    // var pos1_s1 = pos1_s1.toFixedNoRounding(1);
+    console.log(pos1_s1);
+    var pos1_s1_flt = parseFloat(pos1_s1);
+    var pos1_s1_dec = pos1_s1_flt.toFixedNoRounding(1);
     var pos1_s1_fast = timingData.TimingData.Lines[1].Sectors[0].OverallFastest;
     var pos1_s1_pb = timingData.TimingData.Lines[1].Sectors[0].PersonalFastest;   
     var pos1_s2 = timingData.TimingData.Lines[1].Sectors[1].Value;
-    // var pos1_s2 = pos1_s2.toFixedNoRounding(1);
+    var pos1_s2_flt = parseFloat(pos1_s2);
+    var pos1_s2_dec = pos1_s2_flt.toFixedNoRounding(1);
     var pos1_s2_fast = timingData.TimingData.Lines[1].Sectors[1].OverallFastest;    
     var pos1_s2_pb = timingData.TimingData.Lines[1].Sectors[1].PersonalFastest;
     var pos1_s3 = timingData.TimingData.Lines[1].Sectors[2].Value;
-    // console.log(pos1_s3);
-    // var pos1_s3 = pos1_s3.toFixedNoRounding(1);
+    var pos1_s3_flt = parseFloat(pos1_s3);
+    var pos1_s3_dec = pos1_s3_flt.toFixedNoRounding(1);
     // console.log(pos1_s3);
     var pos1_s3_fast = timingData.TimingData.Lines[1].Sectors[2].OverallFastest;    
     var pos1_s3_pb = timingData.TimingData.Lines[1].Sectors[2].PersonalFastest;  
@@ -85,12 +92,26 @@ async function getTimingData(){
     <td id="tab-p1-gap" colspan="2">${pos1_gap}</td>
     <td id="tab-lastlap">${pos1_lastlap}</td>
     <td id="tab-status">${pos1_status}</td>
-    <td id="tab-s1">${pos1_s1}</td>
-    <td id="tab-s2">${pos1_s2}</td>
-    <td id="tab-s3">${pos1_s3}</td>
+    <td id="tab-s1">${pos1_s1_dec}</td>
+    <td id="tab-s2">${pos1_s2_dec}</td>
+    <td id="tab-s3">${pos1_s3_dec}</td>
     <td id="tab-pit">${pos1_pit}</td>`;
 
-    // console.log(pos1_s1_pb);
+    //Hide sector time if there is no sector time.
+    if (pos1_s1_dec === undefined){
+        document.getElementById('tab-s1').style.visibility = 'hidden';
+    }
+    if (pos1_s2_dec === undefined){
+        document.getElementById('tab-s2').style.visibility = 'hidden';
+    }
+    if (pos1_s3_dec === undefined){
+        document.getElementById('tab-s1').style.visibility = 'hidden';
+    }
+
+    //Hide pit counter if driver has not pitted
+    if (pos1_pit === undefined){
+        document.getElementById('tab-pit').style.visibility = 'hidden';   
+    }
     if (pos1_s1_fast === true){
         document.getElementById('tab-s1').style.color = '#d24ae0';
     }
