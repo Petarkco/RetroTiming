@@ -105,7 +105,7 @@ async function getTimingData(){
         document.getElementById('tab-s2').style.visibility = 'hidden';
     }
     if (pos1_s3_dec === undefined){
-        document.getElementById('tab-s1').style.visibility = 'hidden';
+        document.getElementById('tab-s3').style.visibility = 'hidden';
     }
 
     //Hide pit counter if driver has not pitted
