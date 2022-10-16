@@ -1,4 +1,6 @@
 var debug = false;
+// Classic for Manana, F1Digital for Futura
+var font = "Classic";
 
 const url =
 	"http://127.0.0.1:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData";
@@ -16,6 +18,15 @@ async function getTimingData() {
 	const timingData = await response.json();
 	if (debug === true) {
 		console.log(timingData);
+	}
+
+	//Set font
+	if (font === "Classic") {
+		document.getElementById("main").style.fontFamily = "manana, sans-serif";
+	}
+	if (font === "F1Digital") {
+		document.getElementById("main").style.fontFamily =
+			"futura-pt-condensed, sans-serif";
 	}
 
 	//Display 2 hour timer

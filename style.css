@@ -1,101 +1,160 @@
-html{
-    font-family: futura-pt-condensed,sans-serif;
-font-weight: 600;
-font-style: normal;
-font-size: 1.3em;
-color: rgb(255, 255, 255);
-background-color: rgb(0, 0, 0);
+@font-face {
+	font-family: "manana";
+	src: url("/fonts/Manana.otf");
+}
+@font-face {
+	font-family: "manana-bold";
+	src: url("/fonts/Manan-bold.otf");
+}
+@font-face {
+	font-family: "manana-italic";
+	src: url("/fonts/Manana-italic.otf");
 }
 
-html{
-    min-width: 50%;
-    max-width: 75%;
-   margin: auto;
-   padding: 1%;
+html {
+	background-color: rgb(0, 0, 0);
+	min-width: 50%;
+	max-width: 75%;
+	margin: auto;
+	padding: 1%;
 }
-#pos-head{
-    width: 5%;
+#main {
+	/* font-family: futura-pt-condensed, sans-serif; */
+	/* font-family: "manana"; */
+	font-weight: 600;
+	font-style: normal;
+	font-size: 1.3em;
+	color: rgb(255, 255, 255);
 }
-#carnum-head{
-    width: 5%;
+#pos-head {
+	width: 5%;
 }
-#name-head{
-    text-align: left;
+#carnum-head {
+	width: 5%;
 }
-#gap-head{
-    width: 5%;
-    text-align: right;
+#name-head {
+	text-align: left;
 }
-#int-head{
-    width: 5%;
-    text-align: right;
+#gap-head {
+	width: 5%;
+	text-align: right;
 }
-
-#lastlap-head{
-    width: 10%;
-}
-#status-head{
-    width: 5%;
-}
-#s1-head, #s2-head, #s3-head{
-    text-align: right;
-    color: #d24ae0;
-}
-#pit-head{
-    text-align: right;
-    width: 5%;
+#int-head {
+	width: 5%;
+	text-align: right;
 }
 
-#name-head{
-    text-align: left !important;
+#lastlap-head {
+	width: 10%;
 }
-#gap-head, #int-head{
-    color: #5dfafb;
+#status-head {
+	width: 5%;
 }
-#tab-pos{
- color: #5dfafb;
+#s1-head,
+#s2-head,
+#s3-head {
+	text-align: right;
+	color: #d24ae0;
 }
-
-#tab-name{
-    text-align: left;
-}
-#tab-gap, #tab-int{
-    color: #f8ff2c;
-    text-align: right;
-}
-#tab-p1-gap{
-    color: #f8ff2c;
-    text-align: left;
+#pit-head {
+	text-align: right;
+	width: 5%;
 }
 
-#tab-lastlap{
-    color: #f8ff2c;
+#name-head {
+	text-align: left !important;
 }
-#tab-s1, #tab-s2, #tab-s3{
-    color: #f8ff2c;
-    /* color: white; */
-    text-align: right;
+#gap-head,
+#int-head {
+	color: #5dfafb;
 }
-#tab-pit{
-    text-align: right;
-}
-
-#timing-foot{
-    width: 100%;
+#tab-pos {
+	color: #5dfafb;
 }
 
-#track-time{
-    color: #f8ff2c;
+#tab-name {
+	text-align: left;
 }
-#foot-flag{
-    min-width: 250px;
-    text-align: center;
+#tab-gap,
+#tab-int {
+	color: #f8ff2c;
+	text-align: right;
 }
-@-moz-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Firefox */
-@-webkit-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Webkit */
-@-ms-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* IE */
-@keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Opera */
-#race-time{
-    color: #f8ff2c;
-    float: right;
+#tab-p1-gap {
+	color: #f8ff2c;
+	text-align: left;
+}
+
+#tab-lastlap {
+	color: #f8ff2c;
+}
+#tab-s1,
+#tab-s2,
+#tab-s3 {
+	color: #f8ff2c;
+	/* color: white; */
+	text-align: right;
+}
+#tab-pit {
+	text-align: right;
+}
+
+#timing-foot {
+	width: 100%;
+}
+
+#track-time {
+	color: #f8ff2c;
+}
+#foot-flag {
+	min-width: 250px;
+	text-align: center;
+}
+@-moz-keyframes blink {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+} /* Firefox */
+@-webkit-keyframes blink {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+} /* Webkit */
+@-ms-keyframes blink {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+} /* IE */
+@keyframes blink {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+} /* Opera */
+#race-time {
+	color: #f8ff2c;
+	float: right;
 }
