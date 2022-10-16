@@ -3,7 +3,7 @@ var debug = false;
 var font = "Classic";
 
 const url =
-	"http://127.0.0.1:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData";
+	"http://127.0.0.1:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData,DriverList";
 
 async function getTimingData() {
 	const response = await fetch(url, {
@@ -14,7 +14,9 @@ async function getTimingData() {
 			"Content-Type": "application/json",
 		},
 	});
-	console.log("Grabbing Timing Data");
+	if (debug === true) {
+		console.log("Grabbing Timing Data");
+	}
 	const timingData = await response.json();
 	if (debug === true) {
 		console.log(timingData);
@@ -72,85 +74,193 @@ async function getTimingData() {
 			return b > 0 ? a + "0".repeat(b) : a;
 		} catch (err) {}
 	};
-	//Display positions
-	var pos1_pos = "1";
-	var pos1_carnum = timingData.TimingData.Lines[1].RacingNumber;
-	var pos1_name = "M. VERSTAPPEN";
-	var pos1_gap = timingData.TimingData.Lines[1].GapToLeader;
-	var pos1_int = "";
-	var pos1_lastlap = timingData.TimingData.Lines[1].LastLapTime.Value;
-	var pos1_lastlap_isFL =
-		timingData.TimingData.Lines[1].LastLapTime.OverallFastest;
-	var pos1_lastlap_isPB =
-		timingData.TimingData.Lines[1].LastLapTime.PersonalFastest;
-	var pos1_status = "";
-	var pos1_s1 = timingData.TimingData.Lines[1].Sectors[0].Value;
-	var pos1_s1_flt = parseFloat(pos1_s1);
-	var pos1_s1_dec = pos1_s1_flt.toFixedNoRounding(1);
-	var pos1_s1_fast = timingData.TimingData.Lines[1].Sectors[0].OverallFastest;
-	var pos1_s1_pb = timingData.TimingData.Lines[1].Sectors[0].PersonalFastest;
-	var pos1_s2 = timingData.TimingData.Lines[1].Sectors[1].Value;
-	var pos1_s2_flt = parseFloat(pos1_s2);
-	var pos1_s2_dec = pos1_s2_flt.toFixedNoRounding(1);
-	var pos1_s2_fast = timingData.TimingData.Lines[1].Sectors[1].OverallFastest;
-	var pos1_s2_pb = timingData.TimingData.Lines[1].Sectors[1].PersonalFastest;
-	var pos1_s3 = timingData.TimingData.Lines[1].Sectors[2].Value;
-	var pos1_s3_flt = parseFloat(pos1_s3);
-	var pos1_s3_dec = pos1_s3_flt.toFixedNoRounding(1);
-	var pos1_s3_fast = timingData.TimingData.Lines[1].Sectors[2].OverallFastest;
-	var pos1_s3_pb = timingData.TimingData.Lines[1].Sectors[2].PersonalFastest;
-	var pos1_pit = timingData.TimingData.Lines[1].NumberOfPitStops;
+	document.getElementById("position-Data").innerHTML = `<tr>
+	<th id="pos-head"></th>
+	<th id="carnum-head"></th>
+	<th id="name-head"></th>
+	<th id="gap-head">GAP</th>
+	<th id="int-head">INT</th>
+	<th id="lastlap-head"></th>
+	<th id="status-head"></th>
+	<th id="s1-head">00.0</th>
+	<th id="s2-head">00.0</th>
+	<th id="s3-head">00.0</th>
+	<th id="pit-head"></th>
+</tr>`;
+	let liveTimingData = timingData.TimingData.Lines;
+	// console.log(liveTimingData);
+	for (let lines of Object.entries(liveTimingData)) {
+		let linesData = lines;
+		for (var i = 1; i < linesData.length; i++) {
+			let timingCarPos = linesData[i].Position;
+			let timingCarNum = linesData[i].RacingNumber;
+			let timingGap = linesData[i].GapToLeader;
+			let timingInt = linesData[i].IntervalToPositionAhead.Value;
+			let timingLastLap = linesData[i].LastLapTime.Value;
+			// let timingS1 = linesData[i].Sectors[0].Value;
+			let timingS1 = linesData[i].Sectors[0].Value;
+			let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
+			let timingS2 = linesData[i].Sectors[1].Value;
+			let timingS2_dec = parseFloat(timingS2).toFixedNoRounding(1);
+			let timingS3 = linesData[i].Sectors[2].Value;
+			let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
+			let timingPitCount = linesData[i].NumberOfPitStops;
+			let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
+			let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
+			let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
+			let is_driverSector1_pb = linesData[i].Sectors[0].PersonalFastest;
+			let is_driverSector2_pb = linesData[i].Sectors[1].PersonalFastest;
+			let is_driverSector3_pb = linesData[i].Sectors[2].PersonalFastest;
+			let is_fastestlap = linesData[i].LastLapTime.OverallFastest;
+			let is_pb = linesData[i].LastLapTime.PersonalFastest;
+			let timingStopped = linesData[i].Stopped;
+			let timingInPits = linesData[i].InPit;
+			let timingPitOut = linesData[i].PitOut;
+			let carStatus = "";
 
-	document.getElementById("position-Data").innerHTML = `
-    <td id="tab-pos">${pos1_pos}</td>
-    <td id="tab-carnum">${pos1_carnum}</td>
-    <td id="tab-name">${pos1_name}</td>
-    <td id="tab-p1-gap" colspan="2">${pos1_gap}</td>
-    <td id="tab-lastlap">${pos1_lastlap}</td>
-    <td id="tab-status">${pos1_status}</td>
-    <td id="tab-s1">${pos1_s1_dec}</td>
-    <td id="tab-s2">${pos1_s2_dec}</td>
-    <td id="tab-s3">${pos1_s3_dec}</td>
-    <td id="tab-pit">${pos1_pit}</td>`;
+			switch (timingCarNum) {
+				case "1":
+					var timingDriverName = "M. VERSTAPPEN";
+					break;
+				case "3":
+					var timingDriverName = "D. RICCIARDO";
+					break;
+				case "4":
+					var timingDriverName = "L. NORRIS";
+					break;
+				case "5":
+					var timingDriverName = "S.VETTEL";
+					break;
+				case "6":
+					var timingDriverName = "N. LATIFI";
+					break;
+				case "10":
+					var timingDriverName = "P. GASLY";
+					break;
+				case "11":
+					var timingDriverName = "S. PEREZ";
+					break;
+				case "14":
+					var timingDriverName = "F. ALONSO";
+					break;
+				case "16":
+					var timingDriverName = "C. LECLERC";
+					break;
+				case "18":
+					var timingDriverName = "L. STROLL";
+					break;
+				case "20":
+					var timingDriverName = "K. MAGNUSSEN";
+					break;
+				case "22":
+					var timingDriverName = "Y. TSUNODA";
+					break;
+				case "23":
+					var timingDriverName = "A. ALBON";
+					break;
+				case "24":
+					var timingDriverName = "Z. GUANYU";
+					break;
+				case "31":
+					var timingDriverName = "E. OCON";
+					break;
+				case "44":
+					var timingDriverName = "L. HAMILTON";
+					break;
+				case "47":
+					var timingDriverName = "M. SCHUMACHER";
+					break;
+				case "55":
+					var timingDriverName = "C. SAINZ";
+					break;
+				case "63":
+					var timingDriverName = "G. RUSSELL";
+					break;
+				case "77":
+					var timingDriverName = "V. BOTTAS";
+					break;
+			}
 
-	//Hide sector time if there is no sector time.
-	if (pos1_s1_dec === undefined) {
-		document.getElementById("tab-s1").style.visibility = "hidden";
-	}
-	if (pos1_s2_dec === undefined) {
-		document.getElementById("tab-s2").style.visibility = "hidden";
-	}
-	if (pos1_s3_dec === undefined) {
-		document.getElementById("tab-s3").style.visibility = "hidden";
-	}
+			if (timingPitCount === undefined) {
+				timingPitCount = "";
+			}
+			if (timingStopped === true) {
+				carStatus = "STOPPED";
+			}
+			if (timingInPits === true) {
+				carStatus = "IN PIT";
+			}
+			if (timingPitOut === true) {
+				carStatus = "OUT";
+			}
 
-	//Hide pit counter if driver has not pitted
-	if (pos1_pit === undefined) {
-		document.getElementById("tab-pit").style.visibility = "hidden";
-	}
-	if (pos1_s1_fast === true) {
-		document.getElementById("tab-s1").style.color = "#d24ae0";
-	}
-	if (pos1_s1_pb === true && pos1_s1_fast === false) {
-		document.getElementById("tab-s1").style.color = "#f8ff2c";
-	}
-	if (pos1_s2_fast === true) {
-		document.getElementById("tab-s2").style.color = "#d24ae0";
-	}
-	if (pos1_s2_pb === true && pos1_s2_fast === false) {
-		document.getElementById("tab-s2").style.color = "#f8ff2c";
-	}
-	if (pos1_s3_fast === true) {
-		document.getElementById("tab-s3").style.color = "#d24ae0";
-	}
-	if (pos1_s3_pb === true && (pos1_s3_fast = false)) {
-		document.getElementById("tab-s3").style.color = "#f8ff2c";
-	}
-	if (pos1_lastlap_isFL === true) {
-		document.getElementById("tab-lastlap").style.color = "#d24ae0";
-	}
-	if (pos1_lastlap_isFL === false && pos1_lastlap_isPB === true) {
-		document.getElementById("tab-lastlap").style.color = "#f8ff2c";
+			if (timingS1_dec === undefined) {
+				timingS1_dec = "";
+			}
+			if (timingS2_dec === undefined) {
+				timingS2_dec = "";
+			}
+			if (timingS3_dec === undefined) {
+				timingS3_dec = "";
+			}
+
+			var timingPosLine = `<td id="tab-pos">${timingCarPos}</td>`;
+			var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
+			var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
+			var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
+			if (timingCarPos === "1") {
+				var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
+			}
+			var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
+			if (timingCarPos === "1") {
+				var timingIntLine = ``;
+			}
+			var timingLastLapLine = `<td id="tab-lastlap">${timingLastLap}</td>`;
+			if (is_fastestlap === true) {
+				var timingLastLapLine = `<td id="tab-lastlap-fastest">${timingLastLap}</td>`;
+			}
+			if (is_pb === true) {
+				var timingLastLapLine = `<td id="tab-lastlap-pb">${timingLastLap}</td>`;
+			}
+			var timingCarStatusRow = `<td id="tab-status">${carStatus}</td>`;
+			var timingSector1Row = `<td id="tab-s1">${timingS1_dec}</td>`;
+			var timingSector2Row = `<td id="tab-s2">${timingS2_dec}</td>`;
+			var timingSector3Row = `<td id="tab-s3">${timingS3_dec}</td>`;
+			var timingPitCountRow = `<td id="tab-pit">${timingPitCount}</td></tr>`;
+			if (is_driverSector1_fastest === true) {
+				timingSector1Row = `<td id="tab-s1-fastest">${timingS1_dec}</td>`;
+			}
+			if (is_driverSector2_fastest === true) {
+				timingSector2Row = `<td id="tab-s2-fastest">${timingS2_dec}</td>`;
+			}
+			if (is_driverSector3_fastest === true) {
+				timingSector3Row = `<td id="tab-s3-fastest">${timingS3_dec}</td>`;
+			}
+			if (is_driverSector1_pb === true && is_driverSector1_fastest === false) {
+				timingSector1Row = `<td id="tab-s1-pb">${timingS1_dec}</td>`;
+			}
+			if (is_driverSector2_pb === true && is_driverSector2_fastest === false) {
+				timingSector2Row = `<td id="tab-s2-pb">${timingS2_dec}</td>`;
+			}
+			if (is_driverSector3_pb === true && is_driverSector3_fastest === false) {
+				timingSector3Row = `<td id="tab-s3-pb">${timingS3_dec}</td>`;
+			}
+
+			document.getElementById("position-Data").innerHTML += `
+			<tr>
+			${timingPosLine}
+			${timingCarNumLine}
+			${timingDriverNameLine}
+			${timingGapLine}
+			${timingIntLine}
+			${timingLastLapLine}
+			${timingCarStatusRow}
+			${timingSector1Row}
+			${timingSector2Row}
+			${timingSector3Row}
+			${timingPitCountRow}
+			</tr>`;
+		}
 	}
 }
 
@@ -166,7 +276,9 @@ async function getClock() {
 			},
 		}
 	);
-	console.log("Getting time");
+	if (debug === true) {
+		console.log("Getting time");
+	}
 	const clockData = await response.json();
 	if (debug === true) {
 		console.log(clockData);
@@ -182,7 +294,9 @@ async function getClock() {
 			},
 		}
 	);
-	console.log("Getting Session Info");
+	if (debug === true) {
+		console.log("Getting Session Info");
+	}
 	const sessionInfo = await sessionResponse.json();
 	var trackOffset = sessionInfo.GmtOffset;
 	let trackTimezone;
@@ -283,9 +397,9 @@ async function getClock() {
 
 getTimingData();
 if (debug === false) {
-	setInterval(getTimingData, 500);
+	setInterval(getTimingData, 25);
 }
 getClock();
 if (debug === false) {
-	setInterval(getClock, 500);
+	setInterval(getClock, 25);
 }

@@ -14,9 +14,9 @@
 html {
 	background-color: rgb(0, 0, 0);
 	min-width: 50%;
-	max-width: 75%;
+	max-width: 90%;
 	margin: auto;
-	padding: 1%;
+	padding: 0.1%;
 }
 #main {
 	/* font-family: futura-pt-condensed, sans-serif; */
@@ -26,33 +26,38 @@ html {
 	font-size: 1.3em;
 	color: rgb(255, 255, 255);
 }
+#position-Data {
+	width: 100%;
+}
+
 #pos-head {
-	width: 5%;
+	min-width: 5%;
 }
 #carnum-head {
-	width: 5%;
+	min-width: 5%;
 }
 #name-head {
 	text-align: left;
 }
 #gap-head {
-	width: 5%;
+	min-width: 5%;
 	text-align: right;
 }
 #int-head {
-	width: 5%;
+	min-width: 5%;
 	text-align: right;
 }
 
 #lastlap-head {
-	width: 10%;
+	min-width: 10%;
 }
 #status-head {
-	width: 5%;
+	min-width: 5%;
 }
 #s1-head,
 #s2-head,
 #s3-head {
+	min-width: 25%;
 	text-align: right;
 	color: #d24ae0;
 }
@@ -67,6 +72,7 @@ html {
 #gap-head,
 #int-head {
 	color: #5dfafb;
+	text-align: center;
 }
 #tab-pos {
 	color: #5dfafb;
@@ -78,7 +84,7 @@ html {
 #tab-gap,
 #tab-int {
 	color: #f8ff2c;
-	text-align: right;
+	text-align: left;
 }
 #tab-p1-gap {
 	color: #f8ff2c;
@@ -88,14 +94,38 @@ html {
 #tab-lastlap {
 	color: #f8ff2c;
 }
+#tab-lastlap-fastest {
+	color: #d24ae0;
+}
+#tab-lastlap-pb {
+	color: #4cb033;
+}
 #tab-s1,
 #tab-s2,
 #tab-s3 {
 	color: #f8ff2c;
-	/* color: white; */
+	text-align: right;
+}
+
+#tab-s1-pb,
+#tab-s2-pb,
+#tab-s3-pb {
+	color: #4cb033;
+	width: auto;
+	text-align: right;
+}
+#tab-s1-fastest,
+#tab-s2-fastest,
+#tab-s3-fastest {
+	color: #d24ae0;
+	text-align: right;
+}
+#tab-status {
+	color: #f8ff2c;
 	text-align: right;
 }
 #tab-pit {
+	text-align: right;
 	text-align: right;
 }
 
