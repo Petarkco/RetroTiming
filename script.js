@@ -97,7 +97,6 @@ async function getTimingData() {
 			let timingGap = linesData[i].GapToLeader;
 			let timingInt = linesData[i].IntervalToPositionAhead.Value;
 			let timingLastLap = linesData[i].LastLapTime.Value;
-			// let timingS1 = linesData[i].Sectors[0].Value;
 			let timingS1 = linesData[i].Sectors[0].Value;
 			let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
 			let timingS2 = linesData[i].Sectors[1].Value;
@@ -397,9 +396,9 @@ async function getClock() {
 
 getTimingData();
 if (debug === false) {
-	setInterval(getTimingData, 25);
+	setInterval(getTimingData, 100);
 }
 getClock();
 if (debug === false) {
-	setInterval(getClock, 25);
+	setInterval(getClock, 100);
 }
