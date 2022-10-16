@@ -1,4 +1,4 @@
-var debug = true;
+var debug = false;
 
 const url =
 	"http://127.0.0.1:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData";
@@ -173,7 +173,6 @@ async function getClock() {
 	);
 	console.log("Getting Session Info");
 	const sessionInfo = await sessionResponse.json();
-	console.log(sessionInfo);
 	var trackOffset = sessionInfo.GmtOffset;
 	let trackTimezone;
 	if (trackOffset === "-12:00:00") {
@@ -266,7 +265,6 @@ async function getClock() {
 		timeZone: trackTimezone,
 	});
 	document.getElementById("track-time").innerHTML = trackTimeLive;
-	console.log(trackTimeLive);
 	if (trackTimeLive === "Invalid Date") {
 		document.getElementById("track-time").style.visibility = "hidden";
 	}
