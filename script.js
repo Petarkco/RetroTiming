@@ -1,4 +1,4 @@
-var debug = true;
+var debug = false;
 // Classic for Manana, Classic-Bold for Manana in bold and F1Digital for Futura.
 var font = "Classic";
 
@@ -19,7 +19,7 @@ async function getTimingData() {
 	}
 	const timingData = await response.json();
 	if (debug === true) {
-		console.log(timingData);
+		// console.log(timingData);
 	}
 
 	//Set font
@@ -91,9 +91,10 @@ async function getTimingData() {
 	<th id="s3-head">00.0</th>
 	<th id="pit-head"></th>
 </tr>`;
-	let liveTimingData = timingData.TimingData.Lines;
-	// console.log(liveTimingData);
-	for (let lines of Object.entries(liveTimingData)) {
+	const liveTimingData = timingData.TimingData.Lines;
+	for (let lines of Object.entries(liveTimingData).sort(
+		(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
+	)) {
 		let linesData = lines;
 		for (var i = 1; i < linesData.length; i++) {
 			let timingCarPos = linesData[i].Position;
