@@ -1,5 +1,5 @@
-var debug = false;
-// Classic for Manana, F1Digital for Futura
+var debug = true;
+// Classic for Manana, Classic-Bold for Manana in bold and F1Digital for Futura.
 var font = "Classic";
 
 const url =
@@ -24,6 +24,9 @@ async function getTimingData() {
 
 	//Set font
 	if (font === "Classic") {
+		document.getElementById("main").style.fontFamily = "manana, sans-serif";
+	}
+	if (font === "Classic-Bold") {
 		document.getElementById("main").style.fontFamily =
 			"manana-bold, sans-serif";
 	}
@@ -219,7 +222,7 @@ async function getTimingData() {
 			if (is_fastestlap === true) {
 				var timingLastLapLine = `<td id="tab-lastlap-fastest">${timingLastLap}</td>`;
 			}
-			if (is_pb === true) {
+			if (is_pb === true && is_fastestlap === false) {
 				var timingLastLapLine = `<td id="tab-lastlap-pb">${timingLastLap}</td>`;
 			}
 			var timingCarStatusRow = `<td id="tab-status">${carStatus}</td>`;
