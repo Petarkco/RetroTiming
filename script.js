@@ -3,7 +3,7 @@ var debug = false;
 var font = "Classic";
 
 const url =
-	"http://127.0.0.1:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData,DriverList";
+	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData,DriverList";
 
 async function getTimingData() {
 	const response = await fetch(url, {
@@ -24,7 +24,8 @@ async function getTimingData() {
 
 	//Set font
 	if (font === "Classic") {
-		document.getElementById("main").style.fontFamily = "manana, sans-serif";
+		document.getElementById("main").style.fontFamily =
+			"manana-bold, sans-serif";
 	}
 	if (font === "F1Digital") {
 		document.getElementById("main").style.fontFamily =
@@ -265,7 +266,7 @@ async function getTimingData() {
 
 async function getClock() {
 	const response = await fetch(
-		"http://127.0.0.1:10101/api/v2/live-timing/clock",
+		"http://localhost:10101/api/v2/live-timing/clock",
 		{
 			mode: "cors",
 			method: "GET",
@@ -283,7 +284,7 @@ async function getClock() {
 		console.log(clockData);
 	}
 	const sessionResponse = await fetch(
-		"http://127.0.0.1:10101/api/v2/live-timing/state/SessionInfo",
+		"http://localhost:10101/api/v2/live-timing/state/SessionInfo",
 		{
 			mode: "cors",
 			method: "GET",
