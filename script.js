@@ -3,7 +3,7 @@ var debug = false;
 var font = "Classic";
 
 const url =
-	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData,DriverList,SessionInfo";
+	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,TimingData,DriverList,SessionInfo";
 
 async function getTimingData() {
 	const response = await fetch(url, {
@@ -37,10 +37,6 @@ async function getTimingData() {
 
 	const sessionType = timingData.SessionInfo.Type;
 	const sessionPart = timingData.TimingData.SessionPart;
-
-	//Display 2 hour timer
-	var sessionTimeRemaining = timingData.ExtrapolatedClock.Remaining;
-	document.getElementById("race-time").innerText = sessionTimeRemaining;
 
 	//Display SC/VSC and Red flags
 	var trackStatus = timingData.TrackStatus.Message;
@@ -1032,6 +1028,23 @@ async function getClock() {
 			},
 		}
 	);
+
+	const extrapolatedClockResponse = await fetch(
+		"http://localhost:10101/api/v2/live-timing/state/ExtrapolatedClock",
+		{
+			mode: "cors",
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	const extrapolatedClockData = await extrapolatedClockResponse.json();
+	if (debug === true) {
+		console.log(extrapolatedClockData);
+	}
+
 	if (debug === true) {
 		console.log("Getting Session Info");
 	}
@@ -1131,6 +1144,16 @@ async function getClock() {
 	if (trackTimeLive === "Invalid Date") {
 		document.getElementById("track-time").style.visibility = "hidden";
 	}
+
+	// //Display 2 hour timer
+	// const liveTimingStartTime = clockData.liveTimingStartTime;
+	// console.log(liveTimingStartTime);
+	// const isExtrapolatedClockStopped = clockData.paused;
+	// console.log(isExtrapolatedClockStopped);
+	// const sessionTimeElapsed = trackTimeLiveRaw - liveTimingStartTime;
+	// console.log(sessionTimeElapsed2);
+	// var sessionTimeRemaining = extrapolatedClockData.Remaining;
+	// document.getElementById("race-time").innerText = sessionTimeRemaining;
 }
 
 getTimingData();
