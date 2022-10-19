@@ -168,11 +168,17 @@ async function getTimingData() {
 					case "24":
 						var timingDriverName = "Z. GUANYU";
 						break;
+					case "27":
+						var timingDriverName = "N. HULKENBERG";
+						break;
 					case "31":
 						var timingDriverName = "E. OCON";
 						break;
 					case "44":
 						var timingDriverName = "L. HAMILTON";
+						break;
+					case "45":
+						var timingDriverName = "N. DE VRIES";
 						break;
 					case "47":
 						var timingDriverName = "M. SCHUMACHER";
@@ -342,11 +348,17 @@ async function getTimingData() {
 					case "24":
 						var timingDriverName = "Z. GUANYU";
 						break;
+					case "27":
+						var timingDriverName = "N. HULKENBERG";
+						break;
 					case "31":
 						var timingDriverName = "E. OCON";
 						break;
 					case "44":
 						var timingDriverName = "L. HAMILTON";
+						break;
+					case "45":
+						var timingDriverName = "N. DE VRIES";
 						break;
 					case "47":
 						var timingDriverName = "M. SCHUMACHER";
@@ -517,11 +529,17 @@ async function getTimingData() {
 					case "24":
 						var timingDriverName = "Z. GUANYU";
 						break;
+					case "27":
+						var timingDriverName = "N. HULKENBERG";
+						break;
 					case "31":
 						var timingDriverName = "E. OCON";
 						break;
 					case "44":
 						var timingDriverName = "L. HAMILTON";
+						break;
+					case "45":
+						var timingDriverName = "N. DE VRIES";
 						break;
 					case "47":
 						var timingDriverName = "M. SCHUMACHER";
