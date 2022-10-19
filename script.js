@@ -3,7 +3,7 @@ var debug = false;
 var font = "Classic";
 
 const url =
-	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData,DriverList";
+	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,ExtrapolatedClock,TimingData,DriverList,SessionInfo";
 
 async function getTimingData() {
 	const response = await fetch(url, {
@@ -19,7 +19,7 @@ async function getTimingData() {
 	}
 	const timingData = await response.json();
 	if (debug === true) {
-		// console.log(timingData);
+		console.log(timingData);
 	}
 
 	//Set font
@@ -34,6 +34,9 @@ async function getTimingData() {
 		document.getElementById("main").style.fontFamily =
 			"futura-pt-condensed, sans-serif";
 	}
+
+	const sessionType = timingData.SessionInfo.Type;
+	const sessionPart = timingData.TimingData.SessionPart;
 
 	//Display 2 hour timer
 	var sessionTimeRemaining = timingData.ExtrapolatedClock.Remaining;
@@ -97,160 +100,872 @@ async function getTimingData() {
 	)) {
 		let linesData = lines;
 		for (var i = 1; i < linesData.length; i++) {
-			let timingCarPos = linesData[i].Position;
-			let timingCarNum = linesData[i].RacingNumber;
-			let timingGap = linesData[i].GapToLeader;
-			let timingInt = linesData[i].IntervalToPositionAhead.Value;
-			let timingLastLap = linesData[i].LastLapTime.Value;
-			let timingS1 = linesData[i].Sectors[0].Value;
-			let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
-			let timingS2 = linesData[i].Sectors[1].Value;
-			let timingS2_dec = parseFloat(timingS2).toFixedNoRounding(1);
-			let timingS3 = linesData[i].Sectors[2].Value;
-			let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
-			let timingPitCount = linesData[i].NumberOfPitStops;
-			let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
-			let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
-			let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
-			let is_driverSector1_pb = linesData[i].Sectors[0].PersonalFastest;
-			let is_driverSector2_pb = linesData[i].Sectors[1].PersonalFastest;
-			let is_driverSector3_pb = linesData[i].Sectors[2].PersonalFastest;
-			let is_fastestlap = linesData[i].LastLapTime.OverallFastest;
-			let is_pb = linesData[i].LastLapTime.PersonalFastest;
-			let timingStopped = linesData[i].Stopped;
-			let timingInPits = linesData[i].InPit;
-			let timingPitOut = linesData[i].PitOut;
-			let carStatus = "";
+			if (sessionType === "Practice") {
+				let timingCarPos = linesData[i].Position;
+				let timingShowPos = linesData[i].ShowPosition;
+				let timingCarNum = linesData[i].RacingNumber;
+				let timingGap = linesData[i].TimeDiffToFastest;
+				let timingInt = linesData[i].TimeDiffToPositionAhead;
+				let timingLastLap = linesData[i].LastLapTime.Value;
+				let timingS1 = linesData[i].Sectors[0].Value;
+				let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
+				let timingS2 = linesData[i].Sectors[1].Value;
+				let timingS2_dec = parseFloat(timingS2).toFixedNoRounding(1);
+				let timingS3 = linesData[i].Sectors[2].Value;
+				let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
+				let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
+				let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
+				let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
+				let is_driverSector1_pb = linesData[i].Sectors[0].PersonalFastest;
+				let is_driverSector2_pb = linesData[i].Sectors[1].PersonalFastest;
+				let is_driverSector3_pb = linesData[i].Sectors[2].PersonalFastest;
+				let is_fastestlap = linesData[i].LastLapTime.OverallFastest;
+				let is_pb = linesData[i].LastLapTime.PersonalFastest;
+				let timingStopped = linesData[i].Stopped;
+				let timingInPits = linesData[i].InPit;
+				let timingPitOut = linesData[i].PitOut;
+				let carStatus = "";
+				switch (timingCarNum) {
+					case "1":
+						var timingDriverName = "M. VERSTAPPEN";
+						break;
+					case "3":
+						var timingDriverName = "D. RICCIARDO";
+						break;
+					case "4":
+						var timingDriverName = "L. NORRIS";
+						break;
+					case "5":
+						var timingDriverName = "S.VETTEL";
+						break;
+					case "6":
+						var timingDriverName = "N. LATIFI";
+						break;
+					case "10":
+						var timingDriverName = "P. GASLY";
+						break;
+					case "11":
+						var timingDriverName = "S. PEREZ";
+						break;
+					case "14":
+						var timingDriverName = "F. ALONSO";
+						break;
+					case "16":
+						var timingDriverName = "C. LECLERC";
+						break;
+					case "18":
+						var timingDriverName = "L. STROLL";
+						break;
+					case "20":
+						var timingDriverName = "K. MAGNUSSEN";
+						break;
+					case "22":
+						var timingDriverName = "Y. TSUNODA";
+						break;
+					case "23":
+						var timingDriverName = "A. ALBON";
+						break;
+					case "24":
+						var timingDriverName = "Z. GUANYU";
+						break;
+					case "31":
+						var timingDriverName = "E. OCON";
+						break;
+					case "44":
+						var timingDriverName = "L. HAMILTON";
+						break;
+					case "47":
+						var timingDriverName = "M. SCHUMACHER";
+						break;
+					case "55":
+						var timingDriverName = "C. SAINZ";
+						break;
+					case "63":
+						var timingDriverName = "G. RUSSELL";
+						break;
+					case "77":
+						var timingDriverName = "V. BOTTAS";
+						break;
+				}
+				if (timingStopped === true) {
+					carStatus = "STOPPED";
+				}
+				if (timingInPits === true) {
+					carStatus = "IN PIT";
+				}
+				if (timingPitOut === true) {
+					carStatus = "OUT";
+				}
 
-			switch (timingCarNum) {
-				case "1":
-					var timingDriverName = "M. VERSTAPPEN";
-					break;
-				case "3":
-					var timingDriverName = "D. RICCIARDO";
-					break;
-				case "4":
-					var timingDriverName = "L. NORRIS";
-					break;
-				case "5":
-					var timingDriverName = "S.VETTEL";
-					break;
-				case "6":
-					var timingDriverName = "N. LATIFI";
-					break;
-				case "10":
-					var timingDriverName = "P. GASLY";
-					break;
-				case "11":
-					var timingDriverName = "S. PEREZ";
-					break;
-				case "14":
-					var timingDriverName = "F. ALONSO";
-					break;
-				case "16":
-					var timingDriverName = "C. LECLERC";
-					break;
-				case "18":
-					var timingDriverName = "L. STROLL";
-					break;
-				case "20":
-					var timingDriverName = "K. MAGNUSSEN";
-					break;
-				case "22":
-					var timingDriverName = "Y. TSUNODA";
-					break;
-				case "23":
-					var timingDriverName = "A. ALBON";
-					break;
-				case "24":
-					var timingDriverName = "Z. GUANYU";
-					break;
-				case "31":
-					var timingDriverName = "E. OCON";
-					break;
-				case "44":
-					var timingDriverName = "L. HAMILTON";
-					break;
-				case "47":
-					var timingDriverName = "M. SCHUMACHER";
-					break;
-				case "55":
-					var timingDriverName = "C. SAINZ";
-					break;
-				case "63":
-					var timingDriverName = "G. RUSSELL";
-					break;
-				case "77":
-					var timingDriverName = "V. BOTTAS";
-					break;
+				if (timingS1_dec === undefined) {
+					timingS1_dec = "";
+				}
+				if (timingS2_dec === undefined) {
+					timingS2_dec = "";
+				}
+				if (timingS3_dec === undefined) {
+					timingS3_dec = "";
+				}
+
+				if (timingShowPos === false) {
+					var timingPosLine = `<td id="tab-pos"></td>`;
+				}
+				var timingPosLine = `<td id="tab-pos">${timingCarPos}</td>`;
+				var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
+				var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
+				var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
+				if (timingCarPos === "1") {
+					var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
+				}
+				var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
+				if (timingCarPos === "1") {
+					var timingIntLine = ``;
+				}
+				var timingLastLapLine = `<td id="tab-lastlap">${timingLastLap}</td>`;
+				if (is_fastestlap === true) {
+					var timingLastLapLine = `<td id="tab-lastlap-fastest">${timingLastLap}</td>`;
+				}
+				if (is_pb === true && is_fastestlap === false) {
+					var timingLastLapLine = `<td id="tab-lastlap-pb">${timingLastLap}</td>`;
+				}
+				var timingCarStatusRow = `<td id="tab-status">${carStatus}</td>`;
+				var timingSector1Row = `<td id="tab-s1">${timingS1_dec}</td>`;
+				var timingSector2Row = `<td id="tab-s2">${timingS2_dec}</td>`;
+				var timingSector3Row = `<td id="tab-s3">${timingS3_dec}</td>`;
+				if (is_driverSector1_fastest === true) {
+					timingSector1Row = `<td id="tab-s1-fastest">${timingS1_dec}</td>`;
+				}
+				if (is_driverSector2_fastest === true) {
+					timingSector2Row = `<td id="tab-s2-fastest">${timingS2_dec}</td>`;
+				}
+				if (is_driverSector3_fastest === true) {
+					timingSector3Row = `<td id="tab-s3-fastest">${timingS3_dec}</td>`;
+				}
+				if (
+					is_driverSector1_pb === true &&
+					is_driverSector1_fastest === false
+				) {
+					timingSector1Row = `<td id="tab-s1-pb">${timingS1_dec}</td>`;
+				}
+				if (
+					is_driverSector2_pb === true &&
+					is_driverSector2_fastest === false
+				) {
+					timingSector2Row = `<td id="tab-s2-pb">${timingS2_dec}</td>`;
+				}
+				if (
+					is_driverSector3_pb === true &&
+					is_driverSector3_fastest === false
+				) {
+					timingSector3Row = `<td id="tab-s3-pb">${timingS3_dec}</td>`;
+				}
+
+				document.getElementById("position-Data").innerHTML += `
+			<tr>
+			${timingPosLine}
+			${timingCarNumLine}
+			${timingDriverNameLine}
+			${timingGapLine}
+			${timingIntLine}
+			${timingLastLapLine}
+			${timingCarStatusRow}
+			${timingSector1Row}
+			${timingSector2Row}
+			${timingSector3Row}
+			</tr>`;
+			}
+			if (sessionType === "Qualifying" && sessionPart === 1) {
+				let timingCarPos = linesData[i].Position;
+				let timingShowPos = linesData[i].ShowPosition;
+				let timingCarNum = linesData[i].RacingNumber;
+				let timingGap = linesData[i].Stats[0].TimeDiffToFastest;
+				let timingInt = linesData[i].Stats[0].TimeDifftoPositionAhead;
+				let timingLastLap = linesData[i].LastLapTime.Value;
+				let timingS1 = linesData[i].Sectors[0].Value;
+				let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
+				let timingS2 = linesData[i].Sectors[1].Value;
+				let timingS2_dec = parseFloat(timingS2).toFixedNoRounding(1);
+				let timingS3 = linesData[i].Sectors[2].Value;
+				let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
+				let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
+				let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
+				let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
+				let is_driverSector1_pb = linesData[i].Sectors[0].PersonalFastest;
+				let is_driverSector2_pb = linesData[i].Sectors[1].PersonalFastest;
+				let is_driverSector3_pb = linesData[i].Sectors[2].PersonalFastest;
+				let is_fastestlap = linesData[i].LastLapTime.OverallFastest;
+				let is_pb = linesData[i].LastLapTime.PersonalFastest;
+				let timingStopped = linesData[i].Stopped;
+				let timingInPits = linesData[i].InPit;
+				let timingPitOut = linesData[i].PitOut;
+				let carStatus = "";
+				switch (timingCarNum) {
+					case "1":
+						var timingDriverName = "M. VERSTAPPEN";
+						break;
+					case "3":
+						var timingDriverName = "D. RICCIARDO";
+						break;
+					case "4":
+						var timingDriverName = "L. NORRIS";
+						break;
+					case "5":
+						var timingDriverName = "S.VETTEL";
+						break;
+					case "6":
+						var timingDriverName = "N. LATIFI";
+						break;
+					case "10":
+						var timingDriverName = "P. GASLY";
+						break;
+					case "11":
+						var timingDriverName = "S. PEREZ";
+						break;
+					case "14":
+						var timingDriverName = "F. ALONSO";
+						break;
+					case "16":
+						var timingDriverName = "C. LECLERC";
+						break;
+					case "18":
+						var timingDriverName = "L. STROLL";
+						break;
+					case "20":
+						var timingDriverName = "K. MAGNUSSEN";
+						break;
+					case "22":
+						var timingDriverName = "Y. TSUNODA";
+						break;
+					case "23":
+						var timingDriverName = "A. ALBON";
+						break;
+					case "24":
+						var timingDriverName = "Z. GUANYU";
+						break;
+					case "31":
+						var timingDriverName = "E. OCON";
+						break;
+					case "44":
+						var timingDriverName = "L. HAMILTON";
+						break;
+					case "47":
+						var timingDriverName = "M. SCHUMACHER";
+						break;
+					case "55":
+						var timingDriverName = "C. SAINZ";
+						break;
+					case "63":
+						var timingDriverName = "G. RUSSELL";
+						break;
+					case "77":
+						var timingDriverName = "V. BOTTAS";
+						break;
+				}
+				if (timingStopped === true) {
+					carStatus = "STOPPED";
+				}
+				if (timingInPits === true) {
+					carStatus = "IN PIT";
+				}
+				if (timingPitOut === true) {
+					carStatus = "OUT";
+				}
+
+				if (timingS1_dec === undefined) {
+					timingS1_dec = "";
+				}
+				if (timingS2_dec === undefined) {
+					timingS2_dec = "";
+				}
+				if (timingS3_dec === undefined) {
+					timingS3_dec = "";
+				}
+
+				if (timingShowPos === false) {
+					var timingPosLine = `<td id="tab-pos"></td>`;
+				}
+				var timingPosLine = `<td id="tab-pos">${timingCarPos}</td>`;
+				var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
+				var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
+				var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
+				if (timingCarPos === "1") {
+					var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
+				}
+				var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
+				if (timingCarPos === "1") {
+					var timingIntLine = ``;
+				}
+				var timingLastLapLine = `<td id="tab-lastlap">${timingLastLap}</td>`;
+				if (is_fastestlap === true) {
+					var timingLastLapLine = `<td id="tab-lastlap-fastest">${timingLastLap}</td>`;
+				}
+				if (is_pb === true && is_fastestlap === false) {
+					var timingLastLapLine = `<td id="tab-lastlap-pb">${timingLastLap}</td>`;
+				}
+				var timingCarStatusRow = `<td id="tab-status">${carStatus}</td>`;
+				var timingSector1Row = `<td id="tab-s1">${timingS1_dec}</td>`;
+				var timingSector2Row = `<td id="tab-s2">${timingS2_dec}</td>`;
+				var timingSector3Row = `<td id="tab-s3">${timingS3_dec}</td>`;
+				if (is_driverSector1_fastest === true) {
+					timingSector1Row = `<td id="tab-s1-fastest">${timingS1_dec}</td>`;
+				}
+				if (is_driverSector2_fastest === true) {
+					timingSector2Row = `<td id="tab-s2-fastest">${timingS2_dec}</td>`;
+				}
+				if (is_driverSector3_fastest === true) {
+					timingSector3Row = `<td id="tab-s3-fastest">${timingS3_dec}</td>`;
+				}
+				if (
+					is_driverSector1_pb === true &&
+					is_driverSector1_fastest === false
+				) {
+					timingSector1Row = `<td id="tab-s1-pb">${timingS1_dec}</td>`;
+				}
+				if (
+					is_driverSector2_pb === true &&
+					is_driverSector2_fastest === false
+				) {
+					timingSector2Row = `<td id="tab-s2-pb">${timingS2_dec}</td>`;
+				}
+				if (
+					is_driverSector3_pb === true &&
+					is_driverSector3_fastest === false
+				) {
+					timingSector3Row = `<td id="tab-s3-pb">${timingS3_dec}</td>`;
+				}
+
+				document.getElementById("position-Data").innerHTML += `
+			<tr>
+			${timingPosLine}
+			${timingCarNumLine}
+			${timingDriverNameLine}
+			${timingGapLine}
+			${timingIntLine}
+			${timingLastLapLine}
+			${timingCarStatusRow}
+			${timingSector1Row}
+			${timingSector2Row}
+			${timingSector3Row}
+			</tr>`;
 			}
 
-			if (timingPitCount === undefined) {
-				timingPitCount = "";
+			if (sessionType === "Qualifying" && sessionPart === 2) {
+				let timingCarPos = linesData[i].Position;
+				let timingShowPos = linesData[i].ShowPosition;
+				let timingCarNum = linesData[i].RacingNumber;
+				let timingGap = linesData[i].Stats[1].TimeDiffToFastest;
+				let timingInt = linesData[i].Stats[1].TimeDifftoPositionAhead;
+				let timingLastLap = linesData[i].LastLapTime.Value;
+				let timingS1 = linesData[i].Sectors[0].Value;
+				let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
+				let timingS2 = linesData[i].Sectors[1].Value;
+				let timingS2_dec = parseFloat(timingS2).toFixedNoRounding(1);
+				let timingS3 = linesData[i].Sectors[2].Value;
+				let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
+				let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
+				let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
+				let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
+				let is_driverSector1_pb = linesData[i].Sectors[0].PersonalFastest;
+				let is_driverSector2_pb = linesData[i].Sectors[1].PersonalFastest;
+				let is_driverSector3_pb = linesData[i].Sectors[2].PersonalFastest;
+				let is_fastestlap = linesData[i].LastLapTime.OverallFastest;
+				let is_pb = linesData[i].LastLapTime.PersonalFastest;
+				let timingStopped = linesData[i].Stopped;
+				let timingInPits = linesData[i].InPit;
+				let timingPitOut = linesData[i].PitOut;
+				let carStatus = "";
+				switch (timingCarNum) {
+					case "1":
+						var timingDriverName = "M. VERSTAPPEN";
+						break;
+					case "3":
+						var timingDriverName = "D. RICCIARDO";
+						break;
+					case "4":
+						var timingDriverName = "L. NORRIS";
+						break;
+					case "5":
+						var timingDriverName = "S.VETTEL";
+						break;
+					case "6":
+						var timingDriverName = "N. LATIFI";
+						break;
+					case "10":
+						var timingDriverName = "P. GASLY";
+						break;
+					case "11":
+						var timingDriverName = "S. PEREZ";
+						break;
+					case "14":
+						var timingDriverName = "F. ALONSO";
+						break;
+					case "16":
+						var timingDriverName = "C. LECLERC";
+						break;
+					case "18":
+						var timingDriverName = "L. STROLL";
+						break;
+					case "20":
+						var timingDriverName = "K. MAGNUSSEN";
+						break;
+					case "22":
+						var timingDriverName = "Y. TSUNODA";
+						break;
+					case "23":
+						var timingDriverName = "A. ALBON";
+						break;
+					case "24":
+						var timingDriverName = "Z. GUANYU";
+						break;
+					case "31":
+						var timingDriverName = "E. OCON";
+						break;
+					case "44":
+						var timingDriverName = "L. HAMILTON";
+						break;
+					case "47":
+						var timingDriverName = "M. SCHUMACHER";
+						break;
+					case "55":
+						var timingDriverName = "C. SAINZ";
+						break;
+					case "63":
+						var timingDriverName = "G. RUSSELL";
+						break;
+					case "77":
+						var timingDriverName = "V. BOTTAS";
+						break;
+				}
+				if (timingStopped === true) {
+					carStatus = "STOPPED";
+				}
+				if (timingInPits === true) {
+					carStatus = "IN PIT";
+				}
+				if (timingPitOut === true) {
+					carStatus = "OUT";
+				}
+
+				if (timingS1_dec === undefined) {
+					timingS1_dec = "";
+				}
+				if (timingS2_dec === undefined) {
+					timingS2_dec = "";
+				}
+				if (timingS3_dec === undefined) {
+					timingS3_dec = "";
+				}
+
+				if (timingShowPos === false) {
+					var timingPosLine = `<td id="tab-pos"></td>`;
+				}
+				var timingPosLine = `<td id="tab-pos">${timingCarPos}</td>`;
+				var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
+				var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
+				var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
+				if (timingCarPos === "1") {
+					var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
+				}
+				var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
+				if (timingCarPos === "1") {
+					var timingIntLine = ``;
+				}
+				var timingLastLapLine = `<td id="tab-lastlap">${timingLastLap}</td>`;
+				if (is_fastestlap === true) {
+					var timingLastLapLine = `<td id="tab-lastlap-fastest">${timingLastLap}</td>`;
+				}
+				if (is_pb === true && is_fastestlap === false) {
+					var timingLastLapLine = `<td id="tab-lastlap-pb">${timingLastLap}</td>`;
+				}
+				var timingCarStatusRow = `<td id="tab-status">${carStatus}</td>`;
+				var timingSector1Row = `<td id="tab-s1">${timingS1_dec}</td>`;
+				var timingSector2Row = `<td id="tab-s2">${timingS2_dec}</td>`;
+				var timingSector3Row = `<td id="tab-s3">${timingS3_dec}</td>`;
+				if (is_driverSector1_fastest === true) {
+					timingSector1Row = `<td id="tab-s1-fastest">${timingS1_dec}</td>`;
+				}
+				if (is_driverSector2_fastest === true) {
+					timingSector2Row = `<td id="tab-s2-fastest">${timingS2_dec}</td>`;
+				}
+				if (is_driverSector3_fastest === true) {
+					timingSector3Row = `<td id="tab-s3-fastest">${timingS3_dec}</td>`;
+				}
+				if (
+					is_driverSector1_pb === true &&
+					is_driverSector1_fastest === false
+				) {
+					timingSector1Row = `<td id="tab-s1-pb">${timingS1_dec}</td>`;
+				}
+				if (
+					is_driverSector2_pb === true &&
+					is_driverSector2_fastest === false
+				) {
+					timingSector2Row = `<td id="tab-s2-pb">${timingS2_dec}</td>`;
+				}
+				if (
+					is_driverSector3_pb === true &&
+					is_driverSector3_fastest === false
+				) {
+					timingSector3Row = `<td id="tab-s3-pb">${timingS3_dec}</td>`;
+				}
+
+				document.getElementById("position-Data").innerHTML += `
+			<tr>
+			${timingPosLine}
+			${timingCarNumLine}
+			${timingDriverNameLine}
+			${timingGapLine}
+			${timingIntLine}
+			${timingLastLapLine}
+			${timingCarStatusRow}
+			${timingSector1Row}
+			${timingSector2Row}
+			${timingSector3Row}
+			</tr>`;
 			}
-			if (timingStopped === true) {
-				carStatus = "STOPPED";
-			}
-			if (timingInPits === true) {
-				carStatus = "IN PIT";
-			}
-			if (timingPitOut === true) {
-				carStatus = "OUT";
+			if (sessionType === "Qualifying" && sessionPart === 3) {
+				let timingCarPos = linesData[i].Position;
+				let timingShowPos = linesData[i].ShowPosition;
+				let timingCarNum = linesData[i].RacingNumber;
+				let timingGap = linesData[i].Stats[2].TimeDiffToFastest;
+				let timingInt = linesData[i].Stats[2].TimeDifftoPositionAhead;
+				let timingLastLap = linesData[i].LastLapTime.Value;
+				let timingS1 = linesData[i].Sectors[0].Value;
+				let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
+				let timingS2 = linesData[i].Sectors[1].Value;
+				let timingS2_dec = parseFloat(timingS2).toFixedNoRounding(1);
+				let timingS3 = linesData[i].Sectors[2].Value;
+				let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
+				let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
+				let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
+				let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
+				let is_driverSector1_pb = linesData[i].Sectors[0].PersonalFastest;
+				let is_driverSector2_pb = linesData[i].Sectors[1].PersonalFastest;
+				let is_driverSector3_pb = linesData[i].Sectors[2].PersonalFastest;
+				let is_fastestlap = linesData[i].LastLapTime.OverallFastest;
+				let is_pb = linesData[i].LastLapTime.PersonalFastest;
+				let timingStopped = linesData[i].Stopped;
+				let timingInPits = linesData[i].InPit;
+				let timingPitOut = linesData[i].PitOut;
+				let carStatus = "";
+				switch (timingCarNum) {
+					case "1":
+						var timingDriverName = "M. VERSTAPPEN";
+						break;
+					case "3":
+						var timingDriverName = "D. RICCIARDO";
+						break;
+					case "4":
+						var timingDriverName = "L. NORRIS";
+						break;
+					case "5":
+						var timingDriverName = "S.VETTEL";
+						break;
+					case "6":
+						var timingDriverName = "N. LATIFI";
+						break;
+					case "10":
+						var timingDriverName = "P. GASLY";
+						break;
+					case "11":
+						var timingDriverName = "S. PEREZ";
+						break;
+					case "14":
+						var timingDriverName = "F. ALONSO";
+						break;
+					case "16":
+						var timingDriverName = "C. LECLERC";
+						break;
+					case "18":
+						var timingDriverName = "L. STROLL";
+						break;
+					case "20":
+						var timingDriverName = "K. MAGNUSSEN";
+						break;
+					case "22":
+						var timingDriverName = "Y. TSUNODA";
+						break;
+					case "23":
+						var timingDriverName = "A. ALBON";
+						break;
+					case "24":
+						var timingDriverName = "Z. GUANYU";
+						break;
+					case "31":
+						var timingDriverName = "E. OCON";
+						break;
+					case "44":
+						var timingDriverName = "L. HAMILTON";
+						break;
+					case "47":
+						var timingDriverName = "M. SCHUMACHER";
+						break;
+					case "55":
+						var timingDriverName = "C. SAINZ";
+						break;
+					case "63":
+						var timingDriverName = "G. RUSSELL";
+						break;
+					case "77":
+						var timingDriverName = "V. BOTTAS";
+						break;
+				}
+				if (timingStopped === true) {
+					carStatus = "STOPPED";
+				}
+				if (timingInPits === true) {
+					carStatus = "IN PIT";
+				}
+				if (timingPitOut === true) {
+					carStatus = "OUT";
+				}
+
+				if (timingS1_dec === undefined) {
+					timingS1_dec = "";
+				}
+				if (timingS2_dec === undefined) {
+					timingS2_dec = "";
+				}
+				if (timingS3_dec === undefined) {
+					timingS3_dec = "";
+				}
+
+				if (timingShowPos === false) {
+					var timingPosLine = `<td id="tab-pos"></td>`;
+				}
+				var timingPosLine = `<td id="tab-pos">${timingCarPos}</td>`;
+				var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
+				var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
+				var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
+				if (timingCarPos === "1") {
+					var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
+				}
+				var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
+				if (timingCarPos === "1") {
+					var timingIntLine = ``;
+				}
+				var timingLastLapLine = `<td id="tab-lastlap">${timingLastLap}</td>`;
+				if (is_fastestlap === true) {
+					var timingLastLapLine = `<td id="tab-lastlap-fastest">${timingLastLap}</td>`;
+				}
+				if (is_pb === true && is_fastestlap === false) {
+					var timingLastLapLine = `<td id="tab-lastlap-pb">${timingLastLap}</td>`;
+				}
+				var timingCarStatusRow = `<td id="tab-status">${carStatus}</td>`;
+				var timingSector1Row = `<td id="tab-s1">${timingS1_dec}</td>`;
+				var timingSector2Row = `<td id="tab-s2">${timingS2_dec}</td>`;
+				var timingSector3Row = `<td id="tab-s3">${timingS3_dec}</td>`;
+				if (is_driverSector1_fastest === true) {
+					timingSector1Row = `<td id="tab-s1-fastest">${timingS1_dec}</td>`;
+				}
+				if (is_driverSector2_fastest === true) {
+					timingSector2Row = `<td id="tab-s2-fastest">${timingS2_dec}</td>`;
+				}
+				if (is_driverSector3_fastest === true) {
+					timingSector3Row = `<td id="tab-s3-fastest">${timingS3_dec}</td>`;
+				}
+				if (
+					is_driverSector1_pb === true &&
+					is_driverSector1_fastest === false
+				) {
+					timingSector1Row = `<td id="tab-s1-pb">${timingS1_dec}</td>`;
+				}
+				if (
+					is_driverSector2_pb === true &&
+					is_driverSector2_fastest === false
+				) {
+					timingSector2Row = `<td id="tab-s2-pb">${timingS2_dec}</td>`;
+				}
+				if (
+					is_driverSector3_pb === true &&
+					is_driverSector3_fastest === false
+				) {
+					timingSector3Row = `<td id="tab-s3-pb">${timingS3_dec}</td>`;
+				}
+
+				document.getElementById("position-Data").innerHTML += `
+			<tr>
+			${timingPosLine}
+			${timingCarNumLine}
+			${timingDriverNameLine}
+			${timingGapLine}
+			${timingIntLine}
+			${timingLastLapLine}
+			${timingCarStatusRow}
+			${timingSector1Row}
+			${timingSector2Row}
+			${timingSector3Row}
+			</tr>`;
 			}
 
-			if (timingS1_dec === undefined) {
-				timingS1_dec = "";
-			}
-			if (timingS2_dec === undefined) {
-				timingS2_dec = "";
-			}
-			if (timingS3_dec === undefined) {
-				timingS3_dec = "";
-			}
+			if (sessionType === "Race") {
+				let timingCarPos = linesData[i].Position;
+				let timingShowPos = linesData[i].ShowPosition;
+				let timingCarNum = linesData[i].RacingNumber;
+				let timingGap = linesData[i].GapToLeader;
+				let timingInt = linesData[i].IntervalToPositionAhead.Value;
+				let timingLastLap = linesData[i].LastLapTime.Value;
+				let timingS1 = linesData[i].Sectors[0].Value;
+				let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
+				let timingS2 = linesData[i].Sectors[1].Value;
+				let timingS2_dec = parseFloat(timingS2).toFixedNoRounding(1);
+				let timingS3 = linesData[i].Sectors[2].Value;
+				let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
+				let timingPitCount = linesData[i].NumberOfPitStops;
+				let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
+				let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
+				let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
+				let is_driverSector1_pb = linesData[i].Sectors[0].PersonalFastest;
+				let is_driverSector2_pb = linesData[i].Sectors[1].PersonalFastest;
+				let is_driverSector3_pb = linesData[i].Sectors[2].PersonalFastest;
+				let is_fastestlap = linesData[i].LastLapTime.OverallFastest;
+				let is_pb = linesData[i].LastLapTime.PersonalFastest;
+				let timingStopped = linesData[i].Stopped;
+				let timingInPits = linesData[i].InPit;
+				let timingPitOut = linesData[i].PitOut;
+				let carStatus = "";
 
-			var timingPosLine = `<td id="tab-pos">${timingCarPos}</td>`;
-			var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
-			var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
-			var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
-			if (timingCarPos === "1") {
-				var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
-			}
-			var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
-			if (timingCarPos === "1") {
-				var timingIntLine = ``;
-			}
-			var timingLastLapLine = `<td id="tab-lastlap">${timingLastLap}</td>`;
-			if (is_fastestlap === true) {
-				var timingLastLapLine = `<td id="tab-lastlap-fastest">${timingLastLap}</td>`;
-			}
-			if (is_pb === true && is_fastestlap === false) {
-				var timingLastLapLine = `<td id="tab-lastlap-pb">${timingLastLap}</td>`;
-			}
-			var timingCarStatusRow = `<td id="tab-status">${carStatus}</td>`;
-			var timingSector1Row = `<td id="tab-s1">${timingS1_dec}</td>`;
-			var timingSector2Row = `<td id="tab-s2">${timingS2_dec}</td>`;
-			var timingSector3Row = `<td id="tab-s3">${timingS3_dec}</td>`;
-			var timingPitCountRow = `<td id="tab-pit">${timingPitCount}</td></tr>`;
-			if (is_driverSector1_fastest === true) {
-				timingSector1Row = `<td id="tab-s1-fastest">${timingS1_dec}</td>`;
-			}
-			if (is_driverSector2_fastest === true) {
-				timingSector2Row = `<td id="tab-s2-fastest">${timingS2_dec}</td>`;
-			}
-			if (is_driverSector3_fastest === true) {
-				timingSector3Row = `<td id="tab-s3-fastest">${timingS3_dec}</td>`;
-			}
-			if (is_driverSector1_pb === true && is_driverSector1_fastest === false) {
-				timingSector1Row = `<td id="tab-s1-pb">${timingS1_dec}</td>`;
-			}
-			if (is_driverSector2_pb === true && is_driverSector2_fastest === false) {
-				timingSector2Row = `<td id="tab-s2-pb">${timingS2_dec}</td>`;
-			}
-			if (is_driverSector3_pb === true && is_driverSector3_fastest === false) {
-				timingSector3Row = `<td id="tab-s3-pb">${timingS3_dec}</td>`;
-			}
+				switch (timingCarNum) {
+					case "1":
+						var timingDriverName = "M. VERSTAPPEN";
+						break;
+					case "3":
+						var timingDriverName = "D. RICCIARDO";
+						break;
+					case "4":
+						var timingDriverName = "L. NORRIS";
+						break;
+					case "5":
+						var timingDriverName = "S.VETTEL";
+						break;
+					case "6":
+						var timingDriverName = "N. LATIFI";
+						break;
+					case "10":
+						var timingDriverName = "P. GASLY";
+						break;
+					case "11":
+						var timingDriverName = "S. PEREZ";
+						break;
+					case "14":
+						var timingDriverName = "F. ALONSO";
+						break;
+					case "16":
+						var timingDriverName = "C. LECLERC";
+						break;
+					case "18":
+						var timingDriverName = "L. STROLL";
+						break;
+					case "20":
+						var timingDriverName = "K. MAGNUSSEN";
+						break;
+					case "22":
+						var timingDriverName = "Y. TSUNODA";
+						break;
+					case "23":
+						var timingDriverName = "A. ALBON";
+						break;
+					case "24":
+						var timingDriverName = "Z. GUANYU";
+						break;
+					case "31":
+						var timingDriverName = "E. OCON";
+						break;
+					case "44":
+						var timingDriverName = "L. HAMILTON";
+						break;
+					case "47":
+						var timingDriverName = "M. SCHUMACHER";
+						break;
+					case "55":
+						var timingDriverName = "C. SAINZ";
+						break;
+					case "63":
+						var timingDriverName = "G. RUSSELL";
+						break;
+					case "77":
+						var timingDriverName = "V. BOTTAS";
+						break;
+				}
 
-			document.getElementById("position-Data").innerHTML += `
+				if (timingPitCount === undefined) {
+					timingPitCount = "";
+				}
+				if (timingStopped === true) {
+					carStatus = "STOPPED";
+				}
+				if (timingInPits === true) {
+					carStatus = "IN PIT";
+				}
+				if (timingPitOut === true) {
+					carStatus = "OUT";
+				}
+
+				if (timingS1_dec === undefined) {
+					timingS1_dec = "";
+				}
+				if (timingS2_dec === undefined) {
+					timingS2_dec = "";
+				}
+				if (timingS3_dec === undefined) {
+					timingS3_dec = "";
+				}
+
+				if (timingShowPos === false) {
+					var timingPosLine = `<td id="tab-pos"></td>`;
+				}
+				var timingPosLine = `<td id="tab-pos">${timingCarPos}</td>`;
+				var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
+				var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
+				var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
+				if (timingCarPos === "1") {
+					var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
+				}
+				var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
+				if (timingCarPos === "1") {
+					var timingIntLine = ``;
+				}
+				var timingLastLapLine = `<td id="tab-lastlap">${timingLastLap}</td>`;
+				if (is_fastestlap === true) {
+					var timingLastLapLine = `<td id="tab-lastlap-fastest">${timingLastLap}</td>`;
+				}
+				if (is_pb === true && is_fastestlap === false) {
+					var timingLastLapLine = `<td id="tab-lastlap-pb">${timingLastLap}</td>`;
+				}
+				var timingCarStatusRow = `<td id="tab-status">${carStatus}</td>`;
+				var timingSector1Row = `<td id="tab-s1">${timingS1_dec}</td>`;
+				var timingSector2Row = `<td id="tab-s2">${timingS2_dec}</td>`;
+				var timingSector3Row = `<td id="tab-s3">${timingS3_dec}</td>`;
+				var timingPitCountRow = `<td id="tab-pit">${timingPitCount}</td></tr>`;
+				if (is_driverSector1_fastest === true) {
+					timingSector1Row = `<td id="tab-s1-fastest">${timingS1_dec}</td>`;
+				}
+				if (is_driverSector2_fastest === true) {
+					timingSector2Row = `<td id="tab-s2-fastest">${timingS2_dec}</td>`;
+				}
+				if (is_driverSector3_fastest === true) {
+					timingSector3Row = `<td id="tab-s3-fastest">${timingS3_dec}</td>`;
+				}
+				if (
+					is_driverSector1_pb === true &&
+					is_driverSector1_fastest === false
+				) {
+					timingSector1Row = `<td id="tab-s1-pb">${timingS1_dec}</td>`;
+				}
+				if (
+					is_driverSector2_pb === true &&
+					is_driverSector2_fastest === false
+				) {
+					timingSector2Row = `<td id="tab-s2-pb">${timingS2_dec}</td>`;
+				}
+				if (
+					is_driverSector3_pb === true &&
+					is_driverSector3_fastest === false
+				) {
+					timingSector3Row = `<td id="tab-s3-pb">${timingS3_dec}</td>`;
+				}
+
+				document.getElementById("position-Data").innerHTML += `
 			<tr>
 			${timingPosLine}
 			${timingCarNumLine}
@@ -264,6 +979,7 @@ async function getTimingData() {
 			${timingSector3Row}
 			${timingPitCountRow}
 			</tr>`;
+			}
 		}
 	}
 }
