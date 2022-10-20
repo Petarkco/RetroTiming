@@ -1,6 +1,8 @@
-var debug = true;
+var debug = false;
 // Classic for Manana, Classic-Bold for Manana in bold and F1Digital for Futura.
 var font = "Classic";
+//Use three letter code (i.e. HAM) instead of driver name
+var timingUseThreeLetters = false;
 
 const url =
 	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,TimingData,DriverList,SessionInfo,TimingStats";
@@ -77,19 +79,19 @@ async function getTimingData() {
 			return b > 0 ? a + "0".repeat(b) : a;
 		} catch (err) {}
 	};
-	// 	document.getElementById("position-Data").innerHTML = `<tr>
-	// 	<th id="pos-head"></th>
-	// 	<th id="carnum-head"></th>
-	// 	<th id="name-head"></th>
-	// 	<th id="gap-head">GAP</th>
-	// 	<th id="int-head">INT</th>
-	// 	<th id="lastlap-head"></th>
-	// 	<th id="status-head"></th>
-	// 	<th id="s1-head">00.0</th>
-	// 	<th id="s2-head">00.0</th>
-	// 	<th id="s3-head">00.0</th>
-	// 	<th id="pit-head"></th>
-	// </tr>`;
+	document.getElementById("position-Data").innerHTML = `<tr>
+		<th id="pos-head"></th>
+		<th id="carnum-head"></th>
+		<th id="name-head"></th>
+		<th id="gap-head">GAP</th>
+		<th id="int-head">INT</th>
+		<th id="lastlap-head"></th>
+		<th id="status-head"></th>
+		<th id="s1-head">00.0</th>
+		<th id="s2-head">00.0</th>
+		<th id="s3-head">00.0</th>
+		<th id="pit-head"></th>
+	</tr>`;
 
 	const liveTimingData = timingData.TimingData.Lines;
 	for (let lines of Object.entries(liveTimingData).sort(
@@ -578,7 +580,6 @@ async function getTimingData() {
 				let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
 				let timingPitCount = linesData[i].NumberOfPitStops;
 				let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
-				console.log(is_driverSector1_fastest);
 				let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
 				let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
 				let is_driverSector1_pb = linesData[i].Sectors[0].PersonalFastest;
@@ -590,6 +591,10 @@ async function getTimingData() {
 				let timingInPits = linesData[i].InPit;
 				let timingPitOut = linesData[i].PitOut;
 				let carStatus = "";
+
+				if (timingUseThreeLetters === true) {
+					timingDriverName = timingData.DriverList[timingCarNum].Tla;
+				}
 
 				if (timingPitCount === undefined) {
 					timingPitCount = "";
