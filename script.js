@@ -79,6 +79,46 @@ async function getTimingData() {
 			return b > 0 ? a + "0".repeat(b) : a;
 		} catch (err) {}
 	};
+	const liveTimingData = timingData.TimingData.Lines;
+	var timingFastestS1;
+	var timingFastestS2;
+	var timingFastestS3;
+	for (let lines of Object.entries(liveTimingData).sort(
+		(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
+	)) {
+		let linesData = lines;
+		for (var i = 1; i < linesData.length; i++) {
+			let timingS1 = linesData[i].Sectors[0].Value;
+			let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
+			let timingS2 = linesData[i].Sectors[1].Value;
+			let timingS2_dec = parseFloat(timingS2).toFixedNoRounding(1);
+			let timingS3 = linesData[i].Sectors[2].Value;
+			let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
+			let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
+			let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
+			let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
+
+			if (is_driverSector1_fastest === true) {
+				timingFastestS1 = timingS1_dec;
+			}
+			if (is_driverSector2_fastest === true) {
+				timingFastestS2 = timingS2_dec;
+			}
+			if (is_driverSector3_fastest === true) {
+				timingFastestS3 = timingS3_dec;
+			}
+
+			if (timingFastestS1 === undefined) {
+				timingFastestS1 = "";
+			}
+			if (timingFastestS2 === undefined) {
+				timingFastestS2 = "";
+			}
+			if (timingFastestS3 === undefined) {
+				timingFastestS3 = "";
+			}
+		}
+	}
 	document.getElementById("position-Data").innerHTML = `<tr>
 		<th id="pos-head"></th>
 		<th id="carnum-head"></th>
@@ -87,13 +127,12 @@ async function getTimingData() {
 		<th id="int-head">INT</th>
 		<th id="lastlap-head"></th>
 		<th id="status-head"></th>
-		<th id="s1-head">00.0</th>
-		<th id="s2-head">00.0</th>
-		<th id="s3-head">00.0</th>
+		<th id="s1-head">${timingFastestS1}</th>
+		<th id="s2-head">${timingFastestS2}</th>
+		<th id="s3-head">${timingFastestS3}</th>
 		<th id="pit-head"></th>
 	</tr>`;
 
-	const liveTimingData = timingData.TimingData.Lines;
 	for (let lines of Object.entries(liveTimingData).sort(
 		(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
 	)) {
@@ -654,8 +693,6 @@ async function getTimingData() {
 				var timingPitCountRow = `<td id="tab-pit">${timingPitCount}</td></tr>`;
 				if (is_driverSector1_fastest === true) {
 					timingSector1Row = `<td id="tab-s1-fastest">${timingS1_dec}</td>`;
-					console.log(`${is_driverSector1_fastest}, ${timingS1_dec}`);
-					document.getElementById("s1_head").innerHTML = timingS1_dec;
 				}
 				if (is_driverSector2_fastest === true) {
 					timingSector2Row = `<td id="tab-s2-fastest">${timingS2_dec}</td>`;
