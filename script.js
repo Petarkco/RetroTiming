@@ -1,9 +1,9 @@
-var debug = false;
+var debug = true;
 // Classic for Manana, Classic-Bold for Manana in bold and F1Digital for Futura.
 var font = "Classic";
 
 const url =
-	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,TimingData,DriverList,SessionInfo";
+	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,TimingData,DriverList,SessionInfo,TimingStats";
 
 async function getTimingData() {
 	const response = await fetch(url, {
@@ -77,19 +77,20 @@ async function getTimingData() {
 			return b > 0 ? a + "0".repeat(b) : a;
 		} catch (err) {}
 	};
-	document.getElementById("position-Data").innerHTML = `<tr>
-	<th id="pos-head"></th>
-	<th id="carnum-head"></th>
-	<th id="name-head"></th>
-	<th id="gap-head">GAP</th>
-	<th id="int-head">INT</th>
-	<th id="lastlap-head"></th>
-	<th id="status-head"></th>
-	<th id="s1-head">00.0</th>
-	<th id="s2-head">00.0</th>
-	<th id="s3-head">00.0</th>
-	<th id="pit-head"></th>
-</tr>`;
+	// 	document.getElementById("position-Data").innerHTML = `<tr>
+	// 	<th id="pos-head"></th>
+	// 	<th id="carnum-head"></th>
+	// 	<th id="name-head"></th>
+	// 	<th id="gap-head">GAP</th>
+	// 	<th id="int-head">INT</th>
+	// 	<th id="lastlap-head"></th>
+	// 	<th id="status-head"></th>
+	// 	<th id="s1-head">00.0</th>
+	// 	<th id="s2-head">00.0</th>
+	// 	<th id="s3-head">00.0</th>
+	// 	<th id="pit-head"></th>
+	// </tr>`;
+
 	const liveTimingData = timingData.TimingData.Lines;
 	for (let lines of Object.entries(liveTimingData).sort(
 		(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
@@ -100,6 +101,8 @@ async function getTimingData() {
 				let timingCarPos = linesData[i].Position;
 				let timingShowPos = linesData[i].ShowPosition;
 				let timingCarNum = linesData[i].RacingNumber;
+				var timingDriverName =
+					timingData.DriverList[timingCarNum].BroadcastName;
 				let timingGap = linesData[i].TimeDiffToFastest;
 				let timingInt = linesData[i].TimeDiffToPositionAhead;
 				let timingLastLap = linesData[i].LastLapTime.Value;
@@ -121,74 +124,7 @@ async function getTimingData() {
 				let timingInPits = linesData[i].InPit;
 				let timingPitOut = linesData[i].PitOut;
 				let carStatus = "";
-				switch (timingCarNum) {
-					case "1":
-						var timingDriverName = "M. VERSTAPPEN";
-						break;
-					case "3":
-						var timingDriverName = "D. RICCIARDO";
-						break;
-					case "4":
-						var timingDriverName = "L. NORRIS";
-						break;
-					case "5":
-						var timingDriverName = "S.VETTEL";
-						break;
-					case "6":
-						var timingDriverName = "N. LATIFI";
-						break;
-					case "10":
-						var timingDriverName = "P. GASLY";
-						break;
-					case "11":
-						var timingDriverName = "S. PEREZ";
-						break;
-					case "14":
-						var timingDriverName = "F. ALONSO";
-						break;
-					case "16":
-						var timingDriverName = "C. LECLERC";
-						break;
-					case "18":
-						var timingDriverName = "L. STROLL";
-						break;
-					case "20":
-						var timingDriverName = "K. MAGNUSSEN";
-						break;
-					case "22":
-						var timingDriverName = "Y. TSUNODA";
-						break;
-					case "23":
-						var timingDriverName = "A. ALBON";
-						break;
-					case "24":
-						var timingDriverName = "Z. GUANYU";
-						break;
-					case "27":
-						var timingDriverName = "N. HULKENBERG";
-						break;
-					case "31":
-						var timingDriverName = "E. OCON";
-						break;
-					case "44":
-						var timingDriverName = "L. HAMILTON";
-						break;
-					case "45":
-						var timingDriverName = "N. DE VRIES";
-						break;
-					case "47":
-						var timingDriverName = "M. SCHUMACHER";
-						break;
-					case "55":
-						var timingDriverName = "C. SAINZ";
-						break;
-					case "63":
-						var timingDriverName = "G. RUSSELL";
-						break;
-					case "77":
-						var timingDriverName = "V. BOTTAS";
-						break;
-				}
+
 				if (timingStopped === true) {
 					carStatus = "STOPPED";
 				}
@@ -236,12 +172,15 @@ async function getTimingData() {
 				var timingSector3Row = `<td id="tab-s3">${timingS3_dec}</td>`;
 				if (is_driverSector1_fastest === true) {
 					timingSector1Row = `<td id="tab-s1-fastest">${timingS1_dec}</td>`;
+					var timingBestS1 = timingS1_dec;
 				}
 				if (is_driverSector2_fastest === true) {
 					timingSector2Row = `<td id="tab-s2-fastest">${timingS2_dec}</td>`;
+					var timingBestS2 = timingS2_dec;
 				}
 				if (is_driverSector3_fastest === true) {
 					timingSector3Row = `<td id="tab-s3-fastest">${timingS3_dec}</td>`;
+					var timingBestS3 = timingS2_dec;
 				}
 				if (
 					is_driverSector1_pb === true &&
@@ -280,6 +219,8 @@ async function getTimingData() {
 				let timingCarPos = linesData[i].Position;
 				let timingShowPos = linesData[i].ShowPosition;
 				let timingCarNum = linesData[i].RacingNumber;
+				var timingDriverName =
+					timingData.DriverList[timingCarNum].BroadcastName;
 				let timingGap = linesData[i].Stats[0].TimeDiffToFastest;
 				let timingInt = linesData[i].Stats[0].TimeDifftoPositionAhead;
 				let timingLastLap = linesData[i].LastLapTime.Value;
@@ -301,74 +242,7 @@ async function getTimingData() {
 				let timingInPits = linesData[i].InPit;
 				let timingPitOut = linesData[i].PitOut;
 				let carStatus = "";
-				switch (timingCarNum) {
-					case "1":
-						var timingDriverName = "M. VERSTAPPEN";
-						break;
-					case "3":
-						var timingDriverName = "D. RICCIARDO";
-						break;
-					case "4":
-						var timingDriverName = "L. NORRIS";
-						break;
-					case "5":
-						var timingDriverName = "S.VETTEL";
-						break;
-					case "6":
-						var timingDriverName = "N. LATIFI";
-						break;
-					case "10":
-						var timingDriverName = "P. GASLY";
-						break;
-					case "11":
-						var timingDriverName = "S. PEREZ";
-						break;
-					case "14":
-						var timingDriverName = "F. ALONSO";
-						break;
-					case "16":
-						var timingDriverName = "C. LECLERC";
-						break;
-					case "18":
-						var timingDriverName = "L. STROLL";
-						break;
-					case "20":
-						var timingDriverName = "K. MAGNUSSEN";
-						break;
-					case "22":
-						var timingDriverName = "Y. TSUNODA";
-						break;
-					case "23":
-						var timingDriverName = "A. ALBON";
-						break;
-					case "24":
-						var timingDriverName = "Z. GUANYU";
-						break;
-					case "27":
-						var timingDriverName = "N. HULKENBERG";
-						break;
-					case "31":
-						var timingDriverName = "E. OCON";
-						break;
-					case "44":
-						var timingDriverName = "L. HAMILTON";
-						break;
-					case "45":
-						var timingDriverName = "N. DE VRIES";
-						break;
-					case "47":
-						var timingDriverName = "M. SCHUMACHER";
-						break;
-					case "55":
-						var timingDriverName = "C. SAINZ";
-						break;
-					case "63":
-						var timingDriverName = "G. RUSSELL";
-						break;
-					case "77":
-						var timingDriverName = "V. BOTTAS";
-						break;
-				}
+
 				if (timingStopped === true) {
 					carStatus = "STOPPED";
 				}
@@ -461,6 +335,8 @@ async function getTimingData() {
 				let timingCarPos = linesData[i].Position;
 				let timingShowPos = linesData[i].ShowPosition;
 				let timingCarNum = linesData[i].RacingNumber;
+				var timingDriverName =
+					timingData.DriverList[timingCarNum].BroadcastName;
 				let timingGap = linesData[i].Stats[1].TimeDiffToFastest;
 				let timingInt = linesData[i].Stats[1].TimeDifftoPositionAhead;
 				let timingLastLap = linesData[i].LastLapTime.Value;
@@ -482,74 +358,7 @@ async function getTimingData() {
 				let timingInPits = linesData[i].InPit;
 				let timingPitOut = linesData[i].PitOut;
 				let carStatus = "";
-				switch (timingCarNum) {
-					case "1":
-						var timingDriverName = "M. VERSTAPPEN";
-						break;
-					case "3":
-						var timingDriverName = "D. RICCIARDO";
-						break;
-					case "4":
-						var timingDriverName = "L. NORRIS";
-						break;
-					case "5":
-						var timingDriverName = "S.VETTEL";
-						break;
-					case "6":
-						var timingDriverName = "N. LATIFI";
-						break;
-					case "10":
-						var timingDriverName = "P. GASLY";
-						break;
-					case "11":
-						var timingDriverName = "S. PEREZ";
-						break;
-					case "14":
-						var timingDriverName = "F. ALONSO";
-						break;
-					case "16":
-						var timingDriverName = "C. LECLERC";
-						break;
-					case "18":
-						var timingDriverName = "L. STROLL";
-						break;
-					case "20":
-						var timingDriverName = "K. MAGNUSSEN";
-						break;
-					case "22":
-						var timingDriverName = "Y. TSUNODA";
-						break;
-					case "23":
-						var timingDriverName = "A. ALBON";
-						break;
-					case "24":
-						var timingDriverName = "Z. GUANYU";
-						break;
-					case "27":
-						var timingDriverName = "N. HULKENBERG";
-						break;
-					case "31":
-						var timingDriverName = "E. OCON";
-						break;
-					case "44":
-						var timingDriverName = "L. HAMILTON";
-						break;
-					case "45":
-						var timingDriverName = "N. DE VRIES";
-						break;
-					case "47":
-						var timingDriverName = "M. SCHUMACHER";
-						break;
-					case "55":
-						var timingDriverName = "C. SAINZ";
-						break;
-					case "63":
-						var timingDriverName = "G. RUSSELL";
-						break;
-					case "77":
-						var timingDriverName = "V. BOTTAS";
-						break;
-				}
+
 				if (timingStopped === true) {
 					carStatus = "STOPPED";
 				}
@@ -641,6 +450,8 @@ async function getTimingData() {
 				let timingCarPos = linesData[i].Position;
 				let timingShowPos = linesData[i].ShowPosition;
 				let timingCarNum = linesData[i].RacingNumber;
+				var timingDriverName =
+					timingData.DriverList[timingCarNum].BroadcastName;
 				let timingGap = linesData[i].Stats[2].TimeDiffToFastest;
 				let timingInt = linesData[i].Stats[2].TimeDifftoPositionAhead;
 				let timingLastLap = linesData[i].LastLapTime.Value;
@@ -662,68 +473,6 @@ async function getTimingData() {
 				let timingInPits = linesData[i].InPit;
 				let timingPitOut = linesData[i].PitOut;
 				let carStatus = "";
-				switch (timingCarNum) {
-					case "1":
-						var timingDriverName = "M. VERSTAPPEN";
-						break;
-					case "3":
-						var timingDriverName = "D. RICCIARDO";
-						break;
-					case "4":
-						var timingDriverName = "L. NORRIS";
-						break;
-					case "5":
-						var timingDriverName = "S.VETTEL";
-						break;
-					case "6":
-						var timingDriverName = "N. LATIFI";
-						break;
-					case "10":
-						var timingDriverName = "P. GASLY";
-						break;
-					case "11":
-						var timingDriverName = "S. PEREZ";
-						break;
-					case "14":
-						var timingDriverName = "F. ALONSO";
-						break;
-					case "16":
-						var timingDriverName = "C. LECLERC";
-						break;
-					case "18":
-						var timingDriverName = "L. STROLL";
-						break;
-					case "20":
-						var timingDriverName = "K. MAGNUSSEN";
-						break;
-					case "22":
-						var timingDriverName = "Y. TSUNODA";
-						break;
-					case "23":
-						var timingDriverName = "A. ALBON";
-						break;
-					case "24":
-						var timingDriverName = "Z. GUANYU";
-						break;
-					case "31":
-						var timingDriverName = "E. OCON";
-						break;
-					case "44":
-						var timingDriverName = "L. HAMILTON";
-						break;
-					case "47":
-						var timingDriverName = "M. SCHUMACHER";
-						break;
-					case "55":
-						var timingDriverName = "C. SAINZ";
-						break;
-					case "63":
-						var timingDriverName = "G. RUSSELL";
-						break;
-					case "77":
-						var timingDriverName = "V. BOTTAS";
-						break;
-				}
 				if (timingStopped === true) {
 					carStatus = "STOPPED";
 				}
@@ -816,6 +565,8 @@ async function getTimingData() {
 				let timingCarPos = linesData[i].Position;
 				let timingShowPos = linesData[i].ShowPosition;
 				let timingCarNum = linesData[i].RacingNumber;
+				var timingDriverName =
+					timingData.DriverList[timingCarNum].BroadcastName;
 				let timingGap = linesData[i].GapToLeader;
 				let timingInt = linesData[i].IntervalToPositionAhead.Value;
 				let timingLastLap = linesData[i].LastLapTime.Value;
@@ -827,6 +578,7 @@ async function getTimingData() {
 				let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
 				let timingPitCount = linesData[i].NumberOfPitStops;
 				let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
+				console.log(is_driverSector1_fastest);
 				let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
 				let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
 				let is_driverSector1_pb = linesData[i].Sectors[0].PersonalFastest;
@@ -838,69 +590,6 @@ async function getTimingData() {
 				let timingInPits = linesData[i].InPit;
 				let timingPitOut = linesData[i].PitOut;
 				let carStatus = "";
-
-				switch (timingCarNum) {
-					case "1":
-						var timingDriverName = "M. VERSTAPPEN";
-						break;
-					case "3":
-						var timingDriverName = "D. RICCIARDO";
-						break;
-					case "4":
-						var timingDriverName = "L. NORRIS";
-						break;
-					case "5":
-						var timingDriverName = "S.VETTEL";
-						break;
-					case "6":
-						var timingDriverName = "N. LATIFI";
-						break;
-					case "10":
-						var timingDriverName = "P. GASLY";
-						break;
-					case "11":
-						var timingDriverName = "S. PEREZ";
-						break;
-					case "14":
-						var timingDriverName = "F. ALONSO";
-						break;
-					case "16":
-						var timingDriverName = "C. LECLERC";
-						break;
-					case "18":
-						var timingDriverName = "L. STROLL";
-						break;
-					case "20":
-						var timingDriverName = "K. MAGNUSSEN";
-						break;
-					case "22":
-						var timingDriverName = "Y. TSUNODA";
-						break;
-					case "23":
-						var timingDriverName = "A. ALBON";
-						break;
-					case "24":
-						var timingDriverName = "Z. GUANYU";
-						break;
-					case "31":
-						var timingDriverName = "E. OCON";
-						break;
-					case "44":
-						var timingDriverName = "L. HAMILTON";
-						break;
-					case "47":
-						var timingDriverName = "M. SCHUMACHER";
-						break;
-					case "55":
-						var timingDriverName = "C. SAINZ";
-						break;
-					case "63":
-						var timingDriverName = "G. RUSSELL";
-						break;
-					case "77":
-						var timingDriverName = "V. BOTTAS";
-						break;
-				}
 
 				if (timingPitCount === undefined) {
 					timingPitCount = "";
@@ -953,6 +642,8 @@ async function getTimingData() {
 				var timingPitCountRow = `<td id="tab-pit">${timingPitCount}</td></tr>`;
 				if (is_driverSector1_fastest === true) {
 					timingSector1Row = `<td id="tab-s1-fastest">${timingS1_dec}</td>`;
+					console.log(`${is_driverSector1_fastest}, ${timingS1_dec}`);
+					document.getElementById("s1_head").innerHTML = timingS1_dec;
 				}
 				if (is_driverSector2_fastest === true) {
 					timingSector2Row = `<td id="tab-s2-fastest">${timingS2_dec}</td>`;
