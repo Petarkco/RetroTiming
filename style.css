@@ -31,39 +31,46 @@ html {
 }
 
 #pos-head {
-	min-width: 5%;
+	min-width: 27px;
 }
 #carnum-head {
-	min-width: 5%;
+	min-width: 27px;
 }
 #name-head {
 	text-align: left;
+	width: 157px;
 }
+
+#name-head-tla {
+	text-align: left;
+	width: 50px;
+}
+
 #gap-head {
-	min-width: 5%;
+	min-width: 86px;
 	text-align: right;
 }
 #int-head {
-	min-width: 5%;
+	min-width: 86px;
 	text-align: right;
 }
 
 #lastlap-head {
-	min-width: 10%;
+	min-width: 84px;
 }
 #status-head {
-	min-width: 5%;
+	min-width: 80px;
 }
 #s1-head,
 #s2-head,
 #s3-head {
-	min-width: 25%;
+	min-width: 45px;
 	text-align: right;
 	color: #d24ae0;
 }
 #pit-head {
 	text-align: right;
-	width: 5%;
+	width: 15px;
 }
 
 #name-head {

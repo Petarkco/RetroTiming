@@ -99,6 +99,13 @@ async function getTimingData() {
 	)) {
 		let linesData = lines;
 		for (var i = 1; i < linesData.length; i++) {
+			window.addEventListener("resize", function () {
+				if (window.matchMedia("(max-width: 845px)").matches) {
+					timingUseThreeLetters = true;
+				} else {
+					timingUseThreeLetters = false;
+				}
+			});
 			if (sessionType === "Practice") {
 				let timingCarPos = linesData[i].Position;
 				let timingShowPos = linesData[i].ShowPosition;
