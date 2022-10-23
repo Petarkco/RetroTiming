@@ -47,12 +47,12 @@ html {
 }
 
 #gap-head {
-	min-width: 86px;
-	text-align: right;
+	/* min-width: 86px; */
+	text-align: center;
 }
 #int-head {
-	min-width: 86px;
-	text-align: right;
+	/* min-width: 86px; */
+	text-align: center;
 }
 
 #lastlap-head {
@@ -91,11 +91,11 @@ html {
 #tab-gap,
 #tab-int {
 	color: #f8ff2c;
-	text-align: left;
+	/* text-align: left; */
 }
 #tab-p1-gap {
 	color: #f8ff2c;
-	text-align: left;
+	/* text-align: left; */
 }
 
 #tab-lastlap {
