@@ -156,8 +156,10 @@ async function getTimingData() {
 				let timingCarNum = linesData[i].RacingNumber;
 				var timingDriverName =
 					timingData.DriverList[timingCarNum].BroadcastName;
-				let timingGap = linesData[i].TimeDiffToFastest;
-				let timingInt = linesData[i].TimeDiffToPositionAhead;
+				let timingGap = linesData[i].GapToLeader;
+				let timingGapDec = parseFloat(timingGap).toFixedNoRounding(1);
+				let timingInt = linesData[i].IntervalToPositionAhead.Value;
+				let timingIntDec = parseFloat(timingInt).toFixedNoRounding(1);
 				let timingLastLap = linesData[i].LastLapTime.Value;
 				let timingS1 = linesData[i].Sectors[0].Value;
 				let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
@@ -187,6 +189,12 @@ async function getTimingData() {
 				if (timingPitOut === true) {
 					carStatus = "OUT";
 				}
+				if (timingGapDec === undefined) {
+					timingGapDec = "";
+				}
+				if (timingIntDec === undefined) {
+					timingIntDec = "";
+				}
 
 				if (timingS1_dec === undefined) {
 					timingS1_dec = "";
@@ -204,11 +212,11 @@ async function getTimingData() {
 				var timingPosLine = `<td id="tab-pos">${timingCarPos}</td>`;
 				var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
 				var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
-				var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
+				var timingGapLine = `<td id="tab-gap">${timingGapDec}</td>`;
 				if (timingCarPos === "1") {
 					var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
 				}
-				var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
+				var timingIntLine = `<td id="tab-int">${timingIntDec}</td>`;
 				if (timingCarPos === "1") {
 					var timingIntLine = ``;
 				}
@@ -274,8 +282,10 @@ async function getTimingData() {
 				let timingCarNum = linesData[i].RacingNumber;
 				var timingDriverName =
 					timingData.DriverList[timingCarNum].BroadcastName;
-				let timingGap = linesData[i].Stats[0].TimeDiffToFastest;
-				let timingInt = linesData[i].Stats[0].TimeDifftoPositionAhead;
+				let timingGap = linesData[i].GapToLeader;
+				let timingGapDec = parseFloat(timingGap).toFixedNoRounding(1);
+				let timingInt = linesData[i].IntervalToPositionAhead.Value;
+				let timingIntDec = parseFloat(timingInt).toFixedNoRounding(1);
 				let timingLastLap = linesData[i].LastLapTime.Value;
 				let timingS1 = linesData[i].Sectors[0].Value;
 				let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
@@ -305,6 +315,12 @@ async function getTimingData() {
 				if (timingPitOut === true) {
 					carStatus = "OUT";
 				}
+				if (timingGapDec === undefined) {
+					timingGapDec = "";
+				}
+				if (timingIntDec === undefined) {
+					timingIntDec = "";
+				}
 
 				if (timingS1_dec === undefined) {
 					timingS1_dec = "";
@@ -322,11 +338,11 @@ async function getTimingData() {
 				var timingPosLine = `<td id="tab-pos">${timingCarPos}</td>`;
 				var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
 				var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
-				var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
+				var timingGapLine = `<td id="tab-gap">${timingGapDec}</td>`;
 				if (timingCarPos === "1") {
 					var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
 				}
-				var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
+				var timingIntLine = `<td id="tab-int">${timingIntDec}</td>`;
 				if (timingCarPos === "1") {
 					var timingIntLine = ``;
 				}
@@ -390,8 +406,10 @@ async function getTimingData() {
 				let timingCarNum = linesData[i].RacingNumber;
 				var timingDriverName =
 					timingData.DriverList[timingCarNum].BroadcastName;
-				let timingGap = linesData[i].Stats[1].TimeDiffToFastest;
-				let timingInt = linesData[i].Stats[1].TimeDifftoPositionAhead;
+				let timingGap = linesData[i].GapToLeader;
+				let timingGapDec = parseFloat(timingGap).toFixedNoRounding(1);
+				let timingInt = linesData[i].IntervalToPositionAhead.Value;
+				let timingIntDec = parseFloat(timingInt).toFixedNoRounding(1);
 				let timingLastLap = linesData[i].LastLapTime.Value;
 				let timingS1 = linesData[i].Sectors[0].Value;
 				let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
@@ -421,6 +439,12 @@ async function getTimingData() {
 				if (timingPitOut === true) {
 					carStatus = "OUT";
 				}
+				if (timingGapDec === undefined) {
+					timingGapDec = "";
+				}
+				if (timingIntDec === undefined) {
+					timingIntDec = "";
+				}
 
 				if (timingS1_dec === undefined) {
 					timingS1_dec = "";
@@ -439,10 +463,11 @@ async function getTimingData() {
 				var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
 				var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
 				var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
+				var timingGapLine = `<td id="tab-gap">${timingGapDec}</td>`;
 				if (timingCarPos === "1") {
 					var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
 				}
-				var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
+				var timingIntLine = `<td id="tab-int">${timingIntDec}</td>`;
 				if (timingCarPos === "1") {
 					var timingIntLine = ``;
 				}
@@ -505,8 +530,10 @@ async function getTimingData() {
 				let timingCarNum = linesData[i].RacingNumber;
 				var timingDriverName =
 					timingData.DriverList[timingCarNum].BroadcastName;
-				let timingGap = linesData[i].Stats[2].TimeDiffToFastest;
-				let timingInt = linesData[i].Stats[2].TimeDifftoPositionAhead;
+				let timingGap = linesData[i].GapToLeader;
+				let timingGapDec = parseFloat(timingGap).toFixedNoRounding(1);
+				let timingInt = linesData[i].IntervalToPositionAhead.Value;
+				let timingIntDec = parseFloat(timingInt).toFixedNoRounding(1);
 				let timingLastLap = linesData[i].LastLapTime.Value;
 				let timingS1 = linesData[i].Sectors[0].Value;
 				let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
@@ -535,6 +562,12 @@ async function getTimingData() {
 				if (timingPitOut === true) {
 					carStatus = "OUT";
 				}
+				if (timingGapDec === undefined) {
+					timingGapDec = "";
+				}
+				if (timingIntDec === undefined) {
+					timingIntDec = "";
+				}
 
 				if (timingS1_dec === undefined) {
 					timingS1_dec = "";
@@ -552,11 +585,11 @@ async function getTimingData() {
 				var timingPosLine = `<td id="tab-pos">${timingCarPos}</td>`;
 				var timingCarNumLine = `<td id="tab-carnum">${timingCarNum}</td>`;
 				var timingDriverNameLine = `<td id="tab-name">${timingDriverName}</td>`;
-				var timingGapLine = `<td id="tab-gap">${timingGap}</td>`;
+				var timingGapLine = `<td id="tab-gap">${timingGapDec}</td>`;
 				if (timingCarPos === "1") {
 					var timingGapLine = `<td id="tab-p1-gap" colspan="2">${timingGap}</td>`;
 				}
-				var timingIntLine = `<td id="tab-int">${timingInt}</td>`;
+				var timingIntLine = `<td id="tab-int">${timingIntDec}</td>`;
 				if (timingCarPos === "1") {
 					var timingIntLine = ``;
 				}
