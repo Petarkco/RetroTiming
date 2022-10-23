@@ -195,3 +195,12 @@ html {
 	color: #f8ff2c;
 	float: right;
 }
+
+#settings {
+	color: #fff;
+	visibility: hidden;
+}
+
+#settings-icon {
+	opacity: 0.5;
+}

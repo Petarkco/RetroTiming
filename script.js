@@ -1,6 +1,7 @@
 var debug = false;
 // Classic for Manana, Classic-Bold for Manana in bold and F1Digital for Futura.
-var font = "Classic";
+document.cookie = "Classic; max-age=31536000;";
+var font = document.cookie;
 //Use three letter code (i.e. HAM) instead of driver name
 var timingUseThreeLetters = false;
 
@@ -24,11 +25,16 @@ async function getTimingData() {
 		console.log(timingData);
 	}
 
+	document.getElementById("font-choice").onchange = function () {
+		font = document.getElementById("font-choice").value;
+		document.cookie = `${font}; max-age=31536000;`;
+	};
+
 	//Set font
 	if (font === "Classic") {
 		document.getElementById("main").style.fontFamily = "manana, sans-serif";
 	}
-	if (font === "Classic-Bold") {
+	if (font === "ClassicBold") {
 		document.getElementById("main").style.fontFamily =
 			"manana-bold, sans-serif";
 	}
