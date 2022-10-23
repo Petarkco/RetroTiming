@@ -1,6 +1,5 @@
 var debug = false;
 // Classic for Manana, Classic-Bold for Manana in bold and F1Digital for Futura.
-document.cookie = "Classic; max-age=31536000;";
 var font = document.cookie;
 //Use three letter code (i.e. HAM) instead of driver name
 var timingUseThreeLetters = false;
