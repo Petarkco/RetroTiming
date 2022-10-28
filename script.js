@@ -156,9 +156,9 @@ async function getTimingData() {
 				let timingCarNum = linesData[i].RacingNumber;
 				var timingDriverName =
 					timingData.DriverList[timingCarNum].BroadcastName;
-				let timingGap = linesData[i].GapToLeader;
+				let timingGap = linesData[i].TimeDiffToFastest;
 				let timingGapDec = parseFloat(timingGap).toFixedNoRounding(1);
-				let timingInt = linesData[i].IntervalToPositionAhead.Value;
+				let timingInt = linesData[i].TimeDiffToPositionAhead;
 				let timingIntDec = parseFloat(timingInt).toFixedNoRounding(1);
 				let timingLastLap = linesData[i].LastLapTime.Value;
 				let timingS1 = linesData[i].Sectors[0].Value;
