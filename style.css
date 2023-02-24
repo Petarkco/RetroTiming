@@ -1,14 +1,14 @@
 @font-face {
 	font-family: "manana";
-	src: url("/fonts/Manana.otf");
+	src: url("fonts/Manana.otf");
 }
 @font-face {
 	font-family: "manana-bold";
-	src: url("/fonts/Manana-bold.otf");
+	src: url("fonts/Manana-bold.otf");
 }
 @font-face {
 	font-family: "manana-italic";
-	src: url("/fonts/Manana-italic.otf");
+	src: url("fonts/Manana-italic.otf");
 }
 
 body {
