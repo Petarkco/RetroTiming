@@ -70,6 +70,11 @@ main {
 	color: yellow;
 }
 
+#bottom-bar {
+	padding: 1%;
+	height: 1rem;
+}
+
 #flag-bar,
 #green-flag,
 #yellow-flag,
@@ -77,8 +82,6 @@ main {
 #safety-car {
 	margin-left: 3%;
 	margin-right: 3%;
-	height: 1rem;
-	padding: 1%;
 	width: 100%;
 	color: #ffffff;
 }
