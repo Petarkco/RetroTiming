@@ -11,142 +11,117 @@
 	src: url("/fonts/Manana-italic.otf");
 }
 
-html {
-	background-color: rgb(0, 0, 0);
-	min-width: 50%;
-	max-width: 90%;
-	margin: auto;
-	padding: 0.1%;
-}
-#main {
-	/* font-family: futura-pt-condensed, sans-serif; */
-	font-family: "manana";
-	font-weight: 600;
-	font-style: normal;
-	font-size: 1.3em;
-	color: rgb(255, 255, 255);
-}
-#position-Data {
-	width: 100%;
+body {
+	margin: 0;
+	background-color: #000000;
+	font-family: "manana-bold", sans-serif;
+	font-size: 1.3rem;
 }
 
-#pos-head {
+main {
+	width: 100%;
+	max-width: 1024px;
+	margin: 0.5% auto;
+	display: flexbox;
+	color: #ffffff;
+	justify-content: space-evenly;
+}
+
+#bottom-bar {
+	width: 100%;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	text-align: center;
+}
+
+#top-pos,
+#top-carnum {
 	min-width: 27px;
 }
-#carnum-head {
-	min-width: 27px;
-}
-#name-head {
-	text-align: left;
+
+#top-name {
 	width: 157px;
 }
 
-#name-head-tla {
-	text-align: left;
-	width: 50px;
-}
-
-#gap-head {
-	/* min-width: 86px; */
-	text-align: center;
-}
-#int-head {
-	/* min-width: 86px; */
-	text-align: center;
-}
-
-#lastlap-head {
+#top-lastlaptime {
 	min-width: 84px;
 }
-#status-head {
+
+#top-gap,
+#top-int {
+	color: #5dfafb;
+}
+#top-status {
 	min-width: 80px;
 }
-#s1-head,
-#s2-head,
-#s3-head {
+
+#top-sector1,
+#top-sector2,
+#top-sector3 {
 	min-width: 45px;
 	text-align: right;
-	color: #d24ae0;
-}
-#pit-head {
-	text-align: right;
-	width: 15px;
 }
 
-#name-head {
-	text-align: left !important;
-}
-#gap-head,
-#int-head {
-	color: #5dfafb;
-	text-align: center;
-}
-#tab-pos {
-	color: #5dfafb;
+#track-time,
+#session-time {
+	margin: 0 auto;
+	color: yellow;
 }
 
-#tab-name {
-	text-align: left;
-}
-#tab-gap,
-#tab-int {
-	color: #f8ff2c;
-	/* text-align: left; */
-}
-#tab-p1-gap {
-	color: #f8ff2c;
-	/* text-align: left; */
-}
-
-#tab-lastlap {
-	color: #f8ff2c;
-}
-#tab-lastlap-fastest {
-	color: #d24ae0;
-}
-#tab-lastlap-pb {
-	color: #4cb033;
-}
-#tab-s1,
-#tab-s2,
-#tab-s3 {
-	/* color: #f8ff2c; */
-	text-align: right;
-}
-
-#tab-s1-pb,
-#tab-s2-pb,
-#tab-s3-pb {
-	color: #4cb033;
-	width: auto;
-	text-align: right;
-}
-#tab-s1-fastest,
-#tab-s2-fastest,
-#tab-s3-fastest {
-	color: #d24ae0;
-	text-align: right;
-}
-#tab-status {
-	color: #f8ff2c;
-	text-align: right;
-}
-#tab-pit {
-	text-align: right;
-	color: #f8ff2c;
-}
-
-#timing-foot {
+#flag-bar,
+#green-flag,
+#yellow-flag,
+#red-flag,
+#safety-car {
+	margin-left: 3%;
+	margin-right: 3%;
+	height: 1rem;
+	padding: 1%;
 	width: 100%;
+	color: #ffffff;
 }
 
-#track-time {
+/* Colors */
+
+#white {
+	color: #ffffff;
+}
+#yellow {
 	color: #f8ff2c;
 }
-#foot-flag {
-	min-width: 250px;
-	text-align: center;
+#purple {
+	color: #d24ae0;
 }
+#green {
+	color: #4cb033;
+}
+#cyan {
+	color: #5dfafb;
+}
+
+/* Colors for flag bar */
+
+#green-flag {
+	background-color: #4cb033;
+}
+
+#yellow-flag {
+	background-color: #f8ff2c;
+}
+
+#red-flag {
+	background-color: red;
+}
+
+#safety-car {
+	background-color: #f8ff2c;
+	animation: blink normal 1.2s infinite ease-in-out;
+}
+
+/* Browser animation for flag bar */
+
 @-moz-keyframes blink {
 	0% {
 		opacity: 1;
@@ -190,16 +165,4 @@ html {
 	100% {
 		opacity: 1;
 	}
-} /* Opera */
-#race-time {
-	color: #f8ff2c;
-	float: right;
-}
-
-#settings {
-	color: #fff;
-}
-
-#settings-icon {
-	opacity: 0.5;
 }

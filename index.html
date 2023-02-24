@@ -2,60 +2,28 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>RetroTiming for F1MV</title>
-	<link rel="stylesheet" href="https://use.typekit.net/zuh8hjw.css" />
-	<link rel="stylesheet" href="style.css" />
-	<script src="script.js"></script>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/style.css">
+	<script src="scriptV2.js"></script>
+	<title>RetroTiming - Version 2</title>
 </head>
 
 <body>
-	<div id="main">
-		<table id="position-Data">
-			<tr>
-				<th id="pos-head"></th>
-				<th id="carnum-head"></th>
-				<th id="name-head"></th>
-				<th id="gap-head">GAP</th>
-				<th id="int-head">INT</th>
-				<th id="lastlap-head"></th>
-				<th id="status-head"></th>
-				<th id="s1-head">00.0</th>
-				<th id="s2-head">00.0</th>
-				<th id="s3-head">00.0</th>
-				<th id="pit-head"></th>
-			</tr>
-		</table>
-		<div id="container"></div>
+	<main>
+		<div id="timing-data">
+			<table id="timing-table">
 
-		<table id="timing-foot">
-			<tr>
-				<td id="track-time"></td>
-				<td id="foot-flag"></td>
-				<td id="race-time"></td>
-			</tr>
-		</table>
-		<img src="./icons/settings-icon.png" alt="settings-icon" id="settings-icon" onclick="showSettings()">
-		<div id="settings" style="visibility: hidden;">
-			<label for="font-choice">Font:</label>
-			<select name="font-choice" id="font-choice">
-				<option value="Classic">Classic</option>
-				<option value="ClassicBold">Classic Bold</option>
-				<option value="F1Digital">F1Digital+</option>
-			</select>
+			</table>
 		</div>
-		<script>
-			const targetDiv = document.getElementById("settings");
-			function showSettings() {
-				if (targetDiv.style.visibility !== "hidden") {
-					targetDiv.style.visibility = "hidden";
-				} else {
-					targetDiv.style.visibility = "visible";
-				}
-			};
-		</script>
+		<div id="bottom-bar">
+			<div id="track-time"></div>
+			<div id="flag-bar"></div>
+			<div id="session-time"></div>
+		</div>
+
+	</main>
 </body>
 
 </html>
