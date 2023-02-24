@@ -78,12 +78,12 @@ async function getMultiviewData() {
     <th id="top-name"></th>
     <th id="top-gap">GAP</th>
     <th id="top-int">INT</th>
-    <th id="top-bestlaptime"></th>
-    <th id="top-lastlaptime"></th>
+    <th id="top-bestlaptime">BEST</th>
+    <th id="top-lastlaptime">LAST</th>
     <th id="top-status"></th>
-    <th id="top-sector1">00.0</th>
-    <th id="top-sector2">00.0</th>
-    <th id="top-sector3">00.0</th>
+    <th id="top-sector1"></th>
+    <th id="top-sector2"></th>
+    <th id="top-sector3"></th>
     <th id="top-pitnum"></th>
 	</tr>`;
 
@@ -122,17 +122,17 @@ async function getMultiviewData() {
 				carPos = "";
 			}
 
-			let table_carPos = `<td id="cyan">${carPos}</td>`;
-			let table_carNum = `<td>${carNum}</rd>`;
-			let table_carName = `<td  id="yellow">${carName}`;
+			let table_carPos = `<td id="carPos">${carPos}</td>`;
+			let table_carNum = `<td id="carNum">${carNum}</rd>`;
+			let table_carName = `<td>${carName}</td>`;
 			let table_carGap = `<td>${carGap}</td>`;
 			let table_carInt = `<td>${carInt}</td>`;
 			let table_carBestLapTime = `<td>${carBestLap}</td>`;
 			let table_carLastLapTime = `<td>${carLastLap}</td>`;
 			let table_carStatus = `<td>${carStatus}`;
-			let table_carSector1 = `<td>${carSector1dec}`;
-			let table_carSector2 = `<td>${carSector2dec}`;
-			let table_carSector3 = `<td>${carSector3dec}`;
+			let table_carSector1 = `<td id="sector1">${carSector1dec}`;
+			let table_carSector2 = `<td id="sector2">${carSector2dec}`;
+			let table_carSector3 = `<td id="sector3">${carSector3dec}`;
 			let table_pitNum = `<td></td>`;
 
 			document.getElementById("timing-table").innerHTML += `

@@ -14,7 +14,8 @@
 body {
 	margin: 0;
 	background-color: #000000;
-	font-family: "manana-bold", sans-serif;
+	font-family: "manana", sans-serif;
+	font-weight: 600;
 	font-size: 1.3rem;
 }
 
@@ -52,9 +53,11 @@ main {
 #top-gap,
 #top-int {
 	color: #5dfafb;
+	text-align: right;
 }
 #top-status {
 	min-width: 80px;
+	text-align: right;
 }
 
 #top-sector1,
@@ -73,6 +76,27 @@ main {
 #bottom-bar {
 	padding: 1%;
 	height: 1rem;
+}
+
+#top-bestlaptime,
+#top-lastlaptime {
+	color: #5dfafb;
+	text-align: right;
+}
+
+#carPos {
+	color: #5dfafb;
+}
+
+#carPos,
+#carNum {
+	text-align: right;
+}
+
+#sector1,
+#sector2,
+#sector3 {
+	text-align: right;
 }
 
 #flag-bar,
