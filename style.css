@@ -28,6 +28,10 @@ main {
 	justify-content: space-evenly;
 }
 
+#timing-table {
+	width: 100%;
+}
+
 #bottom-bar {
 	width: 100%;
 	margin: 0 auto;
@@ -81,7 +85,7 @@ main {
 #top-bestlaptime,
 #top-lastlaptime {
 	color: #5dfafb;
-	text-align: right;
+	text-align: left;
 }
 
 #carPos {
@@ -96,6 +100,46 @@ main {
 #sector1,
 #sector2,
 #sector3 {
+	text-align: right;
+	color: #f8ff2c;
+}
+
+#sector1pb,
+#sector2pb,
+#sector3pb {
+	color: #4cb033;
+	text-align: right;
+}
+
+#sector1of,
+#sector2of,
+#sector3of {
+	color: #d24ae0;
+	text-align: right;
+}
+
+#sector1speed,
+#sector2speed,
+#sector3speed {
+	color: #f8ff2c;
+}
+
+#sector1speedof,
+#sector2speedof,
+#sector3speedof {
+	color: #d24ae0;
+}
+#sector1speedpb,
+#sector2speedpb,
+#sector3speedpb {
+	color: #4cb033;
+}
+
+#carstatus {
+	text-align: end;
+	color: #f8ff2c;
+}
+#carlapcount {
 	text-align: right;
 }
 
