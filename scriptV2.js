@@ -78,6 +78,7 @@ async function getMultiviewData() {
     <th id="top-name"></th>
     <th id="top-gap">GAP</th>
     <th id="top-int">INT</th>
+    <th id="top-bestlaptime"></th>
     <th id="top-lastlaptime"></th>
     <th id="top-status"></th>
     <th id="top-sector1">00.0</th>
@@ -97,6 +98,7 @@ async function getMultiviewData() {
 			let carName = multiviewData.DriverList[carNum].BroadcastName;
 			let carGap = linesData[i].TimeDiffToFastest;
 			let carInt = linesData[i].TimeDiffToPositionAhead;
+			let carBestLap = linesData[i].BestLapTime.Value;
 			let carLastLap = linesData[i].LastLapTime.Value;
 			let carStatus = "";
 			let carSector1 = linesData[i].Sectors[0].Value;
@@ -125,6 +127,7 @@ async function getMultiviewData() {
 			let table_carName = `<td  id="yellow">${carName}`;
 			let table_carGap = `<td>${carGap}</td>`;
 			let table_carInt = `<td>${carInt}</td>`;
+			let table_carBestLapTime = `<td>${carBestLap}</td>`;
 			let table_carLastLapTime = `<td>${carLastLap}</td>`;
 			let table_carStatus = `<td>${carStatus}`;
 			let table_carSector1 = `<td>${carSector1dec}`;
@@ -138,6 +141,7 @@ async function getMultiviewData() {
             ${table_carName}
             ${table_carGap}
             ${table_carInt}
+            ${table_carBestLapTime}
             ${table_carLastLapTime}
             ${table_carStatus}
             ${table_carSector1}
