@@ -67,8 +67,22 @@ main {
 #top-sector1,
 #top-sector2,
 #top-sector3 {
-	min-width: 45px;
+	min-width: 70px;
 	text-align: right;
+}
+#top-sector1speed,
+#top-sector2speed,
+#top-sector3speed {
+	min-width: 40px;
+	text-align: right;
+}
+
+#top-status {
+	min-width: 85px;
+}
+
+#top-lapcount {
+	min-width: 40px;
 }
 
 #track-time,
