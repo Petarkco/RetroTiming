@@ -15,7 +15,7 @@ async function getMultiviewData() {
 	const multiviewTimingData = multiviewData.TimingData.Lines;
 	var sessionOfficialName = multiviewData.SessionInfo.Meeting.OfficialName;
 	var sessionTrackStatus = multiviewData.TrackStatus.Message;
-	var sessionType = multiviewData.TimingStats.sessionType;
+	var sessionType = multiviewData.TimingStats.SessionType;
 
 	//Allows sector times to have 2 decimals without rounding down
 	Number.prototype.toFixedNoRounding = function (n) {
@@ -32,209 +32,255 @@ async function getMultiviewData() {
 		} catch (err) {}
 	};
 
-	for (let lines of Object.entries(multiviewTimingData).sort(
-		(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
-	)) {
-		let linesData = lines;
-		var timingFastestS1;
-		var timingFastestS2;
-		var timingFastestS3;
-		for (var i = 1; i < linesData.length; i++) {
-			let timingS1 = linesData[i].Sectors[0].Value;
-			let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
-			let timingS2 = linesData[i].Sectors[1].Value;
-			let timingS2_dec = parseFloat(timingS2).toFixedNoRounding(1);
-			let timingS3 = linesData[i].Sectors[2].Value;
-			let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
-			let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
-			let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
-			let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
+	if (
+		sessionType === "Practice" ||
+		sessionType === "Qualifying" ||
+		sessionType === "Race"
+	) {
+		for (let lines of Object.entries(multiviewTimingData).sort(
+			(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
+		)) {
+			let linesData = lines;
+			var timingFastestS1;
+			var timingFastestS2;
+			var timingFastestS3;
+			for (var i = 1; i < linesData.length; i++) {
+				let timingS1 = linesData[i].Sectors[0].Value;
+				let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
+				let timingS2 = linesData[i].Sectors[1].Value;
+				let timingS2_dec = parseFloat(timingS2).toFixedNoRounding(1);
+				let timingS3 = linesData[i].Sectors[2].Value;
+				let timingS3_dec = parseFloat(timingS3).toFixedNoRounding(1);
+				let is_driverSector1_fastest = linesData[i].Sectors[0].OverallFastest;
+				let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
+				let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
 
-			if (is_driverSector1_fastest === true) {
-				timingFastestS1 = timingS1_dec;
-			}
-			if (is_driverSector2_fastest === true) {
-				timingFastestS2 = timingS2_dec;
-			}
-			if (is_driverSector3_fastest === true) {
-				timingFastestS3 = timingS3_dec;
-			}
+				if (is_driverSector1_fastest === true) {
+					timingFastestS1 = timingS1_dec;
+				}
+				if (is_driverSector2_fastest === true) {
+					timingFastestS2 = timingS2_dec;
+				}
+				if (is_driverSector3_fastest === true) {
+					timingFastestS3 = timingS3_dec;
+				}
 
-			if (timingFastestS1 === undefined) {
-				timingFastestS1 = "";
-			}
-			if (timingFastestS2 === undefined) {
-				timingFastestS2 = "";
-			}
-			if (timingFastestS3 === undefined) {
-				timingFastestS3 = "";
+				if (timingFastestS1 === undefined) {
+					timingFastestS1 = "      ";
+				}
+				if (timingFastestS2 === undefined) {
+					timingFastestS2 = "      ";
+				}
+				if (timingFastestS3 === undefined) {
+					timingFastestS3 = "      ";
+				}
 			}
 		}
-	}
 
-	document.getElementById("timing-table").innerHTML = `<tr>
+		for (let lines of Object.entries(multiviewTimingData).sort(
+			(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
+		)) {
+			let linesData = lines;
+			let top_sector1OF;
+			let top_sector2OF;
+			let top_sector3OF;
+			for (var i = 1; i < linesData.length; i++) {
+				let sector1isOF = linesData[i].Sectors[0].OverallFastest;
+				console.log(sector1isOF);
+				let sector1OFTime = linesData[i].Sectors[0].Value;
+				console.log(sector1OFTime);
+				let sector2isOF = linesData[i].Sectors[1].OverallFastest;
+				console.log(sector2isOF);
+				let sector2OFTime = linesData[i].Sectors[1].Value;
+				console.log(sector2OFTime);
+				let sector3isOF = linesData[i].Sectors[2].OverallFastest;
+				let sector3OFTime = linesData[i].Sectors[2].Value;
+
+				if (
+					sector1isOF === true ||
+					sector2isOF === true ||
+					sector3isOF === true
+				) {
+					top_sector1OF = sector1OFTime;
+					top_sector2OF = sector2OFTime;
+					top_sector3OF = sector3OFTime;
+				}
+				console.log(top_sector2OF);
+				if (
+					top_sector1OF === undefined ||
+					top_sector2OF === undefined ||
+					top_sector3OF === undefined
+				) {
+					top_sector1OF = "     ";
+					top_sector2OF = "     ";
+					top_sector3OF = "     ";
+				}
+			}
+
+			document.getElementById("timing-table").innerHTML = `<tr>
     <th id="top-pos"></th>
     <th id="top-carnum"></th>
     <th id="top-name"></th>
     <th id="top-bestlaptime">BEST LAP</th>
-    <th id="top-sector1"></th>
+    <th id="top-sector1">${top_sector1OF}</th>
 	<th id="top-sector1speed</th>
-    <th id="top-sector2"></th>
+    <th id="top-sector2">${top_sector2OF}</th>
 	<th id="top-sector2speed</th>
-    <th id="top-sector3"></th>
+    <th id="top-sector3">${top_sector3OF}</th>
 	<th id="top-sector3speed</th>
     <th id="top-status"></th>
     <th id="top-lapcount"></th>
 	</tr>`;
+		}
 
-	for (let lines of Object.entries(multiviewTimingData).sort(
-		(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
-	)) {
-		let linesData = lines;
-		for (var i = 1; i < linesData.length; i++) {
-			let carPos = linesData[i].Position;
-			let carShowPosition = linesData[i].showPosition;
-			let carNum = linesData[i].RacingNumber;
-			let carName = multiviewData.DriverList[carNum].BroadcastName;
-			let carGap = linesData[i].TimeDiffToFastest;
-			let carInt = linesData[i].TimeDiffToPositionAhead;
-			let carBestLap = linesData[i].BestLapTime.Value;
-			let carLastLap = linesData[i].LastLapTime.Value;
-			let carIsLapOF = linesData[i].LastLapTime.OverallFastest;
-			let carIsLapPB = linesData[i].LastLapTime.PersonalFastest;
-			let carInPit = linesData[i].InPit;
-			let carStopped = linesData[i].Stopped;
-			let carPitOut = linesData[i].PitOut;
-			let carSector1 = linesData[i].Sectors[0].Value;
-			let carSector1isPB = linesData[i].Sectors[0].PersonalFastest;
-			let carSector1isOF = linesData[i].Sectors[0].OverallFastest;
-			let carSector1speed = linesData[i].Speeds.I1.Value;
-			let carSector1speedisOF = linesData[i].Speeds.I1.OverallFastest;
-			let carSector1speedisPB = linesData[i].Speeds.I1.PersonalFastest;
-			let carSector2 = linesData[i].Sectors[1].Value;
-			let carSector2isPB = linesData[i].Sectors[1].PersonalFastest;
-			let carSector2isOF = linesData[i].Sectors[1].OverallFastest;
-			let carSector2speed = linesData[i].Speeds.I2.Value;
-			let carSector2speedisOF = linesData[i].Speeds.I2.OverallFastest;
-			let carSector2speedisPB = linesData[i].Speeds.I2.PersonalFastest;
-			let carSector3 = linesData[i].Sectors[2].Value;
-			let carSector3isPB = linesData[i].Sectors[2].PersonalFastest;
-			let carSector3isOF = linesData[i].Sectors[2].OverallFastest;
-			let carSector3speed = linesData[i].Speeds.FL.Value;
-			let carSector3speedisOF = linesData[i].Speeds.FL.OverallFastest;
-			let carSector3speedisPB = linesData[i].Speeds.FL.PersonalFastest;
-			let carSector1dec = parseFloat(carSector1).toFixedNoRounding(1);
-			let carSector2dec = parseFloat(carSector2).toFixedNoRounding(1);
-			let carSector3dec = parseFloat(carSector3).toFixedNoRounding(1);
-			let carStatus;
-			let carLapCount = linesData[i].NumberOfLaps;
+		for (let lines of Object.entries(multiviewTimingData).sort(
+			(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
+		)) {
+			let linesData = lines;
+			for (var i = 1; i < linesData.length; i++) {
+				let carPos = linesData[i].Position;
+				let carShowPosition = linesData[i].showPosition;
+				let carNum = linesData[i].RacingNumber;
+				let carName = multiviewData.DriverList[carNum].BroadcastName;
+				let carGap = linesData[i].TimeDiffToFastest;
+				let carInt = linesData[i].TimeDiffToPositionAhead;
+				let carBestLap = linesData[i].BestLapTime.Value;
+				let carLastLap = linesData[i].LastLapTime.Value;
+				let carIsLapOF = linesData[i].LastLapTime.OverallFastest;
+				let carIsLapPB = linesData[i].LastLapTime.PersonalFastest;
+				let carInPit = linesData[i].InPit;
+				let carStopped = linesData[i].Stopped;
+				let carPitOut = linesData[i].PitOut;
+				let carSector1 = linesData[i].Sectors[0].Value;
+				let carSector1isPB = linesData[i].Sectors[0].PersonalFastest;
+				let carSector1isOF = linesData[i].Sectors[0].OverallFastest;
+				let carSector1speed = linesData[i].Speeds.I1.Value;
+				let carSector1speedisOF = linesData[i].Speeds.I1.OverallFastest;
+				let carSector1speedisPB = linesData[i].Speeds.I1.PersonalFastest;
+				let carSector2 = linesData[i].Sectors[1].Value;
+				let carSector2isPB = linesData[i].Sectors[1].PersonalFastest;
+				let carSector2isOF = linesData[i].Sectors[1].OverallFastest;
+				let carSector2speed = linesData[i].Speeds.I2.Value;
+				let carSector2speedisOF = linesData[i].Speeds.I2.OverallFastest;
+				let carSector2speedisPB = linesData[i].Speeds.I2.PersonalFastest;
+				let carSector3 = linesData[i].Sectors[2].Value;
+				let carSector3isPB = linesData[i].Sectors[2].PersonalFastest;
+				let carSector3isOF = linesData[i].Sectors[2].OverallFastest;
+				let carSector3speed = linesData[i].Speeds.FL.Value;
+				let carSector3speedisOF = linesData[i].Speeds.FL.OverallFastest;
+				let carSector3speedisPB = linesData[i].Speeds.FL.PersonalFastest;
+				let carSector1dec = parseFloat(carSector1).toFixedNoRounding(1);
+				let carSector2dec = parseFloat(carSector2).toFixedNoRounding(1);
+				let carSector3dec = parseFloat(carSector3).toFixedNoRounding(1);
+				let carStatus;
+				let carLapCount = linesData[i].NumberOfLaps;
 
-			if (carSector1dec === undefined) {
-				carSector1dec = "";
-			}
-			if (carSector2dec === undefined) {
-				carSector2dec = "";
-			}
-			if (carSector3dec === undefined) {
-				carSector3dec = "";
-			}
+				if (carSector1dec === undefined) {
+					carSector1dec = "";
+				}
+				if (carSector2dec === undefined) {
+					carSector2dec = "";
+				}
+				if (carSector3dec === undefined) {
+					carSector3dec = "";
+				}
 
-			if (carShowPosition === false) {
-				carPos = "";
-			}
+				if (carShowPosition === false) {
+					carPos = "";
+				}
 
-			if (carInPit === true) {
-				carStatus = "IN PIT";
-			}
-			if (carStopped === true) {
-				carStatus = "STOPPED";
-			}
-			if (carPitOut == true) {
-				carStatus = "PIT OUT";
-			}
-			if (carInPit === false && carStopped === false && carPitOut === false) {
-				carStatus = "";
-			}
+				if (carInPit === true) {
+					carStatus = "IN PIT";
+				}
+				if (carStopped === true) {
+					carStatus = "STOPPED";
+				}
+				if (carPitOut == true) {
+					carStatus = "PIT OUT";
+				}
+				if (carInPit === false && carStopped === false && carPitOut === false) {
+					carStatus = "       ";
+				}
 
-			if (carLapCount === undefined) {
-				carLapCount = "";
-			}
+				if (carLapCount === undefined) {
+					carLapCount = "   ";
+				}
 
-			let table_carPos = `<td id="carPos">${carPos}</td>`;
-			let table_carNum = `<td id="carNum">${carNum}</rd>`;
-			let table_carName = `<td>${carName}</td>`;
-			let table_carGap = `<td>${carGap}</td>`;
-			let table_carInt = `<td>${carInt}</td>`;
-			let table_carBestLapTime = `<td>${carBestLap}</td>`;
-			let table_carLastLapTime = `<td>${carLastLap}</td>`;
-			let table_carSector1 = `<td id="sector1">${carSector1}</td>`;
-			let table_carSector1speed = `<td id="sector1speed">${carSector1speed}</td>`;
-			let table_carSector2 = `<td id="sector2">${carSector2}</td>`;
-			let table_carSector2speed = `<td id="sector2speed">${carSector2speed}</td>`;
-			let table_carSector3 = `<td id="sector3">${carSector3}</td>`;
-			let table_carSector3speed = `<td id="sector3speed">${carSector3speed}</td>`;
-			let table_carStatus = `<td id="carstatus">${carStatus}</td>`;
-			let table_LapCount = `<td id="carlapcount">${carLapCount}</td>`;
+				let table_carPos = `<td id="carPos">${carPos}</td>`;
+				let table_carNum = `<td id="carNum">${carNum}</rd>`;
+				let table_carName = `<td>${carName}</td>`;
+				let table_carGap = `<td>${carGap}</td>`;
+				let table_carInt = `<td>${carInt}</td>`;
+				let table_carBestLapTime = `<td>${carBestLap}</td>`;
+				let table_carLastLapTime = `<td>${carLastLap}</td>`;
+				let table_carSector1 = `<td id="sector1">${carSector1}</td>`;
+				let table_carSector1speed = `<td id="sector1speed">${carSector1speed}</td>`;
+				let table_carSector2 = `<td id="sector2">${carSector2}</td>`;
+				let table_carSector2speed = `<td id="sector2speed">${carSector2speed}</td>`;
+				let table_carSector3 = `<td id="sector3">${carSector3}</td>`;
+				let table_carSector3speed = `<td id="sector3speed">${carSector3speed}</td>`;
+				let table_carStatus = `<td id="carstatus">${carStatus}</td>`;
+				let table_LapCount = `<td id="carlapcount">${carLapCount}</td>`;
 
-			// set sector time colours for personal best and overall fastest
-			if (carSector1isPB === true && carSector1isOF === true) {
-				table_carSector1 = `<td id="sector1of">${carSector1}</td>`;
-			}
-			if (carSector1isPB === true && carSector1isOF === false) {
-				table_carSector1 = `<td id="sector1pb">${carSector1}</td>`;
-			}
-			if (carSector1isPB === false && carSector1isOF === true) {
-				table_carSector1 = `<td id="sector1of">${carSector1}</td>`;
-			}
-			if (carSector2isPB === true && carSector2isOF === false) {
-				table_carSector2 = `<td id="sector2pb">${carSector2}</td>`;
-			}
-			if (carSector2isPB === false && carSector2isOF === true) {
-				table_carSector2 = `<td id="sector2of">${carSector2}</td>`;
-			}
-			if (carSector2isPB === true && carSector2isOF === true) {
-				table_carSector2 = `<td id="sector2of">${carSector2}</td>`;
-			}
-			if (carSector3isPB === true && carSector3isOF === false) {
-				table_carSector3 = `<td id="sector3pb">${carSector3}</td>`;
-			}
-			if (carSector3isPB === false && carSector3isOF === true) {
-				table_carSector3 = `<td id="sector3of">${carSector3}</td>`;
-			}
-			if (carSector3isPB === true && carSector3isOF === true) {
-				table_carSector3 = `<td id="sector3of">${carSector3}</td>`;
-			}
+				// set sector time colours for personal best and overall fastest
+				if (carSector1isPB === true && carSector1isOF === true) {
+					table_carSector1 = `<td id="sector1of">${carSector1}</td>`;
+				}
+				if (carSector1isPB === true && carSector1isOF === false) {
+					table_carSector1 = `<td id="sector1pb">${carSector1}</td>`;
+				}
+				if (carSector1isPB === false && carSector1isOF === true) {
+					table_carSector1 = `<td id="sector1of">${carSector1}</td>`;
+				}
+				if (carSector2isPB === true && carSector2isOF === false) {
+					table_carSector2 = `<td id="sector2pb">${carSector2}</td>`;
+				}
+				if (carSector2isPB === false && carSector2isOF === true) {
+					table_carSector2 = `<td id="sector2of">${carSector2}</td>`;
+				}
+				if (carSector2isPB === true && carSector2isOF === true) {
+					table_carSector2 = `<td id="sector2of">${carSector2}</td>`;
+				}
+				if (carSector3isPB === true && carSector3isOF === false) {
+					table_carSector3 = `<td id="sector3pb">${carSector3}</td>`;
+				}
+				if (carSector3isPB === false && carSector3isOF === true) {
+					table_carSector3 = `<td id="sector3of">${carSector3}</td>`;
+				}
+				if (carSector3isPB === true && carSector3isOF === true) {
+					table_carSector3 = `<td id="sector3of">${carSector3}</td>`;
+				}
 
-			// set speed colours for personal best and overall fastest
-			if (carSector1speedisOF === true && carSector1speedisPB === false) {
-				table_carSector1speed = `<td id="sector1speedof">${carSector1speed}</td>`;
-			}
-			if (carSector1speedisOF === false && carSector1speedisPB === true) {
-				table_carSector1speed = `<td id="sector1speedpb">${carSector1speed}</td>`;
-			}
-			if (carSector1speedisOF === true && carSector2speedisPB === true) {
-				table_carSector1speed = `<td id="sector1speedof">${carSector1speed}</td>`;
-			}
-			if (carSector2speedisOF === true && carSector2speedisPB === false) {
-				table_carSector2speed = `<td id="sector2speedof">${carSector2speed}</td>`;
-			}
-			if (carSector2speedisOF === false && carSector2speedisPB === true) {
-				table_carSector2speed = `<td id="sector2speedpb">${carSector2speed}</td>`;
-			}
-			if (carSector2speedisOF === true && carSector2speedisPB === true) {
-				table_carSector2speed = `<td id="sector2speedof">${carSector2speed}</td>`;
-			}
-			if (carSector3speedisOF === true && carSector3speedisPB === false) {
-				table_carSector3speed = `<td id="sector3speedof">${carSector3speed}</td>`;
-			}
-			if (carSector3speedisOF === false && carSector3speedisPB === true) {
-				table_carSector3speed = `<td id="sector3speedpb">${carSector3speed}</td>`;
-			}
-			if (carSector3speedisOF === true && carSector3speedisPB === true) {
-				table_carSector3speed = `<td id="sector3speedof">${carSector3speed}</td>`;
-			}
+				// set speed colours for personal best and overall fastest
+				if (carSector1speedisOF === true && carSector1speedisPB === false) {
+					table_carSector1speed = `<td id="sector1speedof">${carSector1speed}</td>`;
+				}
+				if (carSector1speedisOF === false && carSector1speedisPB === true) {
+					table_carSector1speed = `<td id="sector1speedpb">${carSector1speed}</td>`;
+				}
+				if (carSector1speedisOF === true && carSector2speedisPB === true) {
+					table_carSector1speed = `<td id="sector1speedof">${carSector1speed}</td>`;
+				}
+				if (carSector2speedisOF === true && carSector2speedisPB === false) {
+					table_carSector2speed = `<td id="sector2speedof">${carSector2speed}</td>`;
+				}
+				if (carSector2speedisOF === false && carSector2speedisPB === true) {
+					table_carSector2speed = `<td id="sector2speedpb">${carSector2speed}</td>`;
+				}
+				if (carSector2speedisOF === true && carSector2speedisPB === true) {
+					table_carSector2speed = `<td id="sector2speedof">${carSector2speed}</td>`;
+				}
+				if (carSector3speedisOF === true && carSector3speedisPB === false) {
+					table_carSector3speed = `<td id="sector3speedof">${carSector3speed}</td>`;
+				}
+				if (carSector3speedisOF === false && carSector3speedisPB === true) {
+					table_carSector3speed = `<td id="sector3speedpb">${carSector3speed}</td>`;
+				}
+				if (carSector3speedisOF === true && carSector3speedisPB === true) {
+					table_carSector3speed = `<td id="sector3speedof">${carSector3speed}</td>`;
+				}
 
-			document.getElementById("timing-table").innerHTML += `
+				document.getElementById("timing-table").innerHTML += `
             ${table_carPos}
             ${table_carNum}
             ${table_carName}
@@ -248,12 +294,39 @@ async function getMultiviewData() {
             ${table_carStatus}
 			${table_LapCount}
             `;
-		}
+			}
 
-		if ((sessionTrackStatus = "AllClear")) {
-			var flagbar = document.getElementById("flag-bar");
-			flagbar.setAttribute("id", "flag-bar");
-			document.getElementById("flag-bar").innerText = `${sessionOfficialName}`;
+			if (sessionTrackStatus === "AllClear") {
+				document.getElementById(
+					"flag-bar"
+				).innerText = `${sessionOfficialName}`;
+				document.getElementById("flag-bar").style.color =
+					"rgba(255, 255, 255, 1)";
+				document.getElementById("flag-bar").style.backgroundColor = "black";
+				document.getElementById("flag-bar").style.width = "100%";
+				document.getElementById("flag-bar").style.animation = "none";
+			}
+			if (sessionTrackStatus === "SCDeployed") {
+				document.getElementById("flag-bar").innerText = "SC";
+				document.getElementById("flag-bar").style.color = "rgba(0, 0, 0, 0)";
+				document.getElementById("flag-bar").style.backgroundColor = "#f8ff2c";
+				document.getElementById("flag-bar").style.animation =
+					"blink normal 1.2s infinite ease-in-out";
+			}
+			if (sessionTrackStatus === "VSCDeployed") {
+				document.getElementById("flag-bar").innerText = "SC";
+				document.getElementById("flag-bar").style.color = "rgba(0, 0, 0, 0)";
+				document.getElementById("flag-bar").style.backgroundColor = "#f8ff2c";
+				document.getElementById("flag-bar").style.animation =
+					"blink normal 1.2s infinite ease-in-out";
+			}
+			if (sessionTrackStatus === "Red") {
+				document.getElementById("flag-bar").innerText = "RED";
+				document.getElementById("flag-bar").style.color = "rgba(0, 0, 0, 0)";
+				document.getElementById("flag-bar").style.backgroundColor = "red";
+				document.getElementById("flag-bar").style.width = "100%";
+				document.getElementById("flag-bar").style.animation = "none";
+			}
 		}
 	}
 }
