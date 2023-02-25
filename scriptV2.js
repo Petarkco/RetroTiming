@@ -189,6 +189,7 @@ async function getMultiviewData() {
 				let carInPit = linesData[i].InPit;
 				let carStopped = linesData[i].Stopped;
 				let carPitOut = linesData[i].PitOut;
+				let carisRetired = linesData[i].Retired;
 				let carSector1 = linesData[i].Sectors[0].Value;
 				let carSector1isPB = linesData[i].Sectors[0].PersonalFastest;
 				let carSector1isOF = linesData[i].Sectors[0].OverallFastest;
@@ -233,11 +234,29 @@ async function getMultiviewData() {
 				if (carStopped === true) {
 					carStatus = "STOPPED";
 				}
-				if (carPitOut == true) {
+				if (carPitOut === true) {
 					carStatus = "PIT OUT";
 				}
-				if (carInPit === false && carStopped === false && carPitOut === false) {
-					carStatus = "       ";
+				if (carisRetired === true) {
+					carStatus = "OUT";
+				}
+				if (
+					carInPit === false &&
+					carStopped === false &&
+					carPitOut === false &&
+					carisRetired === false
+				) {
+					carStatus = "    ";
+				}
+
+				if (
+					carInPit === false &&
+					carStopped === false &&
+					carPitOut === false &&
+					carisRetired === false &&
+					pageSelected === "p1"
+				) {
+					carStatus = carLastLap;
 				}
 
 				if (carLapCount === undefined) {
@@ -329,6 +348,11 @@ async function getMultiviewData() {
 				if (carSector3speedisOF === true && carSector3speedisPB === true) {
 					table_carSector3speed = `<td id="sector3speedof">${carSector3speed}</td>`;
 				}
+
+				if (carStatus === "PIT OUT") {
+					table_carNum = `<td id="carNumRed">${carNum}</td>`;
+				}
+
 				if (pageSelected === "mix") {
 					document.getElementById("timing-table").innerHTML += `
             ${table_carPos}

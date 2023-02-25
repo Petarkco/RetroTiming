@@ -111,6 +111,11 @@ main {
 	text-align: right;
 }
 
+#carNumRed {
+	color: red;
+	text-align: right;
+}
+
 #carInt,
 #carGap {
 	text-align: right;
