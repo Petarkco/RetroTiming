@@ -120,6 +120,25 @@ async function getMultiviewData() {
 					top_sector3OF = "     ";
 				}
 			}
+
+			if (pageSelected === "mix") {
+				document.getElementById("timing-table").innerHTML = `<tr>
+    <th id="top-pos"></th>
+    <th id="top-carnum"></th>
+    <th id="top-name"></th>
+    <th id="top-bestlaptime">BEST LAP</th>
+    <th id="top-lastlaptime">LAST LAP</th>
+    <th id="top-gap">GAP</th>
+    <th id="top-sector1">${top_sector1OF}</th>
+	<th id="top-sector1speed</th>
+    <th id="top-sector2">${top_sector2OF}</th>
+	<th id="top-sector2speed</th>
+    <th id="top-sector3">${top_sector3OF}</th>
+	<th id="top-sector3speed</th>
+    <th id="top-status"></th>
+    <th id="top-lapcount"></th>
+	</tr>`;
+			}
 			if (pageSelected === "p1") {
 				document.getElementById("timing-table").innerHTML = `<tr>
     <th id="top-pos"></th>
@@ -309,6 +328,24 @@ async function getMultiviewData() {
 				}
 				if (carSector3speedisOF === true && carSector3speedisPB === true) {
 					table_carSector3speed = `<td id="sector3speedof">${carSector3speed}</td>`;
+				}
+				if (pageSelected === "mix") {
+					document.getElementById("timing-table").innerHTML += `
+            ${table_carPos}
+            ${table_carNum}
+            ${table_carName}
+            ${table_carBestLapTime}
+			${table_carLastLapTime}
+			${table_carGap}
+            ${table_carSector1}
+			${table_carSector1speed}
+            ${table_carSector2}
+			${table_carSector2speed}
+            ${table_carSector3}
+			${table_carSector3speed}
+            ${table_carStatus}
+			${table_LapCount}
+            `;
 				}
 				if (pageSelected === "p1") {
 					document.getElementById("timing-table").innerHTML += `
