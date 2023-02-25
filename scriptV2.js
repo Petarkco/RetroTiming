@@ -16,6 +16,15 @@ async function getMultiviewData() {
 	var sessionOfficialName = multiviewData.SessionInfo.Meeting.OfficialName;
 	var sessionTrackStatus = multiviewData.TrackStatus.Message;
 	var sessionType = multiviewData.TimingStats.SessionType;
+	let pageSelected;
+	function pageSelector() {
+		var ele = document.getElementsByName("page-select");
+
+		for (i = 0; i < ele.length; i++) {
+			if (ele[i].checked) pageSelected = ele[i].value;
+		}
+	}
+	pageSelector();
 
 	//Allows sector times to have 2 decimals without rounding down
 	Number.prototype.toFixedNoRounding = function (n) {
@@ -86,13 +95,9 @@ async function getMultiviewData() {
 			let top_sector3OF;
 			for (var i = 1; i < linesData.length; i++) {
 				let sector1isOF = linesData[i].Sectors[0].OverallFastest;
-				console.log(sector1isOF);
 				let sector1OFTime = linesData[i].Sectors[0].Value;
-				console.log(sector1OFTime);
 				let sector2isOF = linesData[i].Sectors[1].OverallFastest;
-				console.log(sector2isOF);
 				let sector2OFTime = linesData[i].Sectors[1].Value;
-				console.log(sector2OFTime);
 				let sector3isOF = linesData[i].Sectors[2].OverallFastest;
 				let sector3OFTime = linesData[i].Sectors[2].Value;
 
@@ -105,7 +110,6 @@ async function getMultiviewData() {
 					top_sector2OF = sector2OFTime;
 					top_sector3OF = sector3OFTime;
 				}
-				console.log(top_sector2OF);
 				if (
 					top_sector1OF === undefined ||
 					top_sector2OF === undefined ||
@@ -116,8 +120,8 @@ async function getMultiviewData() {
 					top_sector3OF = "     ";
 				}
 			}
-
-			document.getElementById("timing-table").innerHTML = `<tr>
+			if (pageSelected === "p1") {
+				document.getElementById("timing-table").innerHTML = `<tr>
     <th id="top-pos"></th>
     <th id="top-carnum"></th>
     <th id="top-name"></th>
@@ -131,6 +135,21 @@ async function getMultiviewData() {
     <th id="top-status"></th>
     <th id="top-lapcount"></th>
 	</tr>`;
+			}
+
+			if (pageSelected === "p4") {
+				document.getElementById("timing-table").innerHTML = `<tr>
+    <th id="top-pos"></th>
+    <th id="top-carnum"></th>
+    <th id="top-name"></th>
+    <th id="top-bestlaptime">BEST LAP</th>
+	<th id="top-gap">GAP</th>
+    <th id="top-sector1">${top_sector1OF}</th>
+    <th id="top-sector2">${top_sector2OF}</th>
+    <th id="top-sector3">${top_sector3OF}</th>
+    <th id="top-lapcount"></th>
+	</tr>`;
+			}
 		}
 
 		for (let lines of Object.entries(multiviewTimingData).sort(
@@ -214,10 +233,13 @@ async function getMultiviewData() {
 				let table_carBestLapTime = `<td>${carBestLap}</td>`;
 				let table_carLastLapTime = `<td>${carLastLap}</td>`;
 				let table_carSector1 = `<td id="sector1">${carSector1}</td>`;
+				let table_carSector1dec = `<td id="sector1">${carSector1dec}</td>`;
 				let table_carSector1speed = `<td id="sector1speed">${carSector1speed}</td>`;
 				let table_carSector2 = `<td id="sector2">${carSector2}</td>`;
+				let table_carSector2dec = `<td id="sector1">${carSector2dec}</td>`;
 				let table_carSector2speed = `<td id="sector2speed">${carSector2speed}</td>`;
 				let table_carSector3 = `<td id="sector3">${carSector3}</td>`;
+				let table_carSector3dec = `<td id="sector1">${carSector3dec}</td>`;
 				let table_carSector3speed = `<td id="sector3speed">${carSector3speed}</td>`;
 				let table_carStatus = `<td id="carstatus">${carStatus}</td>`;
 				let table_LapCount = `<td id="carlapcount">${carLapCount}</td>`;
@@ -279,8 +301,8 @@ async function getMultiviewData() {
 				if (carSector3speedisOF === true && carSector3speedisPB === true) {
 					table_carSector3speed = `<td id="sector3speedof">${carSector3speed}</td>`;
 				}
-
-				document.getElementById("timing-table").innerHTML += `
+				if (pageSelected === "p1") {
+					document.getElementById("timing-table").innerHTML += `
             ${table_carPos}
             ${table_carNum}
             ${table_carName}
@@ -294,6 +316,20 @@ async function getMultiviewData() {
             ${table_carStatus}
 			${table_LapCount}
             `;
+				}
+				if (pageSelected === "p4") {
+					document.getElementById("timing-table").innerHTML += `
+            ${table_carPos}
+            ${table_carNum}
+            ${table_carName}
+            ${table_carBestLapTime}
+			${table_carGap}
+            ${table_carSector1dec}
+            ${table_carSector2dec}
+            ${table_carSector3dec}
+			${table_LapCount}
+            `;
+				}
 			}
 
 			if (sessionTrackStatus === "AllClear") {
