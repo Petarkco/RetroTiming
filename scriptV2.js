@@ -349,7 +349,7 @@ async function getMultiviewData() {
 					table_carSector3speed = `<td id="sector3speedof">${carSector3speed}</td>`;
 				}
 
-				if (carStatus === "PIT OUT") {
+				if (carStatus === "PIT OUT" && pageSelected === "p4") {
 					table_carNum = `<td id="carNumRed">${carNum}</td>`;
 				}
 
@@ -567,7 +567,7 @@ async function getClock() {
 	});
 	document.getElementById("track-time").innerHTML = trackTimeLive;
 	if (trackTimeLive === "Invalid Date") {
-		document.getElementById("track-time").style.visibility = "hidden";
+		document.getElementById("track-time").innerText = "00:00:00";
 	}
 }
 

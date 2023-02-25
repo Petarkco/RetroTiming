@@ -51,7 +51,7 @@ main {
 }
 
 #top-lastlaptime {
-	min-width: 84px;
+	min-width: 95px;
 }
 
 #top-gap,
@@ -60,7 +60,7 @@ main {
 	text-align: right;
 }
 #top-status {
-	min-width: 80px;
+	min-width: 100px;
 	text-align: right;
 }
 
@@ -78,7 +78,7 @@ main {
 }
 
 #top-status {
-	min-width: 85px;
+	min-width: 95px;
 }
 
 #top-lapcount {
@@ -147,6 +147,7 @@ main {
 #sector3speed {
 	color: #f8ff2c;
 	text-align: right;
+	min-width: 50px;
 }
 
 #sector1speedof,
@@ -154,17 +155,20 @@ main {
 #sector3speedof {
 	color: #d24ae0;
 	text-align: right;
+	min-width: 50px;
 }
 #sector1speedpb,
 #sector2speedpb,
 #sector3speedpb {
 	color: #4cb033;
 	text-align: right;
+	min-width: 50px;
 }
 
 #carstatus {
 	text-align: end;
 	color: #f8ff2c;
+	min-width: 95px;
 }
 #carlapcount {
 	text-align: right;
