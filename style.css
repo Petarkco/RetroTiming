@@ -47,7 +47,7 @@ main {
 }
 
 #top-name {
-	width: 157px;
+	min-width: 157px;
 }
 
 #top-lastlaptime {
@@ -111,6 +111,11 @@ main {
 	text-align: right;
 }
 
+#carInt,
+#carGap {
+	text-align: right;
+}
+
 #sector1,
 #sector2,
 #sector3 {
@@ -136,17 +141,20 @@ main {
 #sector2speed,
 #sector3speed {
 	color: #f8ff2c;
+	text-align: right;
 }
 
 #sector1speedof,
 #sector2speedof,
 #sector3speedof {
 	color: #d24ae0;
+	text-align: right;
 }
 #sector1speedpb,
 #sector2speedpb,
 #sector3speedpb {
 	color: #4cb033;
+	text-align: right;
 }
 
 #carstatus {

@@ -228,18 +228,18 @@ async function getMultiviewData() {
 				let table_carPos = `<td id="carPos">${carPos}</td>`;
 				let table_carNum = `<td id="carNum">${carNum}</rd>`;
 				let table_carName = `<td>${carName}</td>`;
-				let table_carGap = `<td>${carGap}</td>`;
-				let table_carInt = `<td>${carInt}</td>`;
+				let table_carGap = `<td id="carGap">${carGap}</td>`;
+				let table_carInt = `<td id="carInt">${carInt}</td>`;
 				let table_carBestLapTime = `<td>${carBestLap}</td>`;
 				let table_carLastLapTime = `<td>${carLastLap}</td>`;
 				let table_carSector1 = `<td id="sector1">${carSector1}</td>`;
 				let table_carSector1dec = `<td id="sector1">${carSector1dec}</td>`;
 				let table_carSector1speed = `<td id="sector1speed">${carSector1speed}</td>`;
 				let table_carSector2 = `<td id="sector2">${carSector2}</td>`;
-				let table_carSector2dec = `<td id="sector1">${carSector2dec}</td>`;
+				let table_carSector2dec = `<td id="sector2">${carSector2dec}</td>`;
 				let table_carSector2speed = `<td id="sector2speed">${carSector2speed}</td>`;
 				let table_carSector3 = `<td id="sector3">${carSector3}</td>`;
-				let table_carSector3dec = `<td id="sector1">${carSector3dec}</td>`;
+				let table_carSector3dec = `<td id="sector3">${carSector3dec}</td>`;
 				let table_carSector3speed = `<td id="sector3speed">${carSector3speed}</td>`;
 				let table_carStatus = `<td id="carstatus">${carStatus}</td>`;
 				let table_LapCount = `<td id="carlapcount">${carLapCount}</td>`;
@@ -247,30 +247,39 @@ async function getMultiviewData() {
 				// set sector time colours for personal best and overall fastest
 				if (carSector1isPB === true && carSector1isOF === true) {
 					table_carSector1 = `<td id="sector1of">${carSector1}</td>`;
+					table_carSector1dec = `<td id="sector1of">${carSector1dec}</td>`;
 				}
 				if (carSector1isPB === true && carSector1isOF === false) {
 					table_carSector1 = `<td id="sector1pb">${carSector1}</td>`;
+					table_carSector1dec = `<td id="sector1pb">${carSector1dec}</td>`;
 				}
 				if (carSector1isPB === false && carSector1isOF === true) {
 					table_carSector1 = `<td id="sector1of">${carSector1}</td>`;
+					table_carSector1dec = `<td id="sector1of">${carSector1dec}</td>`;
 				}
 				if (carSector2isPB === true && carSector2isOF === false) {
 					table_carSector2 = `<td id="sector2pb">${carSector2}</td>`;
+					table_carSector2dec = `<td id="sector2pb">${carSector2dec}</td>`;
 				}
 				if (carSector2isPB === false && carSector2isOF === true) {
 					table_carSector2 = `<td id="sector2of">${carSector2}</td>`;
+					table_carSector2dec = `<td id="sector2of">${carSector2dec}</td>`;
 				}
 				if (carSector2isPB === true && carSector2isOF === true) {
 					table_carSector2 = `<td id="sector2of">${carSector2}</td>`;
+					table_carSector2dec = `<td id="sector2of">${carSector2dec}</td>`;
 				}
 				if (carSector3isPB === true && carSector3isOF === false) {
 					table_carSector3 = `<td id="sector3pb">${carSector3}</td>`;
+					table_carSector3dec = `<td id="sector3pb">${carSector3dec}</td>`;
 				}
 				if (carSector3isPB === false && carSector3isOF === true) {
 					table_carSector3 = `<td id="sector3of">${carSector3}</td>`;
+					table_carSector3dec = `<td id="sector3of">${carSector3dec}</td>`;
 				}
 				if (carSector3isPB === true && carSector3isOF === true) {
 					table_carSector3 = `<td id="sector3of">${carSector3}</td>`;
+					table_carSector3dec = `<td id="sector3of">${carSector3dec}</td>`;
 				}
 
 				// set speed colours for personal best and overall fastest
