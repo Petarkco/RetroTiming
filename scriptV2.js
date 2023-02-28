@@ -214,6 +214,11 @@ async function getMultiviewData() {
 				let carStatus;
 				let carLapCount = linesData[i].NumberOfLaps;
 
+				if (sessionType === "Race") {
+					carGap = linesData[i].GapToLeader;
+					carInt = linesData[i].IntervalToPositionAhead.Value;
+				}
+
 				if (carSector1dec === undefined) {
 					carSector1dec = "";
 				}
@@ -558,6 +563,16 @@ async function getClock() {
 		trackTimezone = "Etc/GMT-14";
 	}
 
+	let sessionTimeRemaining;
+	var isClockPaused = clockData.paused;
+	var extrapolatedClockTime = extrapolatedClockData.Utc;
+	var extrapolatedClockStart = Math.floor(
+		new Date(extrapolatedClockTime) / 1000
+	);
+	var extrapolatedTime = extrapolatedClockData.Remaining;
+	var sessionDuration = Math.floor(new Date(extrapolatedClockTime) / 1000);
+	console.log(sessionDuration);
+	var isExtrapolionating = extrapolatedClockData.Extrapolating;
 	var systemTime = clockData.systemTime;
 	var trackTime = clockData.trackTime;
 	var now = Date.now();
@@ -569,6 +584,12 @@ async function getClock() {
 	if (trackTimeLive === "Invalid Date") {
 		document.getElementById("track-time").innerText = "00:00:00";
 	}
+
+	if (isExtrapolionating === true) {
+		sessionTimeRemaining =
+			new Date(trackTimeLiveRaw - extrapolatedClockStart) / 1000;
+	}
+	// document.getElementById("session-time").innerHTML = sessionTimeRemaining;
 }
 
 getMultiviewData();
