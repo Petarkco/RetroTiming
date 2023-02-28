@@ -1,6 +1,6 @@
 const debug = false;
 const MultiView_url =
-	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,TimingData,DriverList,SessionInfo,TimingStats";
+	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,TimingData,DriverList,SessionInfo,TimingStats,RaceControlMessages";
 
 async function getMultiviewData() {
 	const multviewDataResponse = await fetch(MultiView_url, {
@@ -13,9 +13,94 @@ async function getMultiviewData() {
 	});
 	let multiviewData = await multviewDataResponse.json();
 	const multiviewTimingData = multiviewData.TimingData.Lines;
+	const raceControlMessagesData = multiviewData.RaceControlMessages;
 	let sessionOfficialName = multiviewData.SessionInfo.Meeting.OfficialName;
 	let sessionTrackStatus = multiviewData.TrackStatus.Message;
 	let sessionType = multiviewData.TimingStats.SessionType;
+	let trackOffset = multiviewData.SessionInfo.GmtOffset;
+	let trackTimezone;
+	if (trackOffset === "-12:00:00") {
+		trackTimezone = "Etc/GMT+12";
+	}
+	if (trackOffset === "-11:00:00") {
+		trackTimezone = "Etc/GMT+11";
+	}
+	if (trackOffset === "-10:00:00") {
+		trackTimezone = "Etc/GMT+10";
+	}
+	if (trackOffset === "-09:00:00") {
+		trackTimezone = "Etc/GMT+9";
+	}
+	if (trackOffset === "-08:00:00") {
+		trackTimezone = "Etc/GMT+8";
+	}
+	if (trackOffset === "-07:00:00") {
+		trackTimezone = "Etc/GMT+7";
+	}
+	if (trackOffset === "-06:00:00") {
+		trackTimezone = "Etc/GMT+6";
+	}
+	if (trackOffset === "-05:00:00") {
+		trackTimezone = "Etc/GMT+5";
+	}
+	if (trackOffset === "-04:00:00") {
+		trackTimezone = "Etc/GMT+4";
+	}
+	if (trackOffset === "-03:00:00") {
+		trackTimezone = "Etc/GMT+3";
+	}
+	if (trackOffset === "-02:00:00") {
+		trackTimezone = "Etc/GMT+2";
+	}
+	if (trackOffset === "-01:00:00") {
+		trackTimezone = "Etc/GMT+1";
+	}
+	if (trackOffset === "00:00:00") {
+		trackTimezone = "Etc/GMT-0";
+	}
+	if (trackOffset === "01:00:00") {
+		trackTimezone = "Etc/GMT-1";
+	}
+	if (trackOffset === "02:00:00") {
+		trackTimezone = "Etc/GMT-2";
+	}
+	if (trackOffset === "03:00:00") {
+		trackTimezone = "Etc/GMT-3";
+	}
+	if (trackOffset === "04:00:00") {
+		trackTimezone = "Etc/GMT-4";
+	}
+	if (trackOffset === "05:00:00") {
+		trackTimezone = "Etc/GMT-5";
+	}
+	if (trackOffset === "06:00:00") {
+		trackTimezone = "Etc/GMT-6";
+	}
+	if (trackOffset === "07:00:00") {
+		trackTimezone = "Etc/GMT-7";
+	}
+	if (trackOffset === "08:00:00") {
+		trackTimezone = "Etc/GMT-8";
+	}
+	if (trackOffset === "09:00:00") {
+		trackTimezone = "Etc/GMT-9";
+	}
+	if (trackOffset === "10:00:00") {
+		trackTimezone = "Etc/GMT-10";
+	}
+	if (trackOffset === "11:00:00") {
+		trackTimezone = "Etc/GMT-11";
+	}
+	if (trackOffset === "12:00:00") {
+		trackTimezone = "Etc/GMT-12";
+	}
+	if (trackOffset === "13:00:00") {
+		trackTimezone = "Etc/GMT-13";
+	}
+	if (trackOffset === "14:00:00") {
+		trackTimezone = "Etc/GMT-14";
+	}
+
 	let pageSelected;
 	function pageSelector() {
 		var ele = document.getElementsByName("page-select");
@@ -150,6 +235,12 @@ async function getMultiviewData() {
     <th id="top-lapcount"></th>
 	</tr>`;
 		}
+		if (pageSelected === "p3") {
+			document.getElementById("timing-table").innerHTML = ``;
+			document.getElementById("timing-table").innerHTML += `<tr>
+			<th id="top-rcmtime">TIME</th>
+			<th id="top-rcmmessages">MESSAGE</th>`;
+		}
 
 		if (pageSelected === "p4") {
 			document.getElementById("timing-table").innerHTML = `<tr>
@@ -264,7 +355,7 @@ async function getMultiviewData() {
 			}
 
 			let table_carPos = `<td id="carPos">${carPos}</td>`;
-			let table_carNum = `<td id="carNum">${carNum}</rd>`;
+			let table_carNum = `<td id="carNum">${carNum}</td>`;
 			let table_carName = `<td>${carName}</td>`;
 			let table_carGap = `<td id="carGap">${carGap}</td>`;
 			let table_carInt = `<td id="carInt">${carInt}</td>`;
@@ -387,6 +478,7 @@ async function getMultiviewData() {
 			${table_LapCount}
             `;
 			}
+
 			if (pageSelected === "p4") {
 				document.getElementById("timing-table").innerHTML += `
             ${table_carPos}
@@ -436,6 +528,26 @@ async function getMultiviewData() {
 			document.getElementById("flag-bar").style.animation = "none";
 		}
 	}
+	// console.log(raceControlMessagesData);
+	raceControlMessagesData.Messages.reverse();
+
+	// Race Control messages
+	for (var i = 1; i < 13; i++) {
+		let raceControlMessageTime =
+			raceControlMessagesData.Messages[i].Utc + "+00:00";
+		let raceControlMessage = raceControlMessagesData.Messages[i].Message;
+		if (pageSelected === "p3") {
+			document.getElementById(
+				"timing-table"
+			).innerHTML += `<td id="table-rcm-time">${new Date(
+				raceControlMessageTime
+			).toLocaleTimeString("en-GB", {
+				timeZone: trackTimezone,
+				hour: "2-digit",
+				minute: "2-digit",
+			})}</td><td id="table-rcm-message">${raceControlMessage}</td>`;
+		}
+	}
 }
 
 async function getClock() {
@@ -476,7 +588,7 @@ async function getClock() {
 	);
 	const extrapolatedClockData = await extrapolatedClockResponse.json();
 	const sessionInfo = await sessionResponse.json();
-	var trackOffset = sessionInfo.GmtOffset;
+	let trackOffset = sessionInfo.GmtOffset;
 	let trackTimezone;
 	if (trackOffset === "-12:00:00") {
 		trackTimezone = "Etc/GMT+12";
@@ -568,7 +680,7 @@ async function getClock() {
 	);
 	var extrapolatedTime = extrapolatedClockData.Remaining;
 	var sessionDuration = Math.floor(new Date(extrapolatedClockTime) / 1000);
-	console.log(sessionDuration);
+	// console.log(sessionDuration);
 	var isExtrapolionating = extrapolatedClockData.Extrapolating;
 	var systemTime = clockData.systemTime;
 	var trackTime = clockData.trackTime;

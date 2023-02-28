@@ -185,6 +185,21 @@ main {
 	color: #ffffff;
 }
 
+#top-rcmtime,
+#top-rcmmessages,
+#table-rcm-time,
+#table-rcm-message {
+	color: #f8ff2c;
+	text-align: left;
+}
+
+#top-rcmmessages {
+	padding-left: 2%;
+}
+#table-rcm-message {
+	padding-left: 2%;
+}
+
 /* Colors */
 
 #white {
