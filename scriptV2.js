@@ -1,19 +1,14 @@
 const debug = false;
 const MultiView_url =
-	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,TimingData,DriverList,SessionInfo,TimingStats,RaceControlMessages";
+	"http://localhost:10101/api/v2/live-timing/state/TrackStatus,TimingData,DriverList,SessionInfo,TimingStats,RaceControlMessages,WeatherData";
 
 async function getMultiviewData() {
 	const multviewDataResponse = await fetch(MultiView_url, {
 		mode: "cors",
-		method: "GET",
-		headers: {
-			Accept: "application/json",
-			"Content-Type": "application/json",
-		},
 	});
 	let multiviewData = await multviewDataResponse.json();
-	const multiviewTimingData = multiviewData.TimingData.Lines;
-	const raceControlMessagesData = multiviewData.RaceControlMessages;
+	let multiviewTimingData = multiviewData.TimingData.Lines;
+	let raceControlMessagesData = multiviewData.RaceControlMessages;
 	let sessionOfficialName = multiviewData.SessionInfo.Meeting.OfficialName;
 	let sessionTrackStatus = multiviewData.TrackStatus.Message;
 	let sessionType = multiviewData.TimingStats.SessionType;
@@ -103,7 +98,7 @@ async function getMultiviewData() {
 
 	let pageSelected;
 	function pageSelector() {
-		var ele = document.getElementsByName("page-select");
+		let ele = document.getElementsByName("page-select");
 
 		for (i = 0; i < ele.length; i++) {
 			if (ele[i].checked) pageSelected = ele[i].value;
@@ -130,9 +125,9 @@ async function getMultiviewData() {
 		(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
 	)) {
 		let linesData = lines;
-		var timingFastestS1;
-		var timingFastestS2;
-		var timingFastestS3;
+		let timingFastestS1;
+		let timingFastestS2;
+		let timingFastestS3;
 		for (var i = 1; i < linesData.length; i++) {
 			let timingS1 = linesData[i].Sectors[0].Value;
 			let timingS1_dec = parseFloat(timingS1).toFixedNoRounding(1);
@@ -166,95 +161,59 @@ async function getMultiviewData() {
 		}
 	}
 
-	for (let lines of Object.entries(multiviewTimingData).sort(
-		(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
-	)) {
-		let linesData = lines;
-		let top_sector1OF;
-		let top_sector2OF;
-		let top_sector3OF;
-		for (var i = 1; i < linesData.length; i++) {
-			let sector1isOF = linesData[i].Sectors[0].OverallFastest;
-			let sector1OFTime = linesData[i].Sectors[0].Value;
-			let sector2isOF = linesData[i].Sectors[1].OverallFastest;
-			let sector2OFTime = linesData[i].Sectors[1].Value;
-			let sector3isOF = linesData[i].Sectors[2].OverallFastest;
-			let sector3OFTime = linesData[i].Sectors[2].Value;
-
-			if (
-				sector1isOF === true ||
-				sector2isOF === true ||
-				sector3isOF === true
-			) {
-				top_sector1OF = sector1OFTime;
-				top_sector2OF = sector2OFTime;
-				top_sector3OF = sector3OFTime;
-			}
-			if (
-				top_sector1OF === undefined ||
-				top_sector2OF === undefined ||
-				top_sector3OF === undefined
-			) {
-				top_sector1OF = "     ";
-				top_sector2OF = "     ";
-				top_sector3OF = "     ";
-			}
-		}
-
-		if (pageSelected === "mix") {
-			document.getElementById("timing-table").innerHTML = `<tr>
+	if (pageSelected === "mix") {
+		document.getElementById("timing-table").innerHTML = `<tr>
     <th id="top-pos"></th>
     <th id="top-carnum"></th>
     <th id="top-name"></th>
     <th id="top-bestlaptime">BEST LAP</th>
     <th id="top-lastlaptime">LAST LAP</th>
     <th id="top-gap">GAP</th>
-    <th id="top-sector1">${top_sector1OF}</th>
+    <th id="top-sector-1"></th>
 	<th id="top-sector1speed</th>
-    <th id="top-sector2">${top_sector2OF}</th>
+    <th id="top-sector-2"></th>
 	<th id="top-sector2speed</th>
-    <th id="top-sector3">${top_sector3OF}</th>
+    <th id="top-sector-3"></th>
 	<th id="top-sector3speed</th>
     <th id="top-status"></th>
     <th id="top-lapcount"></th>
 	</tr>`;
-		}
-		if (pageSelected === "p1") {
-			document.getElementById("timing-table").innerHTML = `<tr>
+	}
+	if (pageSelected === "p1") {
+		document.getElementById("timing-table").innerHTML = `<tr>
     <th id="top-pos"></th>
     <th id="top-carnum"></th>
     <th id="top-name"></th>
     <th id="top-bestlaptime">BEST LAP</th>
-    <th id="top-sector1">${top_sector1OF}</th>
+    <th id="top-sector-1"></th>
 	<th id="top-sector1speed</th>
-    <th id="top-sector2">${top_sector2OF}</th>
+    <th id="top-sector-2"></th>
 	<th id="top-sector2speed</th>
-    <th id="top-sector3">${top_sector3OF}</th>
+    <th id="top-sector-3"></th>
 	<th id="top-sector3speed</th>
     <th id="top-status"></th>
     <th id="top-lapcount"></th>
 	</tr>`;
-		}
-		if (pageSelected === "p3") {
-			document.getElementById("timing-table").innerHTML = ``;
-			document.getElementById("timing-table").innerHTML += `<tr>
+	}
+	if (pageSelected === "p3") {
+		document.getElementById("timing-table").innerHTML = ``;
+		document.getElementById("timing-table").innerHTML += `<tr>
 			<th id="top-rcmtime">TIME</th>
 			<th id="top-rcmmessages">MESSAGE</th>`;
-		}
+	}
 
-		if (pageSelected === "p4") {
-			document.getElementById("timing-table").innerHTML = `<tr>
+	if (pageSelected === "p4") {
+		document.getElementById("timing-table").innerHTML = `<tr>
     <th id="top-pos"></th>
     <th id="top-carnum"></th>
     <th id="top-name"></th>
     <th id="top-bestlaptime">BEST LAP</th>
 	<th id="top-gap">GAP</th>
-    <th id="top-sector1">${top_sector1OF}</th>
-    <th id="top-sector2">${top_sector2OF}</th>
-    <th id="top-sector3">${top_sector3OF}</th>
+    <th id="top-sector-1">${top_sector1OF}</th>
+    <th id="top-sector-2">${top_sector2OF}</th>
+    <th id="top-sector-3">${top_sector3OF}</th>
     <th id="top-lapcount"></th>
 	</tr>`;
-		}
 	}
 
 	for (let lines of Object.entries(multiviewTimingData).sort(
@@ -528,14 +487,19 @@ async function getMultiviewData() {
 			document.getElementById("flag-bar").style.animation = "none";
 		}
 	}
-	// console.log(raceControlMessagesData);
 	raceControlMessagesData.Messages.reverse();
 
-	// Race Control messages
-	for (var i = 1; i < 13; i++) {
-		let raceControlMessageTime =
+	for (
+		var i = 0;
+		i <
+		(raceControlMessagesData.Messages.length < 13
+			? raceControlMessagesData.Messages.length
+			: 13);
+		i++
+	) {
+		var raceControlMessageTime =
 			raceControlMessagesData.Messages[i].Utc + "+00:00";
-		let raceControlMessage = raceControlMessagesData.Messages[i].Message;
+		var raceControlMessage = raceControlMessagesData.Messages[i].Message;
 		if (pageSelected === "p3") {
 			document.getElementById(
 				"timing-table"
@@ -586,7 +550,6 @@ async function getClock() {
 			},
 		}
 	);
-	const extrapolatedClockData = await extrapolatedClockResponse.json();
 	const sessionInfo = await sessionResponse.json();
 	let trackOffset = sessionInfo.GmtOffset;
 	let trackTimezone;
@@ -672,33 +635,17 @@ async function getClock() {
 		trackTimezone = "Etc/GMT-14";
 	}
 
-	let sessionTimeRemaining;
-	var isClockPaused = clockData.paused;
-	var extrapolatedClockTime = extrapolatedClockData.Utc;
-	var extrapolatedClockStart = Math.floor(
-		new Date(extrapolatedClockTime) / 1000
-	);
-	var extrapolatedTime = extrapolatedClockData.Remaining;
-	var sessionDuration = Math.floor(new Date(extrapolatedClockTime) / 1000);
-	// console.log(sessionDuration);
-	var isExtrapolionating = extrapolatedClockData.Extrapolating;
-	var systemTime = clockData.systemTime;
-	var trackTime = clockData.trackTime;
-	var now = Date.now();
-	var trackTimeLiveRaw = (now -= systemTime -= trackTime);
-	var trackTimeLive = new Date(trackTimeLiveRaw).toLocaleTimeString("en-GB", {
+	let systemTime = clockData.systemTime;
+	let trackTime = clockData.trackTime;
+	let now = Date.now();
+	let trackTimeLiveRaw = (now -= systemTime -= trackTime);
+	let trackTimeLive = new Date(trackTimeLiveRaw).toLocaleTimeString("en-GB", {
 		timeZone: trackTimezone,
 	});
-	document.getElementById("track-time").innerHTML = trackTimeLive;
+	document.getElementById("track-time").innerText = trackTimeLive;
 	if (trackTimeLive === "Invalid Date") {
 		document.getElementById("track-time").innerText = "00:00:00";
 	}
-
-	if (isExtrapolionating === true) {
-		sessionTimeRemaining =
-			new Date(trackTimeLiveRaw - extrapolatedClockStart) / 1000;
-	}
-	// document.getElementById("session-time").innerHTML = sessionTimeRemaining;
 }
 
 getMultiviewData();
