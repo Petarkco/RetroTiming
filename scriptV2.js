@@ -466,7 +466,6 @@ async function getMultiviewData() {
 			let table_LapCount = `<td id="carlapcount">${carLapCount}</td>`;
 			let table_PitCount = `<td id="carlapcount">${carPitCount}</td>`;
 			if (carIsKnockedOut === true || carIsCutOff === true) {
-				table_carNum = `<td id="carNumRed">${carNum}</td>`;
 				table_carName = `<td id="carNameKO">${carName}</td>`;
 			}
 
