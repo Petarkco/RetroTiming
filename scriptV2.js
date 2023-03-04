@@ -671,18 +671,6 @@ async function getClock() {
 			},
 		}
 	);
-
-	const extrapolatedClockResponse = await fetch(
-		"http://localhost:10101/api/v2/live-timing/state/ExtrapolatedClock",
-		{
-			mode: "cors",
-			method: "GET",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-		}
-	);
 	const sessionInfo = await sessionResponse.json();
 	let trackOffset = sessionInfo.GmtOffset;
 	let trackTimezone;
@@ -779,6 +767,81 @@ async function getClock() {
 	if (trackTimeLive === "Invalid Date") {
 		document.getElementById("track-time").innerText = "00:00:00";
 	}
+}
+
+async function getRemainingTime() {
+	const clockResponse = await fetch(
+		"http://localhost:10101/api/v2/live-timing/clock",
+		{
+			mode: "cors",
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	const clockData = await clockResponse.json();
+	const ExtrapolatedClockResponse = await fetch(
+		"http://localhost:10101/api/v2/live-timing/state/ExtrapolatedClock",
+		{
+			mode: "cors",
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	const exapolatedClockData = await ExtrapolatedClockResponse.json();
+	const now = new Date();
+	const paused = clockData.paused;
+	const extrapolatedClockStart = new Date(exapolatedClockData.Utc);
+	const extrapolatedTime = exapolatedClockData.Remaining;
+	const systemTime = clockData.systemTime;
+	const trackTime = clockData.trackTime;
+	const extrapolating = exapolatedClockData.Extrapolating;
+	const sessionDuration = parseTime(extrapolatedTime) + 1000;
+
+	const timer = extrapolating
+		? paused
+			? getTime(sessionDuration - (trackTime - extrapolatedClockStart))
+			: getTime(
+					sessionDuration -
+						(now - (systemTime - trackTime) - extrapolatedClockStart)
+			  )
+		: extrapolatedTime;
+	document.getElementById("session-time").innerText = timer;
+
+	return parseTime(timer);
+}
+
+function parseTime(time) {
+	const [seconds, minutes, hours] = time
+		.split(":")
+		.reverse()
+		.map((number) => parseInt(number));
+
+	if (hours === undefined) return (minutes * 60 + seconds) * 1000;
+
+	return (hours * 3600 + minutes * 60 + seconds) * 1000;
+}
+function getTime(ms) {
+	const date = new Date(ms);
+
+	const hours = date.getUTCHours().toString().padStart(2, "0");
+	const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+	const seconds = date.getUTCSeconds().toString().padStart(2, "0");
+
+	if (parseInt(hours) === 0) {
+		return `${hours}:${minutes}:${seconds}`;
+	}
+
+	return `${hours}:${minutes}:${seconds}`;
+}
+getRemainingTime();
+if (debug === false) {
+	setInterval(getRemainingTime, 100);
 }
 
 getMultiviewData();
