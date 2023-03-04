@@ -120,6 +120,10 @@ main {
 	text-align: right;
 }
 
+#carNameKO {
+	color: #959595;
+}
+
 #carInt,
 #carGap {
 	text-align: right;
