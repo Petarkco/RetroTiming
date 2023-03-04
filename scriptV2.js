@@ -13,6 +13,7 @@ async function getMultiviewData() {
 	let sessionTrackStatus = multiviewData.TrackStatus.Message;
 	let sessionType = multiviewData.TimingStats.SessionType;
 	let trackOffset = multiviewData.SessionInfo.GmtOffset;
+	let qualifyingPart = await multiviewData.TimingData.SessionPart;
 	let trackTimezone;
 	if (trackOffset === "-12:00:00") {
 		trackTimezone = "Etc/GMT+12";
@@ -209,9 +210,9 @@ async function getMultiviewData() {
     <th id="top-name"></th>
     <th id="top-bestlaptime">BEST LAP</th>
 	<th id="top-gap">GAP</th>
-    <th id="top-sector-1">${top_sector1OF}</th>
-    <th id="top-sector-2">${top_sector2OF}</th>
-    <th id="top-sector-3">${top_sector3OF}</th>
+    <th id="top-sector-1"></th>
+    <th id="top-sector-2"></th>
+    <th id="top-sector-3">}</th>
     <th id="top-lapcount"></th>
 	</tr>`;
 	}
@@ -258,7 +259,19 @@ async function getMultiviewData() {
 			let carSector3dec = parseFloat(carSector3).toFixedNoRounding(1);
 			let carStatus;
 			let carLapCount = linesData[i].NumberOfLaps;
+			let carIsKnockedOut = linesData[i].KnockedOut;
+			let carIsCutOff = linesData[i].Cutoff;
 
+			if (sessionType === "Qualifying") {
+				carGap = linesData[i].Stats[qualifyingPart - 1].TimeDiffToFastest;
+				if (carGap === undefined) {
+					carGap = "";
+				}
+				carInt = linesData[i].Stats[qualifyingPart - 1].TimeDifftoPositionAhead;
+				if (carInt === undefined) {
+					carInt = "";
+				}
+			}
 			if (sessionType === "Race") {
 				carGap = linesData[i].GapToLeader;
 				carInt = linesData[i].IntervalToPositionAhead.Value;
@@ -331,6 +344,9 @@ async function getMultiviewData() {
 			let table_carSector3speed = `<td id="sector3speed">${carSector3speed}</td>`;
 			let table_carStatus = `<td id="carstatus">${carStatus}</td>`;
 			let table_LapCount = `<td id="carlapcount">${carLapCount}</td>`;
+			if (carIsKnockedOut === true) {
+				table_carNum = `<td id="carNumRed">${carNum}</td>`;
+			}
 
 			// set sector time colours for personal best and overall fastest
 			if (carSector1isPB === true && carSector1isOF === true) {
