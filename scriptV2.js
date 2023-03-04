@@ -760,9 +760,16 @@ async function getClock() {
 	let trackTime = clockData.trackTime;
 	let now = Date.now();
 	let trackTimeLiveRaw = (now -= systemTime -= trackTime);
-	let trackTimeLive = new Date(trackTimeLiveRaw).toLocaleTimeString("en-GB", {
-		timeZone: trackTimezone,
-	});
+	// let trackTimeLive = ;
+	let isClockPaused = clockData.paused;
+
+	let trackTimeLive = isClockPaused
+		? new Date(trackTime).toLocaleTimeString("en-GB", {
+				timeZone: trackTimezone,
+		  })
+		: new Date(trackTimeLiveRaw).toLocaleTimeString("en-GB", {
+				timeZone: trackTimezone,
+		  });
 	document.getElementById("track-time").innerText = trackTimeLive;
 	if (trackTimeLive === "Invalid Date") {
 		document.getElementById("track-time").innerText = "00:00:00";
