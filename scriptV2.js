@@ -121,6 +121,8 @@ async function getMultiviewData() {
 			return b > 0 ? a + "0".repeat(b) : a;
 		} catch (err) {}
 	};
+	let cutOffTime = multiviewData.TimingData.CutOffTime;
+	let cutOffPercent = multiviewData.TimingData.CutOffPercentage;
 
 	for (let lines of Object.entries(multiviewTimingData).sort(
 		(a, b) => parseInt(a[1].Position) - parseInt(b[1].Position)
@@ -216,7 +218,62 @@ async function getMultiviewData() {
     <th id="top-lapcount"></th>
 	</tr>`;
 	}
+	if (sessionType === "Qualifying") {
+		if (pageSelected === "mix") {
+			document.getElementById("timing-table").innerHTML = `<tr>
+		<th id="top-pos"></th>
+		<th id="top-carnum"></th>
+		<th id="top-name"></th>
+		<th id="top-bestlaptime">BEST LAP</th>
+		<th id="top-lastlaptime">LAST LAP</th>
+		<th id="top-gap">GAP</th>
+		<th id="top-sector-1"></th>
+		<th id="top-sector1speed</th>
+		<th id="top-sector-2"></th>
+		<th id="top-sector2speed</th>
+		<th id="top-sector-3"></th>
+		<th id="top-sector3speed</th>
+		<th id="top-status"></th>
+		<th id="top-lapcount"></th>
+		</tr>`;
+		}
+		if (pageSelected === "p1") {
+			document.getElementById("timing-table").innerHTML = `<tr>
+		<th id="top-pos"></th>
+		<th id="top-carnum"></th>
+		<th id="top-name"></th>
+		<th id="top-bestlaptime">BEST LAP</th>
+		<th id="top-sector-1"></th>
+		<th id="top-sector1speed</th>
+		<th id="top-sector-2"></th>
+		<th id="top-sector2speed</th>
+		<th id="top-sector-3"></th>
+		<th id="top-sector3speed</th>
+		<th id="top-status"></th>
+		<th id="top-lapcount"></th>
+		</tr>`;
+		}
+		if (pageSelected === "p3") {
+			document.getElementById("timing-table").innerHTML = ``;
+			document.getElementById("timing-table").innerHTML += `<tr>
+				<th id="top-rcmtime">TIME</th>
+				<th id="top-rcmmessages">MESSAGE</th>`;
+		}
 
+		if (pageSelected === "p4") {
+			document.getElementById("timing-table").innerHTML = `<tr>
+		<th id="top-pos"></th>
+		<th id="top-carnum"></th>
+		<th id="top-nameQ">Q1 ${cutOffPercent}% TIME</th>
+		<th id="top-bestlaptime">${cutOffTime}</th>
+		<th id="top-gap">GAP</th>
+		<th id="top-sector-1"></th>
+		<th id="top-sector-2"></th>
+		<th id="top-sector-3"></th>
+		<th id="top-lapcount"></th>
+		</tr>`;
+		}
+	}
 	if (sessionType === "Race") {
 		if (pageSelected === "mix") {
 			document.getElementById("timing-table").innerHTML = `<tr>
@@ -483,7 +540,58 @@ async function getMultiviewData() {
 				table_carNum = `<td id="carNumRed">${carNum}</td>`;
 			}
 
-			if (sessionType === "Practice" || sessionType === "Qualifying") {
+			if (sessionType === "Practice") {
+				if (pageSelected === "mix") {
+					document.getElementById("timing-table").innerHTML += `
+            ${table_carPos}
+            ${table_carNum}
+            ${table_carName}
+            ${table_carBestLapTime}
+			${table_carLastLapTime}
+			${table_carGap}
+            ${table_carSector1}
+			${table_carSector1speed}
+            ${table_carSector2}
+			${table_carSector2speed}
+            ${table_carSector3}
+			${table_carSector3speed}
+            ${table_carStatus}
+			${table_LapCount}
+            `;
+				}
+				if (pageSelected === "p1") {
+					document.getElementById("timing-table").innerHTML += `
+            ${table_carPos}
+            ${table_carNum}
+            ${table_carName}
+            ${table_carBestLapTime}
+            ${table_carSector1}
+			${table_carSector1speed}
+            ${table_carSector2}
+			${table_carSector2speed}
+            ${table_carSector3}
+			${table_carSector3speed}
+            ${table_carStatus}
+			${table_LapCount}
+            `;
+				}
+
+				if (pageSelected === "p4") {
+					document.getElementById("timing-table").innerHTML += `
+            ${table_carPos}
+            ${table_carNum}
+            ${table_carName}
+            ${table_carBestLapTime}
+			${table_carGap}
+            ${table_carSector1dec}
+            ${table_carSector2dec}
+            ${table_carSector3dec}
+			${table_LapCount}
+            `;
+				}
+			}
+
+			if (sessionType === "Qualifying") {
 				if (pageSelected === "mix") {
 					document.getElementById("timing-table").innerHTML += `
             ${table_carPos}
