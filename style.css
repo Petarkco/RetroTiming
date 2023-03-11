@@ -208,6 +208,27 @@ main {
 	padding-left: 2%;
 }
 
+#trackWeatherData {
+	float: right;
+}
+
+#weatherTableColB {
+	min-width: 70px;
+}
+#trackTemp {
+	color: #f8ff2c;
+}
+#airTemp,
+#pressure {
+	color: #d24ae0;
+}
+#wetDry {
+	color: #5dfafb;
+}
+#windSpeed {
+	color: #4cb033;
+}
+
 /* Colors */
 
 #white {

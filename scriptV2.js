@@ -9,6 +9,7 @@ async function getMultiviewData() {
 	let multiviewData = await multviewDataResponse.json();
 	let multiviewTimingData = multiviewData.TimingData.Lines;
 	let raceControlMessagesData = multiviewData.RaceControlMessages;
+	let weatherData = multiviewData.WeatherData;
 	let sessionOfficialName = multiviewData.SessionInfo.Meeting.OfficialName;
 	let sessionTrackStatus = multiviewData.TrackStatus.Message;
 	let sessionType = multiviewData.TimingStats.SessionType;
@@ -165,6 +166,7 @@ async function getMultiviewData() {
 	}
 
 	if (pageSelected === "mix") {
+		document.getElementById("trackWeatherData").innerHTML = ``;
 		document.getElementById("timing-table").innerHTML = `<tr>
     <th id="top-pos"></th>
     <th id="top-carnum"></th>
@@ -183,6 +185,7 @@ async function getMultiviewData() {
 	</tr>`;
 	}
 	if (pageSelected === "p1") {
+		document.getElementById("trackWeatherData").innerHTML = ``;
 		document.getElementById("timing-table").innerHTML = `<tr>
     <th id="top-pos"></th>
     <th id="top-carnum"></th>
@@ -206,6 +209,7 @@ async function getMultiviewData() {
 	}
 
 	if (pageSelected === "p4") {
+		document.getElementById("trackWeatherData").innerHTML = ``;
 		document.getElementById("timing-table").innerHTML = `<tr>
     <th id="top-pos"></th>
     <th id="top-carnum"></th>
@@ -728,8 +732,9 @@ async function getMultiviewData() {
 			document.getElementById("flag-bar").style.animation = "none";
 		}
 	}
+	// console.log(weatherData);
+	let weatherDivAdded = false;
 	raceControlMessagesData.Messages.reverse();
-
 	for (
 		var i = 0;
 		i <
@@ -752,6 +757,27 @@ async function getMultiviewData() {
 				minute: "2-digit",
 			})}</td><td id="table-rcm-message">${raceControlMessage}</td>`;
 		}
+	}
+	let trackAirTemp = weatherData.AirTemp;
+	let trackHumidity = weatherData.Humidity;
+	let trackPressure = weatherData.Pressure;
+	let trackRainfall = weatherData.Rainfall;
+	let trackTrackTemp = weatherData.TrackTemp;
+	let trackWindDirection = weatherData.WindDirection;
+	let trackWindSpeed = weatherData.WindSpeed;
+
+	if (pageSelected === "p3") {
+		document.getElementById(
+			"trackWeatherData"
+		).innerHTML = `<table id="weatherTable">
+		<th id="weatherTableColA"></th><th id="weatherTableColB"></th>
+		<tr id="trackTemp"><td>TRACK TEMP</td><td>${trackTrackTemp}</td></tr>
+		<tr id="airTemp"><td>AIR TEMP</td><td>${trackAirTemp}</td></tr>
+		<tr id="wetDry"><td>WET / DRY</td><td>${trackRainfall}</td></tr>
+		<tr id="windSpeed"><td>WIND SPEED</td><td>${trackWindSpeed}</td></tr>
+		<tr id="humidity"><td>HUMIDITY</td><td>${trackHumidity}</td></tr>
+		<tr id="pressure"><td>PRESSURE</td><td>${trackPressure}</td></tr>
+		</table>`;
 	}
 }
 
