@@ -15,88 +15,7 @@ async function getMultiviewData() {
 	let sessionType = multiviewData.TimingStats.SessionType;
 	let trackOffset = multiviewData.SessionInfo.GmtOffset;
 	let qualifyingPart = await multiviewData.TimingData.SessionPart;
-	let trackTimezone;
-	if (trackOffset === "-12:00:00") {
-		trackTimezone = "Etc/GMT+12";
-	}
-	if (trackOffset === "-11:00:00") {
-		trackTimezone = "Etc/GMT+11";
-	}
-	if (trackOffset === "-10:00:00") {
-		trackTimezone = "Etc/GMT+10";
-	}
-	if (trackOffset === "-09:00:00") {
-		trackTimezone = "Etc/GMT+9";
-	}
-	if (trackOffset === "-08:00:00") {
-		trackTimezone = "Etc/GMT+8";
-	}
-	if (trackOffset === "-07:00:00") {
-		trackTimezone = "Etc/GMT+7";
-	}
-	if (trackOffset === "-06:00:00") {
-		trackTimezone = "Etc/GMT+6";
-	}
-	if (trackOffset === "-05:00:00") {
-		trackTimezone = "Etc/GMT+5";
-	}
-	if (trackOffset === "-04:00:00") {
-		trackTimezone = "Etc/GMT+4";
-	}
-	if (trackOffset === "-03:00:00") {
-		trackTimezone = "Etc/GMT+3";
-	}
-	if (trackOffset === "-02:00:00") {
-		trackTimezone = "Etc/GMT+2";
-	}
-	if (trackOffset === "-01:00:00") {
-		trackTimezone = "Etc/GMT+1";
-	}
-	if (trackOffset === "00:00:00") {
-		trackTimezone = "Etc/GMT-0";
-	}
-	if (trackOffset === "01:00:00") {
-		trackTimezone = "Etc/GMT-1";
-	}
-	if (trackOffset === "02:00:00") {
-		trackTimezone = "Etc/GMT-2";
-	}
-	if (trackOffset === "03:00:00") {
-		trackTimezone = "Etc/GMT-3";
-	}
-	if (trackOffset === "04:00:00") {
-		trackTimezone = "Etc/GMT-4";
-	}
-	if (trackOffset === "05:00:00") {
-		trackTimezone = "Etc/GMT-5";
-	}
-	if (trackOffset === "06:00:00") {
-		trackTimezone = "Etc/GMT-6";
-	}
-	if (trackOffset === "07:00:00") {
-		trackTimezone = "Etc/GMT-7";
-	}
-	if (trackOffset === "08:00:00") {
-		trackTimezone = "Etc/GMT-8";
-	}
-	if (trackOffset === "09:00:00") {
-		trackTimezone = "Etc/GMT-9";
-	}
-	if (trackOffset === "10:00:00") {
-		trackTimezone = "Etc/GMT-10";
-	}
-	if (trackOffset === "11:00:00") {
-		trackTimezone = "Etc/GMT-11";
-	}
-	if (trackOffset === "12:00:00") {
-		trackTimezone = "Etc/GMT-12";
-	}
-	if (trackOffset === "13:00:00") {
-		trackTimezone = "Etc/GMT-13";
-	}
-	if (trackOffset === "14:00:00") {
-		trackTimezone = "Etc/GMT-14";
-	}
+	let trackTimezone = getTrackTimezone(trackOffset);
 
 	let pageSelected;
 	function pageSelector() {
@@ -108,20 +27,6 @@ async function getMultiviewData() {
 	}
 	pageSelector();
 
-	//Allows sector times to have 2 decimals without rounding down
-	Number.prototype.toFixedNoRounding = function (n) {
-		try {
-			const reg = new RegExp("^-?\\d+(?:\\.\\d{0," + n + "})?", "g");
-			const a = this.toString().match(reg)[0];
-			const dot = a.indexOf(".");
-			if (dot === -1) {
-				// integer, insert decimal dot and pad up zeros
-				return a + "." + "0".repeat(n);
-			}
-			const b = n - (a.length - dot) + 1;
-			return b > 0 ? a + "0".repeat(b) : a;
-		} catch (err) {}
-	};
 	let cutOffTime = multiviewData.TimingData.CutOffTime;
 	let cutOffPercent = multiviewData.TimingData.CutOffPercentage;
 
@@ -143,24 +48,24 @@ async function getMultiviewData() {
 			let is_driverSector2_fastest = linesData[i].Sectors[1].OverallFastest;
 			let is_driverSector3_fastest = linesData[i].Sectors[2].OverallFastest;
 
-			if (is_driverSector1_fastest === true) {
-				timingFastestS1 = timingS1_dec;
-			}
-			if (is_driverSector2_fastest === true) {
-				timingFastestS2 = timingS2_dec;
-			}
-			if (is_driverSector3_fastest === true) {
-				timingFastestS3 = timingS3_dec;
+			if (
+				is_driverSector1_fastest ||
+				is_driverSector2_fastest ||
+				is_driverSector3_fastest
+			) {
+				if (is_driverSector1_fastest) timingFastestS1 = timingS1_dec;
+				if (is_driverSector2_fastest) timingFastestS2 = timingS2_dec;
+				if (is_driverSector3_fastest) timingFastestS3 = timingS3_dec;
 			}
 
-			if (timingFastestS1 === undefined) {
-				timingFastestS1 = "      ";
-			}
-			if (timingFastestS2 === undefined) {
-				timingFastestS2 = "      ";
-			}
-			if (timingFastestS3 === undefined) {
-				timingFastestS3 = "      ";
+			if (
+				timingFastestS1 === undefined ||
+				timingFastestS2 === undefined ||
+				timingFastestS3 === undefined
+			) {
+				timingFastestS1 = timingFastestS1 || "";
+				timingFastestS2 = timingFastestS2 || "";
+				timingFastestS3 = timingFastestS3 || "";
 			}
 		}
 	}
@@ -411,25 +316,16 @@ async function getMultiviewData() {
 				carPos = "";
 			}
 
-			if (carInPit === true) {
+			if (carInPit) {
 				carStatus = "IN PIT";
-			}
-			if (carStopped === true) {
+			} else if (carStopped) {
 				carStatus = "STOPPED";
-			}
-			if (carPitOut === true) {
+			} else if (carPitOut) {
 				carStatus = "PIT OUT";
-			}
-			if (carisRetired === true) {
+			} else if (carisRetired) {
 				carStatus = "OUT";
-			}
-			if (
-				carInPit === false &&
-				carStopped === false &&
-				carPitOut === false &&
-				carisRetired === false
-			) {
-				carStatus = "    ";
+			} else {
+				carStatus = "";
 			}
 
 			if (
@@ -474,70 +370,47 @@ async function getMultiviewData() {
 			}
 
 			// set sector time colours for personal best and overall fastest
-			if (carSector1isPB === true && carSector1isOF === true) {
+			if (carSector1isOF) {
 				table_carSector1 = `<td id="sector1of">${carSector1}</td>`;
 				table_carSector1dec = `<td id="sector1of">${carSector1dec}</td>`;
-			}
-			if (carSector1isPB === true && carSector1isOF === false) {
+			} else if (carSector1isPB) {
 				table_carSector1 = `<td id="sector1pb">${carSector1}</td>`;
 				table_carSector1dec = `<td id="sector1pb">${carSector1dec}</td>`;
 			}
-			if (carSector1isPB === false && carSector1isOF === true) {
-				table_carSector1 = `<td id="sector1of">${carSector1}</td>`;
-				table_carSector1dec = `<td id="sector1of">${carSector1dec}</td>`;
-			}
-			if (carSector2isPB === true && carSector2isOF === false) {
+
+			if (carSector2isOF) {
+				table_carSector2 = `<td id="sector2of">${carSector2}</td>`;
+				table_carSector2dec = `<td id="sector2of">${carSector2dec}</td>`;
+			} else if (carSector2isPB) {
 				table_carSector2 = `<td id="sector2pb">${carSector2}</td>`;
 				table_carSector2dec = `<td id="sector2pb">${carSector2dec}</td>`;
 			}
-			if (carSector2isPB === false && carSector2isOF === true) {
-				table_carSector2 = `<td id="sector2of">${carSector2}</td>`;
-				table_carSector2dec = `<td id="sector2of">${carSector2dec}</td>`;
-			}
-			if (carSector2isPB === true && carSector2isOF === true) {
-				table_carSector2 = `<td id="sector2of">${carSector2}</td>`;
-				table_carSector2dec = `<td id="sector2of">${carSector2dec}</td>`;
-			}
-			if (carSector3isPB === true && carSector3isOF === false) {
+
+			if (carSector3isOF) {
+				table_carSector3 = `<td id="sector3of">${carSector3}</td>`;
+				table_carSector3dec = `<td id="sector3of">${carSector3dec}</td>`;
+			} else if (carSector3isPB) {
 				table_carSector3 = `<td id="sector3pb">${carSector3}</td>`;
 				table_carSector3dec = `<td id="sector3pb">${carSector3dec}</td>`;
 			}
-			if (carSector3isPB === false && carSector3isOF === true) {
-				table_carSector3 = `<td id="sector3of">${carSector3}</td>`;
-				table_carSector3dec = `<td id="sector3of">${carSector3dec}</td>`;
-			}
-			if (carSector3isPB === true && carSector3isOF === true) {
-				table_carSector3 = `<td id="sector3of">${carSector3}</td>`;
-				table_carSector3dec = `<td id="sector3of">${carSector3dec}</td>`;
-			}
 
 			// set speed colours for personal best and overall fastest
-			if (carSector1speedisOF === true && carSector1speedisPB === false) {
+			if (carSector1speedisOF) {
 				table_carSector1speed = `<td id="sector1speedof">${carSector1speed}</td>`;
-			}
-			if (carSector1speedisOF === false && carSector1speedisPB === true) {
+			} else if (carSector1speedisPB) {
 				table_carSector1speed = `<td id="sector1speedpb">${carSector1speed}</td>`;
 			}
-			if (carSector1speedisOF === true && carSector2speedisPB === true) {
-				table_carSector1speed = `<td id="sector1speedof">${carSector1speed}</td>`;
-			}
-			if (carSector2speedisOF === true && carSector2speedisPB === false) {
+
+			if (carSector2speedisOF) {
 				table_carSector2speed = `<td id="sector2speedof">${carSector2speed}</td>`;
-			}
-			if (carSector2speedisOF === false && carSector2speedisPB === true) {
+			} else if (carSector2speedisPB) {
 				table_carSector2speed = `<td id="sector2speedpb">${carSector2speed}</td>`;
 			}
-			if (carSector2speedisOF === true && carSector2speedisPB === true) {
-				table_carSector2speed = `<td id="sector2speedof">${carSector2speed}</td>`;
-			}
-			if (carSector3speedisOF === true && carSector3speedisPB === false) {
+
+			if (carSector3speedisOF) {
 				table_carSector3speed = `<td id="sector3speedof">${carSector3speed}</td>`;
-			}
-			if (carSector3speedisOF === false && carSector3speedisPB === true) {
+			} else if (carSector3speedisPB) {
 				table_carSector3speed = `<td id="sector3speedpb">${carSector3speed}</td>`;
-			}
-			if (carSector3speedisOF === true && carSector3speedisPB === true) {
-				table_carSector3speed = `<td id="sector3speedof">${carSector3speed}</td>`;
 			}
 
 			if (carStatus === "PIT OUT" && pageSelected === "p4") {
@@ -703,7 +576,9 @@ async function getMultiviewData() {
 		}
 
 		if (sessionTrackStatus === "AllClear") {
-			document.getElementById("flag-bar").innerText = `${sessionOfficialName}`;
+			document.getElementById(
+				"flag-bar"
+			).innerText = `${sessionOfficialName} - ${sessionType}`;
 			document.getElementById("flag-bar").style.color =
 				"rgba(255, 255, 255, 1)";
 			document.getElementById("flag-bar").style.backgroundColor = "black";
@@ -733,14 +608,13 @@ async function getMultiviewData() {
 		}
 	}
 	// console.log(weatherData);
-	let weatherDivAdded = false;
 	raceControlMessagesData.Messages.reverse();
 	for (
 		var i = 0;
 		i <
-		(raceControlMessagesData.Messages.length < 13
+		(raceControlMessagesData.Messages.length < 12
 			? raceControlMessagesData.Messages.length
-			: 13);
+			: 12);
 		i++
 	) {
 		var raceControlMessageTime =
@@ -807,94 +681,11 @@ async function getClock() {
 	);
 	const sessionInfo = await sessionResponse.json();
 	let trackOffset = sessionInfo.GmtOffset;
-	let trackTimezone;
-	if (trackOffset === "-12:00:00") {
-		trackTimezone = "Etc/GMT+12";
-	}
-	if (trackOffset === "-11:00:00") {
-		trackTimezone = "Etc/GMT+11";
-	}
-	if (trackOffset === "-10:00:00") {
-		trackTimezone = "Etc/GMT+10";
-	}
-	if (trackOffset === "-09:00:00") {
-		trackTimezone = "Etc/GMT+9";
-	}
-	if (trackOffset === "-08:00:00") {
-		trackTimezone = "Etc/GMT+8";
-	}
-	if (trackOffset === "-07:00:00") {
-		trackTimezone = "Etc/GMT+7";
-	}
-	if (trackOffset === "-06:00:00") {
-		trackTimezone = "Etc/GMT+6";
-	}
-	if (trackOffset === "-05:00:00") {
-		trackTimezone = "Etc/GMT+5";
-	}
-	if (trackOffset === "-04:00:00") {
-		trackTimezone = "Etc/GMT+4";
-	}
-	if (trackOffset === "-03:00:00") {
-		trackTimezone = "Etc/GMT+3";
-	}
-	if (trackOffset === "-02:00:00") {
-		trackTimezone = "Etc/GMT+2";
-	}
-	if (trackOffset === "-01:00:00") {
-		trackTimezone = "Etc/GMT+1";
-	}
-	if (trackOffset === "00:00:00") {
-		trackTimezone = "Etc/GMT-0";
-	}
-	if (trackOffset === "01:00:00") {
-		trackTimezone = "Etc/GMT-1";
-	}
-	if (trackOffset === "02:00:00") {
-		trackTimezone = "Etc/GMT-2";
-	}
-	if (trackOffset === "03:00:00") {
-		trackTimezone = "Etc/GMT-3";
-	}
-	if (trackOffset === "04:00:00") {
-		trackTimezone = "Etc/GMT-4";
-	}
-	if (trackOffset === "05:00:00") {
-		trackTimezone = "Etc/GMT-5";
-	}
-	if (trackOffset === "06:00:00") {
-		trackTimezone = "Etc/GMT-6";
-	}
-	if (trackOffset === "07:00:00") {
-		trackTimezone = "Etc/GMT-7";
-	}
-	if (trackOffset === "08:00:00") {
-		trackTimezone = "Etc/GMT-8";
-	}
-	if (trackOffset === "09:00:00") {
-		trackTimezone = "Etc/GMT-9";
-	}
-	if (trackOffset === "10:00:00") {
-		trackTimezone = "Etc/GMT-10";
-	}
-	if (trackOffset === "11:00:00") {
-		trackTimezone = "Etc/GMT-11";
-	}
-	if (trackOffset === "12:00:00") {
-		trackTimezone = "Etc/GMT-12";
-	}
-	if (trackOffset === "13:00:00") {
-		trackTimezone = "Etc/GMT-13";
-	}
-	if (trackOffset === "14:00:00") {
-		trackTimezone = "Etc/GMT-14";
-	}
-
+	let trackTimezone = getTrackTimezone(trackOffset);
 	let systemTime = clockData.systemTime;
 	let trackTime = clockData.trackTime;
 	let now = Date.now();
 	let trackTimeLiveRaw = (now -= systemTime -= trackTime);
-	// let trackTimeLive = ;
 	let isClockPaused = clockData.paused;
 
 	let trackTimeLive = isClockPaused
@@ -980,6 +771,85 @@ function getTime(ms) {
 
 	return `${hours}:${minutes}:${seconds}`;
 }
+
+function getTrackTimezone(trackOffset) {
+	switch (trackOffset) {
+		case "-12:00:00":
+			return "Etc/GMT+12";
+		case "-11:00:00":
+			return "Etc/GMT+11";
+		case "-10:00:00":
+			return "Etc/GMT+10";
+		case "-09:00:00":
+			return "Etc/GMT+9";
+		case "-08:00:00":
+			return "Etc/GMT+8";
+		case "-07:00:00":
+			return "Etc/GMT+7";
+		case "-06:00:00":
+			return "Etc/GMT+6";
+		case "-05:00:00":
+			return "Etc/GMT+5";
+		case "-04:00:00":
+			return "Etc/GMT+4";
+		case "-03:00:00":
+			return "Etc/GMT+3";
+		case "-02:00:00":
+			return "Etc/GMT+2";
+		case "-01:00:00":
+			return "Etc/GMT+1";
+		case "00:00:00":
+			return "Etc/GMT-0";
+		case "01:00:00":
+			return "Etc/GMT-1";
+		case "02:00:00":
+			return "Etc/GMT-2";
+		case "03:00:00":
+			return "Etc/GMT-3";
+		case "04:00:00":
+			return "Etc/GMT-4";
+		case "05:00:00":
+			return "Etc/GMT-5";
+		case "06:00:00":
+			return "Etc/GMT-6";
+		case "07:00:00":
+			return "Etc/GMT-7";
+		case "08:00:00":
+			return "Etc/GMT-8";
+		case "09:00:00":
+			return "Etc/GMT-9";
+		case "10:00:00":
+			return "Etc/GMT-10";
+		case "11:00:00":
+			return "Etc/GMT-11";
+		case "12:00:00":
+			return "Etc/GMT-12";
+		case "13:00:00":
+			return "Etc/GMT-13";
+		case "14:00:00":
+			return "Etc/GMT-14";
+		default:
+			// Handle the case where the trackOffset doesn't match any of the cases
+			console.error("Invalid trackOffset value:", trackOffset);
+			return null;
+	}
+}
+
+//Allows sector times to have 2 decimals without rounding down
+Number.prototype.toFixedNoRounding = function (n) {
+	try {
+		const reg = new RegExp("^-?\\d+(?:\\.\\d{0," + n + "})?", "g");
+		const a = this.toString().match(reg)[0];
+		const dot = a.indexOf(".");
+		if (dot === -1) {
+			// integer, insert decimal dot and pad up zeros
+			return a + "." + "0".repeat(n);
+		}
+		const b = n - (a.length - dot) + 1;
+		return b > 0 ? a + "0".repeat(b) : a;
+	} catch (err) {}
+};
+
 getRemainingTime();
 if (debug === false) {
 	setInterval(getRemainingTime, 100);

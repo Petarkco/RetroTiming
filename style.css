@@ -23,18 +23,24 @@ main {
 	width: 100%;
 	max-width: 1024px;
 	margin: 0.5% auto;
-	display: flexbox;
 	color: #ffffff;
-	justify-content: space-evenly;
 }
 
+#timing-data {
+	min-height: 611px;
+	max-height: 611px;
+	width: 100%;
+}
 #timing-table {
 	width: 100%;
+	/* min-height: 430px; */
+	vertical-align: top;
+	/* display: inline-block; */
+	empty-cells: show;
 }
 
 #bottom-bar {
 	width: 100%;
-	margin: 0 auto;
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
@@ -208,8 +214,18 @@ main {
 	padding-left: 2%;
 }
 
+/* #weatherData{
+	display: flex;
+} */
+/* #trackGraph {
+	float: middle;
+	min-height: 182px;
+} */
+
 #trackWeatherData {
 	float: right;
+	display: flex;
+	align-self: flex-end;
 }
 
 #weatherTableColB {
