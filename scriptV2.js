@@ -753,22 +753,17 @@ function parseTime(time) {
 		.split(":")
 		.reverse()
 		.map((number) => parseInt(number));
-
 	if (hours === undefined) return (minutes * 60 + seconds) * 1000;
-
 	return (hours * 3600 + minutes * 60 + seconds) * 1000;
 }
 function getTime(ms) {
 	const date = new Date(ms);
-
 	const hours = date.getUTCHours().toString().padStart(2, "0");
 	const minutes = date.getUTCMinutes().toString().padStart(2, "0");
 	const seconds = date.getUTCSeconds().toString().padStart(2, "0");
-
 	if (parseInt(hours) === 0) {
 		return `${hours}:${minutes}:${seconds}`;
 	}
-
 	return `${hours}:${minutes}:${seconds}`;
 }
 
