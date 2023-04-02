@@ -576,11 +576,11 @@ async function getMultiviewData() {
 			}
 		}
 
-		if (sessionOfficialName === undefined) {
+		if (sessionOfficialName == undefined) {
 			sessionOfficialName = multiviewData.SessionInfo.Meeting.Name;
 		}
 
-		if (sessionTrackStatus === "AllClear") {
+		if (sessionTrackStatus == "AllClear") {
 			document.getElementById(
 				"flag-bar"
 			).innerText = `${sessionOfficialName} - ${sessionType}`;
@@ -590,21 +590,21 @@ async function getMultiviewData() {
 			document.getElementById("flag-bar").style.width = "100%";
 			document.getElementById("flag-bar").style.animation = "none";
 		}
-		if (sessionTrackStatus === "SCDeployed") {
+		if (sessionTrackStatus == "SCDeployed") {
 			document.getElementById("flag-bar").innerText = "SC";
 			document.getElementById("flag-bar").style.color = "rgba(0, 0, 0, 0)";
 			document.getElementById("flag-bar").style.backgroundColor = "#f8ff2c";
 			document.getElementById("flag-bar").style.animation =
 				"blink normal 1.2s infinite ease-in-out";
 		}
-		if (sessionTrackStatus === "VSCDeployed") {
+		if (sessionTrackStatus == "VSCDeployed") {
 			document.getElementById("flag-bar").innerText = "SC";
 			document.getElementById("flag-bar").style.color = "rgba(0, 0, 0, 0)";
 			document.getElementById("flag-bar").style.backgroundColor = "#f8ff2c";
 			document.getElementById("flag-bar").style.animation =
 				"blink normal 1.2s infinite ease-in-out";
 		}
-		if (sessionTrackStatus === "Red") {
+		if (sessionTrackStatus == "Red") {
 			document.getElementById("flag-bar").innerText = "RED";
 			document.getElementById("flag-bar").style.color = "rgba(0, 0, 0, 0)";
 			document.getElementById("flag-bar").style.backgroundColor = "red";
