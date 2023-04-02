@@ -369,10 +369,10 @@ async function getMultiviewData() {
 				table_carName = `<td id="carNameKO">${carName}</td>`;
 			}
 
-			if ((carPos = 1)) {
-				table_carGap = `<td id="carGap" colspan=2>${carGap}</td>`;
-				table_carInt = ``;
-			}
+			// if ((carPos = 1)) {
+			// 	table_carGap = `<td id="carGap" colspan=2>${carGap}</td>`;
+			// 	table_carInt = ``;
+			// }
 
 			// set sector time colours for personal best and overall fastest
 			if (carSector1isOF) {
